@@ -1,2 +1,2 @@
-# angular_project
+# currency_converter
 ## проект для курса по тайп скрипту на ангуляре
