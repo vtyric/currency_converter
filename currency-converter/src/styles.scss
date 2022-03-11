@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   .form-group {
     label {
@@ -17,19 +18,74 @@
 
     input {
       margin-bottom: 2rem;
-      width: 16rem;
+      width: 18rem;
+    }
+  }
+
+  .converter {
+    display: flex;
+    justify-content: space-between;
+
+    .left, .right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+
+      .additional {
+        font-size: 70%;
+        padding-top: 1rem;
+      }
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+
+      svg {
+        width: 30%;
+        fill: currentColor;
+      }
     }
   }
 
   button {
-    justify-content: center;
     text-align: center;
   }
 }
 
 .header {
   text-align: center;
-  margin-bottom: 2.6rem;
+  margin-bottom: 4rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    padding-bottom: 0.3rem;
+    font-size: 80%;
+  }
+
+  .switcher {
+    .btn {
+      border-radius: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .input-box {
+    height: 7rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+    font-size: 150%;
+    font-weight: bold;
+  }
 }
 
 

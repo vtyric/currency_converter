@@ -14,6 +14,7 @@ import { NewsDescriptionPageComponent } from './pages/news-description-page/news
 import { MapPageComponent } from './pages/map-page/map-page.component';
 import { PredictionsPageComponent } from './pages/predictions-page/predictions-page.component';
 import { PredictionPageComponent } from './pages/prediction-page/prediction-page.component';
+import { ConverterElementComponent } from './components/converter-element/converter-element.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PredictionPageComponent } from './pages/prediction-page/prediction-page
     NewsDescriptionPageComponent,
     MapPageComponent,
     PredictionsPageComponent,
-    PredictionPageComponent
+    PredictionPageComponent,
+    ConverterElementComponent
   ],
   imports: [
     BrowserModule,
