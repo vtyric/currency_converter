@@ -45,8 +45,9 @@
       width: 20%;
 
       svg {
-        width: 30%;
+        width: 27%;
         fill: currentColor;
+        cursor: pointer;
       }
     }
   }
@@ -79,11 +80,11 @@
 
   .input-box {
     height: 7rem;
-    width: 100%;
+    width: auto;
     margin-top: 1rem;
     padding-bottom: 2rem;
     padding-left: 1rem;
-    font-size: 150%;
+    font-size: 200%;
     font-weight: bold;
   }
 }

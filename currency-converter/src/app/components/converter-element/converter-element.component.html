@@ -6,5 +6,8 @@
     <button class="btn btn-outline-secondary">EUR</button>
     <button class="btn btn-outline-secondary">GBP</button>
   </div>
-  <input type="text" class="input-box">
+  <input
+    [formControl]="value"
+    [value]="value.value|numericSeparator:3"
+    type="text" class="input-box" maxlength="13">
 </div>

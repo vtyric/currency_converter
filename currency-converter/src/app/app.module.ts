@@ -15,6 +15,8 @@ import { MapPageComponent } from './pages/map-page/map-page.component';
 import { PredictionsPageComponent } from './pages/predictions-page/predictions-page.component';
 import { PredictionPageComponent } from './pages/prediction-page/prediction-page.component';
 import { ConverterElementComponent } from './components/converter-element/converter-element.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { NumericSeparatorPipe } from './pipes/numeric-separator.pipe';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,13 @@ import { ConverterElementComponent } from './components/converter-element/conver
     MapPageComponent,
     PredictionsPageComponent,
     PredictionPageComponent,
-    ConverterElementComponent
+    ConverterElementComponent,
+    NumericSeparatorPipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
