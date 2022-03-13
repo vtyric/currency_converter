@@ -5,8 +5,12 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class NumericSeparatorPipe implements PipeTransform {
   transform(value: string, divisionLength: number): string {
-    return !value.trim()
-      ? ""
+    if (!value.trim()) {
+      return "";
+    }
+
+    return value.includes('.')
+      ? value
       : Array(
         ...Array(...value)
           .filter(c => c !== " ")

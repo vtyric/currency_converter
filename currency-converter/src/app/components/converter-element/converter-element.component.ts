@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-converter-element',
@@ -11,12 +11,24 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public title!: string;
   @Output()
-  public value: FormControl = new FormControl('', [Validators.pattern(/\d/)]);
+  public cash: FormControl = new FormControl('');
+
+  public isInputSelected: boolean = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
-  }
+    this.cash.valueChanges
+      .subscribe((value: string) => {
+        let res = value.replace(',', '.').replace(/[^.\d]/g, '');
 
+        if (res.includes('.')) {
+          let temp = res[0] === '.' ? ("0" + res).split('.') : res.split('.');
+          res = temp.shift() + '.' + temp.join("");
+        }
+
+        this.cash.patchValue(res, {emitEvent: false});
+      });
+  }
 }

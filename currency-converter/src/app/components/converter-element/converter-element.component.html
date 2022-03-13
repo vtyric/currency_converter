@@ -7,7 +7,9 @@
     <button class="btn btn-outline-secondary">GBP</button>
   </div>
   <input
-    [formControl]="value"
-    [value]="value.value|numericSeparator:3"
-    type="text" class="input-box" maxlength="13">
+    (focus)="isInputSelected = true"
+    (focusout)="isInputSelected = false"
+    [formControl]="cash"
+    [value]="isInputSelected ? cash.value : cash.value | numericSeparator:3"
+    class="input-box" maxlength="13" type="text">
 </div>
