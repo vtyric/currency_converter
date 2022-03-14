@@ -17,6 +17,8 @@ import {PredictionPageComponent} from './pages/prediction-page/prediction-page.c
 import {ConverterElementComponent} from './components/converter-element/converter-element.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NumericSeparatorPipe} from './pipes/numeric-separator.pipe';
+import {CurrencyService} from "./services/currency.service";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -39,9 +41,10 @@ import {NumericSeparatorPipe} from './pipes/numeric-separator.pipe';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CurrencyService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
