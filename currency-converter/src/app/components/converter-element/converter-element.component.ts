@@ -11,23 +11,24 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public title!: string;
   @Input()
-  public currencies!: string[];
+  public allCurrencies!: string[];
   @Output()
   public cash: FormControl = new FormControl('');
   @Output()
-  public selectedCurrency!: string;
+  public selectedCurrency!: string | null;
   public isInputSelected: boolean = false;
+  public mainCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
 
-  @ViewChild('switcher')
-  private switcher!: ElementRef;
+  @ViewChild('mainButtons')
+  private mainButtons!: ElementRef;
   private currentTargetButton!: EventTarget | null;
 
   constructor(private renderer: Renderer2) {
   }
 
-  public onButtonClick(target: EventTarget | null, currency: string): void {
+  public onMainButtonClick(target: EventTarget | null, currency: string): void {
     if (!this.currentTargetButton) {
-      this.currentTargetButton = this.switcher.nativeElement.children[0];
+      this.currentTargetButton = this.mainButtons.nativeElement.children[0];
     }
     this.changeClasses(this.currentTargetButton, 'btn-success', 'btn-outline-secondary');
     this.changeClasses(target, 'btn-outline-secondary', 'btn-success');
@@ -35,13 +36,17 @@ export class ConverterElementComponent implements OnInit {
     this.currentTargetButton = target;
   }
 
+  public onAdditionalButtonClick(currency: string): void {
+    console.log(currency);
+  }
+
   private changeClasses(target: EventTarget | null, removeClass: string, addClass: string): void {
     this.renderer.removeClass(target, removeClass);
-    this.renderer.addClass(target, addClass);
+    this.renderer?.addClass(target, addClass);
   }
 
   ngOnInit(): void {
-    this.selectedCurrency = this.currencies[0];
+    this.selectedCurrency = this.mainCurrencies[0];
 
     this.cash.valueChanges
       .subscribe((value: string) => {

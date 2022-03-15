@@ -1,12 +1,29 @@
 <div class="button-container">
   <span class="title">{{title}}</span>
-  <div class="switcher" #switcher>
-    <button
-      *ngFor="let currency of currencies; let i = index"
-      (click)="onButtonClick($event.target, currency)"
-      [ngClass]=" i === 0 ? 'btn btn-success' : 'btn btn-outline-secondary'">
-      {{currency}}
-    </button>
+  <div class="switcher">
+
+    <div class="main" #mainButtons>
+      <button
+        *ngFor="let currency of mainCurrencies; let i = index"
+        (click)="onMainButtonClick($event.target, currency)"
+        [ngClass]=" i === 0 ? 'btn btn-success' : 'btn btn-outline-secondary'">
+        {{currency}}
+      </button>
+    </div>
+
+    <div
+      class="dropdown"
+      appDropdown>
+      <button class="btn btn-outline-secondary dropdown-toggle"></button>
+      <div class="dropdown-menu">
+        <span
+          *ngFor="let currency of allCurrencies"
+          (click)="onAdditionalButtonClick(currency)">
+          {{currency}}
+        </span>
+      </div>
+    </div>
+
   </div>
   <input
     (focus)="isInputSelected = true"

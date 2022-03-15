@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {CurrencyService} from "../../services/currency.service";
+import {LatestCurrenciesResponse} from "../../interfaces";
 
 @Component({
   selector: 'app-main-page',
@@ -7,12 +9,19 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  public currencies: string[] = ['USD', 'RUB', 'GBP', 'EUR']
+  public currencies!: string[];
+  public date!: Date;
 
-  constructor() {
+  constructor(private currencyService: CurrencyService) {
   }
 
   ngOnInit(): void {
+    this.currencyService
+      .getLatestCurrencyExchangeRates()
+      .subscribe((value: LatestCurrenciesResponse) => {
+        this.date = value.date;
+        this.currencies = Object.keys(value.rates);
+      })
   }
 
 }

@@ -72,9 +72,19 @@
   }
 
   .switcher {
-    .btn {
+    display: flex;
+
+    .btn, .dropdown-toggle {
       border-radius: 0;
       margin-bottom: 0.5rem;
+    }
+
+    .dropdown-toggle {
+      width: 180%;
+    }
+
+    .dropdown-menu.show {
+      width: 40rem;
     }
   }
 
@@ -88,5 +98,3 @@
     font-weight: bold;
   }
 }
-
-

@@ -18,7 +18,8 @@ import {ConverterElementComponent} from './components/converter-element/converte
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NumericSeparatorPipe} from './pipes/numeric-separator.pipe';
 import {CurrencyService} from "./services/currency.service";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
+import {DropdownDirective} from './directives/dropdown.directive';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     PredictionPageComponent,
     ConverterElementComponent,
     NumericSeparatorPipe,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,

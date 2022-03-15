@@ -3,8 +3,8 @@
   <div class="converter">
     <div class="left">
       <app-converter-element
-        title="У меня есть"
-        [currencies]="currencies">
+        [title]="'У меня есть'"
+        [allCurrencies]="currencies">
       </app-converter-element>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -21,10 +21,10 @@
     </div>
     <div class="right">
       <app-converter-element
-        title="Хочу приобрести"
-        [currencies]="currencies">
+        [title]="'Хочу приобрести'"
+        [allCurrencies]="currencies">
       </app-converter-element>
-      <span class="additional">Данные за 2022-03-11 19:27:09 GMT+03:00</span>
+      <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>
   </div>
 </div>
