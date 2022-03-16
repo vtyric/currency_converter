@@ -1,30 +1,13 @@
-<div class="button-container">
+<div class="converter-main">
+
   <span class="title">{{title}}</span>
-  <div class="switcher">
 
-    <div class="main" #mainButtons>
-      <button
-        *ngFor="let currency of mainCurrencies; let i = index"
-        (click)="onMainButtonClick($event.target, currency)"
-        [ngClass]=" i === 0 ? 'btn btn-success' : 'btn btn-outline-secondary'">
-        {{currency}}
-      </button>
-    </div>
+  <app-converter-top-panel
+    [mainCurrencies]="mainCurrencies"
+    [allCurrencies]="allCurrencies"
+    (selectCurrency)="onCurrencyChange($event)">
+  </app-converter-top-panel>
 
-    <div
-      class="dropdown"
-      appDropdown>
-      <button class="btn btn-outline-secondary dropdown-toggle"></button>
-      <div class="dropdown-menu">
-        <span
-          *ngFor="let currency of allCurrencies"
-          (click)="onAdditionalButtonClick(currency)">
-          {{currency}}
-        </span>
-      </div>
-    </div>
-
-  </div>
   <input
     (focus)="isInputSelected = true"
     (focusout)="isInputSelected = false"
@@ -32,3 +15,5 @@
     [value]="isInputSelected ? cash.value : cash.value | numericSeparator:3"
     class="input-box" maxlength="13" type="text">
 </div>
+
+

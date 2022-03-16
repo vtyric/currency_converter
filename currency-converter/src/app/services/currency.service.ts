@@ -24,9 +24,9 @@ export class CurrencyService {
   public getLatestCurrencyExchangeRates = (): Observable<LatestCurrenciesResponse> =>
     this.httpClient.get<LatestCurrenciesResponse>(`${this.url}latest?apikey=${environment.currencyFreaksApiKEy}`);
 
-  public getRatesDesiredCurrencies = (symbols: string[]): Observable<any> =>
+  public getRatesDesiredCurrencies = (currencies: string[]): Observable<any> =>
     this.httpClient
-      .get(`${this.url}latest?apikey=${environment.currencyFreaksApiKEy}&symbols=${symbols
+      .get(`${this.url}latest?apikey=${environment.currencyFreaksApiKEy}&symbols=${currencies
         .reduce((r, c) => r + c + ',', '')
         .slice(0, -1)}`);
 }

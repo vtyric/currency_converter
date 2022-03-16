@@ -62,7 +62,7 @@
   margin-bottom: 4rem;
 }
 
-.button-container {
+.converter-main {
   display: flex;
   flex-direction: column;
 
@@ -74,17 +74,32 @@
   .switcher {
     display: flex;
 
-    .btn, .dropdown-toggle {
-      border-radius: 0;
-      margin-bottom: 0.5rem;
-    }
-
     .dropdown-toggle {
       width: 180%;
     }
 
+    button {
+      border-radius: 0;
+    }
+
     .dropdown-menu.show {
-      width: 40rem;
+      margin-top: 0.5rem;
+      width: auto;
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(18, auto);
+    }
+
+    .item {
+      font-size: 1rem;
+      margin-right: 0.3rem;
+      width: 3rem;
+
+    }
+
+    .item:hover {
+      background-color: #c7c7f1;
+      cursor: pointer;
     }
   }
 

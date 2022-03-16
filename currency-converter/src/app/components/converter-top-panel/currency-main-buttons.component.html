@@ -1,0 +1,31 @@
+<div class="switcher">
+
+  <div class="main" #mainButtons>
+    <button
+      *ngFor="let currency of mainCurrencies; let i = index"
+      (click)="onMainButtonClick($event.target, currency)"
+      [ngClass]=" i === 0 ? 'btn btn-success' : 'btn btn-outline-secondary'">
+      {{currency}}
+    </button>
+  </div>
+
+  <div
+    class="dropdown"
+    appDropdown>
+    <button
+      #dropdown
+      class="btn btn-outline-secondary dropdown-toggle"
+      (click)="onMainButtonClick($event.target,'')">
+    </button>
+    <div class="dropdown-menu">
+        <span
+          *ngFor="let currency of allCurrencies; let i = index"
+          (click)="onDropdownButtonClick(currency)"
+          class="item">
+          {{currency}}
+        </span>
+    </div>
+  </div>
+
+</div>
+
