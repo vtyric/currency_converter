@@ -19,8 +19,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NumericSeparatorPipe} from './pipes/numeric-separator.pipe';
 import {CurrencyService} from "./services/currency.service";
 import {HttpClientModule} from "@angular/common/http";
-import {DropdownDirective} from './directives/dropdown.directive';
 import {CurrencyMainButtonsComponent} from './components/converter-top-panel/currency-main-buttons.component';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +38,6 @@ import {CurrencyMainButtonsComponent} from './components/converter-top-panel/cur
     PredictionPageComponent,
     ConverterElementComponent,
     NumericSeparatorPipe,
-    DropdownDirective,
     CurrencyMainButtonsComponent,
   ],
   imports: [

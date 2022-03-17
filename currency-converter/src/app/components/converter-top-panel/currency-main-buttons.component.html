@@ -10,16 +10,15 @@
   </div>
 
   <div
-    class="dropdown"
-    appDropdown>
+    class="dropdown">
     <button
       #dropdown
       class="btn btn-outline-secondary dropdown-toggle"
-      (click)="onMainButtonClick($event.target,'')">
+      (click)="onToggleButtonClick($event.target)">
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" #dropdownMenu>
         <span
-          *ngFor="let currency of allCurrencies; let i = index"
+          *ngFor="let currency of allCurrencies"
           (click)="onDropdownButtonClick(currency)"
           class="item">
           {{currency}}

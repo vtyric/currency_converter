@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 
 @Component({
@@ -12,22 +12,36 @@ export class ConverterElementComponent implements OnInit {
   public title!: string;
   @Input()
   public allCurrencies!: string[];
+  @Input()
+  public mainCurrencies!: string[];
   @Output()
   public cash: FormControl = new FormControl('');
-  public isInputSelected: boolean = false;
-  public mainCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
+  @Output()
+  public isDropdownToggle: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  public selectedCurrency: EventEmitter<string> = new EventEmitter<string>();
+  @Output()
+  public dropDownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
 
-  private selectedCurrency!: string | null;
+  public isInputSelected: boolean = false;
 
   constructor() {
   }
 
   public onCurrencyChange(currency: string): void {
-    this.selectedCurrency = currency;
+    this.selectedCurrency.emit(currency);
+  }
+
+  public dropDownToggle(dropDownToggle: boolean): void {
+    this.isDropdownToggle.emit(dropDownToggle);
+  }
+
+  public dropdownMenu(dropDownMenu: ElementRef) {
+    this.dropDownMenuOutput.emit(dropDownMenu);
   }
 
   ngOnInit(): void {
-    this.selectedCurrency = this.mainCurrencies[0];
+    this.selectedCurrency.emit(this.mainCurrencies[0]);
 
     this.cash.valueChanges
       .subscribe((value: string) => {

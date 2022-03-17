@@ -4,17 +4,19 @@
     <div class="left">
       <app-converter-element
         [title]="'У меня есть'"
-        [allCurrencies]="currencies">
+        [allCurrencies]="currencies"
+        [mainCurrencies]="mainCurrencies.slice(0, -1)"
+        (isDropdownToggle)="dropdownUpdate($event)"
+        (dropDownMenuOutput)="getDropdownMenu($event)">
       </app-converter-element>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
     <div class="center">
-      <svg class="bi bi-arrow-right" viewBox="0 0 16 16">
+      <svg class="bi bi-arrow-right" viewBox="0 0 16 16" (click)=OnArrowsClick()>
         <path fill-rule="evenodd"
               d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
       </svg>
-      <svg class="bi bi-arrow-left"
-           viewBox="0 0 16 16">
+      <svg class="bi bi-arrow-left" viewBox="0 0 16 16" (click)=OnArrowsClick()>
         <path fill-rule="evenodd"
               d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
       </svg>
@@ -22,7 +24,9 @@
     <div class="right">
       <app-converter-element
         [title]="'Хочу приобрести'"
-        [allCurrencies]="currencies">
+        [allCurrencies]="currencies"
+        [mainCurrencies]="mainCurrencies.slice(1)"
+        (isDropdownToggle)="dropdownUpdate($event)">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>

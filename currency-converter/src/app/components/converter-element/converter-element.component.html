@@ -5,7 +5,9 @@
   <app-converter-top-panel
     [mainCurrencies]="mainCurrencies"
     [allCurrencies]="allCurrencies"
-    (selectCurrency)="onCurrencyChange($event)">
+    (isDropdownToggle)="dropDownToggle($event)"
+    (selectedCurrency)="onCurrencyChange($event)"
+    (dropdownMenuOutput)="dropdownMenu($event)">
   </app-converter-top-panel>
 
   <input
@@ -15,5 +17,3 @@
     [value]="isInputSelected ? cash.value : cash.value | numericSeparator:3"
     class="input-box" maxlength="13" type="text">
 </div>
-
-
