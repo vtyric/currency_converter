@@ -5,6 +5,7 @@
   <app-converter-top-panel
     [mainCurrencies]="mainCurrencies"
     [allCurrencies]="allCurrencies"
+    [converterTogglePosition]="elementPosition"
     (isDropdownToggle)="dropDownToggle($event)"
     (selectedCurrency)="onCurrencyChange($event)"
     (dropdownMenuOutput)="dropdownMenu($event)">

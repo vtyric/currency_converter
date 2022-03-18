@@ -9,6 +9,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+import {ConverterTogglePosition, DropdownToggle} from "../../types";
 
 @Component({
   selector: 'app-converter-top-panel',
@@ -21,10 +22,13 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
   public mainCurrencies!: string[];
   @Input()
   public allCurrencies!: string[];
+  @Input()
+  public converterTogglePosition!: ConverterTogglePosition;
+
   @Output()
   public selectedCurrency: EventEmitter<string> = new EventEmitter<string>();
   @Output()
-  public isDropdownToggle: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();
   @Output()
   public dropdownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
 
@@ -51,15 +55,15 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
     this.changeClasses(this.currentTargetButton, 'btn-success', 'btn-outline-secondary');
     this.changeClasses(target, 'btn-outline-secondary', 'btn-success');
     this.selectedCurrency.emit(currency);
-    this.isDropdownToggle.emit(false);
+    this.isDropdownToggle.emit('');
     this.currentTargetButton = target;
   }
 
   public onToggleButtonClick(target: EventTarget | null): void {
-    this.isDropdownToggle.emit(true);
+    this.isDropdownToggle.emit(this.converterTogglePosition);
     if (this.currentTargetButton === target) {
       target = this.mainButtonsPanel.nativeElement.children[0];
-      this.isDropdownToggle.emit(false);
+      this.isDropdownToggle.emit('');
     }
     this.changeClasses(this.currentTargetButton, 'btn-success', 'btn-outline-secondary');
     this.changeClasses(target, 'btn-outline-secondary', 'btn-success');
@@ -67,7 +71,7 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
   }
 
   public onDropdownButtonClick(currency: string): void {
-    this.isDropdownToggle.emit(false);
+    this.isDropdownToggle.emit('');
     let target = this.mainButtonsPanel.nativeElement.children[this.mainButtonsPanel.nativeElement.children.length - 1];
     target.innerText = currency;
     this.currentTargetButton = target;

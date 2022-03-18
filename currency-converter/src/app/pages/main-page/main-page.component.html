@@ -6,8 +6,12 @@
         [title]="'У меня есть'"
         [allCurrencies]="currencies"
         [mainCurrencies]="mainCurrencies.slice(0, -1)"
+        [elementPosition]="'left'"
+        [inputValue]="rightValue"
         (isDropdownToggle)="dropdownUpdate($event)"
-        (dropDownMenuOutput)="getDropdownMenu($event)">
+        (dropDownMenuOutput)="getDropdownMenu($event)"
+        (selectedCurrency)="onCurrencyChange($event,'left')"
+        (value)="onValueChange($event,'left')">
       </app-converter-element>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -26,7 +30,11 @@
         [title]="'Хочу приобрести'"
         [allCurrencies]="currencies"
         [mainCurrencies]="mainCurrencies.slice(1)"
-        (isDropdownToggle)="dropdownUpdate($event)">
+        [elementPosition]="'right'"
+        [inputValue]="leftValue"
+        (isDropdownToggle)="dropdownUpdate($event)"
+        (selectedCurrency)="onCurrencyChange($event,'right')"
+        (value)="onValueChange($event,'right')">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>
