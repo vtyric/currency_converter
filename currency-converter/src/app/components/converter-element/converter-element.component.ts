@@ -18,7 +18,7 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public elementPosition!: ConverterTogglePosition;
   @Input()
-  public inputValue!: EventEmitter<number>;
+  public cash!: FormControl;
 
   @Output()
   public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();
@@ -27,16 +27,11 @@ export class ConverterElementComponent implements OnInit {
   @Output()
   public dropDownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
   @Output()
-  public value: EventEmitter<string> = new EventEmitter<string>();
+  public isInputSelectedOutput: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public isInputSelected: boolean = false;
-  public cash: FormControl = new FormControl('');
+  public isInputSelected: boolean = true;
 
   constructor() {
-  }
-
-  public getValue(value: number): void {
-    this.cash.setValue(value.toString());
   }
 
   public onCurrencyChange(currency: string): void {
@@ -54,13 +49,6 @@ export class ConverterElementComponent implements OnInit {
   ngOnInit(): void {
     this.selectedCurrency.emit(this.mainCurrencies[0]);
 
-    this.inputValue?.subscribe(value => {
-      if (!this.isInputSelected) {
-        this.cash.patchValue(!value ? "" : value.toString(), {emitEvent: false});
-        this.value.emit(!value ? "" : value.toString());
-      }
-    })
-
     this.cash.valueChanges
       .subscribe((value: string) => {
         let res = value.replace(',', '.').replace(/[^.\d]/g, '');
@@ -71,7 +59,6 @@ export class ConverterElementComponent implements OnInit {
         }
 
         this.cash.patchValue(res, {emitEvent: false});
-        this.value.emit(res);
       });
   }
 }

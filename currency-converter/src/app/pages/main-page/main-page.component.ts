@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, OnInit, Renderer2} from '@angular/c
 import {CurrencyService} from "../../services/currency.service";
 import {LatestCurrenciesResponse} from "../../interfaces";
 import {ConverterTogglePosition, DropdownToggle} from "../../types";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-main-page',
@@ -17,26 +18,16 @@ export class MainPageComponent implements OnInit {
   public rightCurrency: string = this.mainCurrencies[0];
   public leftCurrency: string = this.mainCurrencies[1];
 
-  public leftValue: EventEmitter<number> = new EventEmitter<number>();
-  public rightValue: EventEmitter<number> = new EventEmitter<number>();
+  public leftInput: FormControl = new FormControl('');
+  public isLeftInputSelected!: boolean;
+
+  public rightInput: FormControl = new FormControl('');
+  public isRightInputSelected!: boolean;
 
   private dropdownMenu!: ElementRef;
   private dropDownToggle: DropdownToggle = '';
 
   constructor(private currencyService: CurrencyService, private renderer: Renderer2) {
-  }
-
-  public onValueChange(value: string, position: ConverterTogglePosition) {
-    const leftRate: number = (this.rates
-      .find(([key, value]) => key === this.leftCurrency) ?? [])[1] ?? 0;
-    const rightRate: number = (this.rates
-      .find(([key, value]) => key === this.rightCurrency) ?? [])[1] ?? 0;
-
-    if (position === 'left') {
-      this.leftValue.emit(this.getRes(Number.parseFloat(value), rightRate, leftRate));
-    } else  {
-      this.rightValue.emit(this.getRes(Number.parseFloat(value), leftRate, rightRate))
-    }
   }
 
   private getRes = (value: number, firstRate: number, secondRate: number): number =>
@@ -52,6 +43,8 @@ export class MainPageComponent implements OnInit {
     } else {
       this.rightCurrency = currency;
     }
+
+    this.leftInput.setValue(this.leftInput.value);
   }
 
   public OnArrowsClick(): void {
@@ -72,11 +65,30 @@ export class MainPageComponent implements OnInit {
     this.currencyService
       .getLatestCurrencyExchangeRates()
       .subscribe((value: LatestCurrenciesResponse) => {
-        console.log(value)
         this.date = value.date;
         this.rates = Object.entries(value.rates);
-        this.currencies = Object.keys(this.rates);
-      })
+        this.currencies = this.rates.map(x => x[0]);
+      });
+
+    this.leftInput.valueChanges.subscribe(value => {
+      if (!this.isRightInputSelected) {
+        const leftRate: number = (this.rates
+          ?.find(([key, _]) => key === this.leftCurrency) ?? [])[1] ?? 0;
+        const rightRate: number = (this.rates
+          ?.find(([key, _]) => key === this.rightCurrency) ?? [])[1] ?? 0;
+        this.rightInput.patchValue(this.getRes(Number.parseFloat(value), rightRate, leftRate).toString());
+      }
+    });
+
+    this.rightInput.valueChanges.subscribe(value => {
+      if (!this.isLeftInputSelected) {
+        const leftRate: number = (this.rates
+          ?.find(([key, _]) => key === this.leftCurrency) ?? [])[1] ?? 0;
+        const rightRate: number = (this.rates
+          ?.find(([key, _]) => key === this.rightCurrency) ?? [])[1] ?? 0;
+        this.leftInput.patchValue(this.getRes(Number.parseFloat(value), leftRate, rightRate).toString());
+      }
+    });
   }
 
 }

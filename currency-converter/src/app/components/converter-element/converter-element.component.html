@@ -12,8 +12,8 @@
   </app-converter-top-panel>
 
   <input
-    (focus)="isInputSelected = true"
-    (focusout)="isInputSelected = false"
+    (focus)="isInputSelectedOutput.emit(isInputSelected = true)"
+    (focusout)="isInputSelectedOutput.emit(isInputSelected = false)"
     [formControl]="cash"
     [value]="isInputSelected ? cash.value : cash.value | numericSeparator:3"
     class="input-box" maxlength="13" type="text">
