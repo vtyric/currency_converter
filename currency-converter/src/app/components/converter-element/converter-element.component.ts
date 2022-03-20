@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {ConverterTogglePosition, DropdownToggle} from "../../types";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-converter-element',
@@ -19,11 +20,11 @@ export class ConverterElementComponent implements OnInit {
   public elementPosition!: ConverterTogglePosition;
   @Input()
   public cash!: FormControl;
+  @Input()
+  public currency!: Subject<string>;
 
   @Output()
   public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();
-  @Output()
-  public selectedCurrency: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   public dropDownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
   @Output()
@@ -32,10 +33,6 @@ export class ConverterElementComponent implements OnInit {
   public isInputSelected: boolean = true;
 
   constructor() {
-  }
-
-  public onCurrencyChange(currency: string): void {
-    this.selectedCurrency.emit(currency);
   }
 
   public dropDownToggle(dropDownToggle: DropdownToggle): void {
@@ -47,7 +44,7 @@ export class ConverterElementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedCurrency.emit(this.mainCurrencies[0]);
+    this.currency.next(this.mainCurrencies[0]);
 
     this.cash.valueChanges
       .subscribe((value: string) => {

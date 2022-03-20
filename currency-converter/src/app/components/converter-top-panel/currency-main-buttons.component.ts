@@ -10,6 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {ConverterTogglePosition, DropdownToggle} from "../../types";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-converter-top-panel',
@@ -24,6 +25,8 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
   public allCurrencies!: string[];
   @Input()
   public converterTogglePosition!: ConverterTogglePosition;
+  @Input()
+  public currentCurrency!: Subject<string>;
 
   @Output()
   public selectedCurrency: EventEmitter<string> = new EventEmitter<string>();
@@ -54,7 +57,7 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
   public onMainButtonClick(target: EventTarget | null, currency: string): void {
     this.changeClasses(this.currentTargetButton, 'btn-success', 'btn-outline-secondary');
     this.changeClasses(target, 'btn-outline-secondary', 'btn-success');
-    this.selectedCurrency.emit(currency);
+    this.currentCurrency.next(currency);
     this.isDropdownToggle.emit('');
     this.currentTargetButton = target;
   }
@@ -77,7 +80,7 @@ export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
     this.currentTargetButton = target;
     this.changeClasses(this.dropdownButton.nativeElement, 'btn-success', 'btn-outline-secondary');
     this.changeClasses(target, 'btn-outline-secondary', 'btn-success');
-    this.selectedCurrency.emit(currency);
+    this.currentCurrency.next(currency);
   }
 
   private changeClasses(target: EventTarget | null, removeClass: string, addClass: string): void {

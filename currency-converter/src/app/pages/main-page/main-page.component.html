@@ -1,5 +1,3 @@
-<!--<span>left - {{currentLeftValue}} {{leftCurrency}}  right - {{currentRightValue}} {{rightCurrency}}</span>-->
-
 <div class="container">
   <h1 class="header">Конвертер валют</h1>
   <div class="converter">
@@ -10,10 +8,10 @@
         [mainCurrencies]="mainCurrencies.slice(0, -1)"
         [elementPosition]="'left'"
         [cash]="leftInput"
+        [currency]="leftCurrency"
         (isInputSelectedOutput)="isLeftInputSelected=$event"
         (isDropdownToggle)="dropdownUpdate($event)"
-        (dropDownMenuOutput)="getDropdownMenu($event)"
-        (selectedCurrency)="onCurrencyChange($event,'left')">
+        (dropDownMenuOutput)="getDropdownMenu($event)">
       </app-converter-element>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -34,9 +32,9 @@
         [mainCurrencies]="mainCurrencies.slice(1)"
         [elementPosition]="'right'"
         [cash]="rightInput"
+        [currency]="rightCurrency"
         (isInputSelectedOutput)="isRightInputSelected=$event"
-        (isDropdownToggle)="dropdownUpdate($event)"
-        (selectedCurrency)="onCurrencyChange($event,'right')">
+        (isDropdownToggle)="dropdownUpdate($event)">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>
