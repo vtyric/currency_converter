@@ -5,11 +5,10 @@
       <app-converter-element
         [title]="'У меня есть'"
         [allCurrencies]="currencies"
-        [mainCurrencies]="mainCurrencies.slice(0, -1)"
+        [mainCurrencies]="leftCurrencies"
         [elementPosition]="'left'"
         [cash]="leftInput"
         [currency]="leftCurrency"
-        (isInputSelectedOutput)="isLeftInputSelected=$event"
         (isDropdownToggle)="dropdownUpdate($event)"
         (dropDownMenuOutput)="getDropdownMenu($event)">
       </app-converter-element>
@@ -29,11 +28,10 @@
       <app-converter-element
         [title]="'Хочу приобрести'"
         [allCurrencies]="currencies"
-        [mainCurrencies]="mainCurrencies.slice(1)"
+        [mainCurrencies]="rightCurrencies"
         [elementPosition]="'right'"
         [cash]="rightInput"
         [currency]="rightCurrency"
-        (isInputSelectedOutput)="isRightInputSelected=$event"
         (isDropdownToggle)="dropdownUpdate($event)">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>

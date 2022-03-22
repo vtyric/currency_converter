@@ -5,7 +5,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class NumericSeparatorPipe implements PipeTransform {
   transform(value: string, divisionLength: number): string {
-    if (!value.trim()) {
+    if (!value.trim() || value === "0") {
       return "";
     }
     const dotIndex = value.indexOf('.');

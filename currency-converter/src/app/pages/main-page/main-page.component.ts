@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {CurrencyService} from "../../services/currency.service";
 import {LatestCurrenciesResponse} from "../../interfaces";
 import {DropdownToggle} from "../../types";
 import {FormControl} from "@angular/forms";
-import {Subject} from "rxjs";
+import {filter, Subject, tap} from "rxjs";
 
 @Component({
   selector: 'app-main-page',
@@ -15,19 +15,18 @@ export class MainPageComponent implements OnInit {
   public currencies!: string[];
   public date!: Date;
   public rates!: [string, number][];
-  public mainCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY', 'BYN'];
 
-  private currentRightCurrency: string = this.mainCurrencies[0];
-  private currentLeftCurrency: string = this.mainCurrencies[1];
+  public leftCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
+  public rightCurrencies: string[] = ['USD', 'GBP', 'CNY', 'BYN'];
+
+  private currentRightCurrency: string = this.rightCurrencies[0];
+  private currentLeftCurrency: string = this.leftCurrencies[0];
 
   public leftCurrency: Subject<string> = new Subject<string>();
   public rightCurrency: Subject<string> = new Subject<string>();
 
   public leftInput: FormControl = new FormControl('');
-  public isLeftInputSelected!: boolean;
-
   public rightInput: FormControl = new FormControl('');
-  public isRightInputSelected!: boolean;
 
   private dropdownMenu!: ElementRef;
   private dropDownToggle: DropdownToggle = '';
@@ -38,33 +37,25 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     this.currencyService
       .getLatestCurrencyExchangeRates()
-      .subscribe((value: LatestCurrenciesResponse) => {
+      .pipe(tap((value: LatestCurrenciesResponse) => {
         this.date = value.date;
         this.rates = Object.entries(value.rates);
         this.currencies = this.rates.map(x => x[0]);
-      });
+      }))
+      .subscribe();
 
-    this.leftCurrency.subscribe(value => {
-      this.currentLeftCurrency = value;
-      this.leftInput.setValue(this.leftInput.value)
-    })
+    this.leftCurrency
+      .pipe(tap(value => this.currentLeftCurrency = value))
+      .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
-    this.rightCurrency.subscribe(value => {
-      this.currentRightCurrency = value;
-      this.leftInput.setValue(this.leftInput.value)
-    })
+    this.rightCurrency
+      .pipe(tap(value => this.currentRightCurrency = value))
+      .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
-    this.leftInput.valueChanges.subscribe(value => {
-      if (!this.isRightInputSelected) {
-        this.updateInputValue(Number.parseFloat(value), this.rightInput);
-      }
-    });
+    this.leftInput.valueChanges
+      .subscribe(value => this.updateInputValue(Number.parseFloat(value), this.rightInput));
 
-    this.rightInput.valueChanges.subscribe(value => {
-      if (!this.isLeftInputSelected) {
-        this.updateInputValue(Number.parseFloat(value), this.leftInput);
-      }
-    });
+    this.rightInput.valueChanges.subscribe(value => this.updateInputValue(Number.parseFloat(value), this.leftInput))
   }
 
   private updateInputValue(value: number, control: FormControl) {
@@ -76,7 +67,7 @@ export class MainPageComponent implements OnInit {
     if (control === this.leftInput) {
       control.patchValue(this.getRes(value, leftRate, rightRate).toString());
     } else {
-      control.patchValue(this.getRes(value, rightRate, leftRate).toString());
+      control.patchValue(this.getRes(value, rightRate, leftRate).toString(), {emitEvent: false});
     }
   }
 
