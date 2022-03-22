@@ -3,7 +3,7 @@ import {CurrencyService} from "../../services/currency.service";
 import {LatestCurrenciesResponse} from "../../interfaces";
 import {DropdownToggle} from "../../types";
 import {FormControl} from "@angular/forms";
-import {filter, Subject, tap} from "rxjs";
+import {Subject, tap} from "rxjs";
 
 @Component({
   selector: 'app-main-page',
@@ -15,16 +15,12 @@ export class MainPageComponent implements OnInit {
   public currencies!: string[];
   public date!: Date;
   public rates!: [string, number][];
-
   public leftCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
-  public rightCurrencies: string[] = ['USD', 'GBP', 'CNY', 'BYN'];
-
-  private currentRightCurrency: string = this.rightCurrencies[0];
-  private currentLeftCurrency: string = this.leftCurrencies[0];
-
+  public rightCurrencies: string[] = ['USD', 'RUB', 'GBP', 'CNY'];
+  public currentRightCurrency: string = this.rightCurrencies[0];
+  public currentLeftCurrency: string = this.leftCurrencies[0];
   public leftCurrency: Subject<string> = new Subject<string>();
   public rightCurrency: Subject<string> = new Subject<string>();
-
   public leftInput: FormControl = new FormControl('');
   public rightInput: FormControl = new FormControl('');
 
@@ -55,7 +51,8 @@ export class MainPageComponent implements OnInit {
     this.leftInput.valueChanges
       .subscribe(value => this.updateInputValue(Number.parseFloat(value), this.rightInput));
 
-    this.rightInput.valueChanges.subscribe(value => this.updateInputValue(Number.parseFloat(value), this.leftInput))
+    this.rightInput.valueChanges
+      .subscribe(value => this.updateInputValue(Number.parseFloat(value), this.leftInput))
   }
 
   private updateInputValue(value: number, control: FormControl) {
@@ -79,7 +76,15 @@ export class MainPageComponent implements OnInit {
   }
 
   public OnArrowsClick(): void {
-    console.log('click');
+    let tempCurrencies = this.leftCurrencies;
+    this.leftCurrencies = this.rightCurrencies;
+    this.rightCurrencies = tempCurrencies;
+    const tempValue = this.leftInput.value;
+    this.leftInput.patchValue(this.rightInput.value, {emitEvent: false});
+    this.rightInput.patchValue(tempValue, {emitEvent: false});
+    const tempCurrency = this.currentLeftCurrency;
+    this.leftCurrency.next(this.currentRightCurrency);
+    this.rightCurrency.next(tempCurrency);
   }
 
   public dropdownUpdate(toggle: DropdownToggle): void {

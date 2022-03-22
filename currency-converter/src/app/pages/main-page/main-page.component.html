@@ -8,7 +8,8 @@
         [mainCurrencies]="leftCurrencies"
         [elementPosition]="'left'"
         [cash]="leftInput"
-        [currency]="leftCurrency"
+        [currencySubject]="leftCurrency"
+        [currency]="currentLeftCurrency"
         (isDropdownToggle)="dropdownUpdate($event)"
         (dropDownMenuOutput)="getDropdownMenu($event)">
       </app-converter-element>
@@ -31,7 +32,8 @@
         [mainCurrencies]="rightCurrencies"
         [elementPosition]="'right'"
         [cash]="rightInput"
-        [currency]="rightCurrency"
+        [currencySubject]="rightCurrency"
+        [currency]="currentRightCurrency"
         (isDropdownToggle)="dropdownUpdate($event)">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>

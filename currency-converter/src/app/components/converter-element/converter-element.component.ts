@@ -21,7 +21,9 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public cash!: FormControl;
   @Input()
-  public currency!: Subject<string>;
+  public currencySubject!: Subject<string>;
+  @Input()
+  public currency!: string;
 
   @Output()
   public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();

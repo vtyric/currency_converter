@@ -2,9 +2,9 @@
 
   <div class="main" #mainButtons>
     <button
-      *ngFor="let currency of mainCurrencies; let i = index"
+      *ngFor="let currency of mainCurrencies"
       (click)="onMainButtonClick($event.target, currency)"
-      [ngClass]=" i === 0 ? 'btn btn-success' : 'btn btn-outline-secondary'">
+      [class]="'btn btn-outline-secondary'">
       {{currency}}
     </button>
   </div>

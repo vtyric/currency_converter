@@ -6,7 +6,8 @@
     [mainCurrencies]="mainCurrencies"
     [allCurrencies]="allCurrencies"
     [converterTogglePosition]="elementPosition"
-    [currentCurrency]="currency"
+    [currentCurrencySubject]="currencySubject"
+    [currency]="currency"
     (isDropdownToggle)="dropDownToggle($event)"
     (dropdownMenuOutput)="dropdownMenu($event)">
   </app-converter-top-panel>
