@@ -1,6 +1,5 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {ConverterTogglePosition, DropdownToggle} from "../../types";
 import {map, Subject, tap} from "rxjs";
 
 @Component({
@@ -15,32 +14,17 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public allCurrencies!: string[];
   @Input()
-  public mainCurrencies!: string[];
-  @Input()
-  public elementPosition!: ConverterTogglePosition;
-  @Input()
   public cash!: FormControl;
   @Input()
   public currencySubject!: Subject<string>;
   @Input()
-  public currency!: string;
-
-  @Output()
-  public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();
-  @Output()
-  public dropDownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
+  public mainCurrencies!: string[];
+  @Input()
+  public currentCurrency!: string;
 
   public isInputSelected: boolean = true;
 
   constructor() {
-  }
-
-  public dropDownToggle(dropDownToggle: DropdownToggle): void {
-    this.isDropdownToggle.emit(dropDownToggle);
-  }
-
-  public dropdownMenu(dropDownMenu: ElementRef) {
-    this.dropDownMenuOutput.emit(dropDownMenu);
   }
 
   ngOnInit(): void {

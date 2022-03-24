@@ -5,13 +5,10 @@
       <app-converter-element
         [title]="'У меня есть'"
         [allCurrencies]="currencies"
-        [mainCurrencies]="leftCurrencies"
-        [elementPosition]="'left'"
         [cash]="leftInput"
-        [currencySubject]="leftCurrency"
-        [currency]="currentLeftCurrency"
-        (isDropdownToggle)="dropdownUpdate($event)"
-        (dropDownMenuOutput)="getDropdownMenu($event)">
+        [mainCurrencies]="leftCurrencies"
+        [currentCurrency]="currentLeftCurrency"
+        [currencySubject]="leftCurrency">
       </app-converter-element>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -29,12 +26,10 @@
       <app-converter-element
         [title]="'Хочу приобрести'"
         [allCurrencies]="currencies"
-        [mainCurrencies]="rightCurrencies"
-        [elementPosition]="'right'"
         [cash]="rightInput"
-        [currencySubject]="rightCurrency"
-        [currency]="currentRightCurrency"
-        (isDropdownToggle)="dropdownUpdate($event)">
+        [mainCurrencies]="rightCurrencies"
+        [currentCurrency]="currentRightCurrency"
+        [currencySubject]="rightCurrency">
       </app-converter-element>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>

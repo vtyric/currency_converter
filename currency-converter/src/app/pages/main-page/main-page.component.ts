@@ -1,7 +1,6 @@
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CurrencyService} from "../../services/currency.service";
 import {LatestCurrenciesResponse} from "../../interfaces";
-import {DropdownToggle} from "../../types";
 import {FormControl} from "@angular/forms";
 import {Subject, tap} from "rxjs";
 
@@ -24,10 +23,7 @@ export class MainPageComponent implements OnInit {
   public leftInput: FormControl = new FormControl('');
   public rightInput: FormControl = new FormControl('');
 
-  private dropdownMenu!: ElementRef;
-  private dropDownToggle: DropdownToggle = '';
-
-  constructor(private currencyService: CurrencyService, private renderer: Renderer2) {
+  constructor(private currencyService: CurrencyService) {
   }
 
   ngOnInit(): void {
@@ -41,11 +37,21 @@ export class MainPageComponent implements OnInit {
       .subscribe();
 
     this.leftCurrency
-      .pipe(tap(value => this.currentLeftCurrency = value))
+      .pipe(tap(value => {
+        if (!this.leftCurrencies.includes(value)) {
+          this.leftCurrencies[this.leftCurrencies.length - 1] = value;
+        }
+        this.currentLeftCurrency = value;
+      }))
       .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
     this.rightCurrency
-      .pipe(tap(value => this.currentRightCurrency = value))
+      .pipe(tap(value => {
+        if (!this.rightCurrencies.includes(value)) {
+          this.rightCurrencies[this.rightCurrencies.length - 1] = value;
+        }
+        this.currentRightCurrency = value;
+      }))
       .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
     this.leftInput.valueChanges
@@ -71,10 +77,6 @@ export class MainPageComponent implements OnInit {
   private getRes = (value: number, firstRate: number, secondRate: number): number =>
     !value ? 0 : +(value * firstRate / secondRate).toFixed(4);
 
-  public getDropdownMenu(dropdownMenu: ElementRef): void {
-    this.dropdownMenu = dropdownMenu;
-  }
-
   public OnArrowsClick(): void {
     let tempCurrencies = this.leftCurrencies;
     this.leftCurrencies = this.rightCurrencies;
@@ -85,15 +87,5 @@ export class MainPageComponent implements OnInit {
     const tempCurrency = this.currentLeftCurrency;
     this.leftCurrency.next(this.currentRightCurrency);
     this.rightCurrency.next(tempCurrency);
-  }
-
-  public dropdownUpdate(toggle: DropdownToggle): void {
-    if (toggle !== '') {
-      this.dropDownToggle = toggle;
-      this.renderer.addClass(this.dropdownMenu.nativeElement, 'show');
-    } else {
-      this.dropDownToggle = '';
-      this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
-    }
   }
 }

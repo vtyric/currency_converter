@@ -1,97 +1,70 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
-import {ConverterTogglePosition, DropdownToggle} from "../../types";
-import {Subject} from "rxjs";
+import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Subject, tap} from "rxjs";
 
 @Component({
   selector: 'app-converter-top-panel',
   templateUrl: './currency-main-buttons.component.html',
   styleUrls: ['./currency-main-buttons.component.scss']
 })
-export class CurrencyMainButtonsComponent implements OnInit, AfterViewInit {
+export class CurrencyMainButtonsComponent implements OnInit {
 
-  @Input()
-  public mainCurrencies!: string[];
   @Input()
   public allCurrencies!: string[];
   @Input()
-  public converterTogglePosition!: ConverterTogglePosition;
+  public currencySubject!: Subject<string>;
   @Input()
-  public currentCurrencySubject!: Subject<string>;
+  public mainCurrencies!: string[];
   @Input()
-  public currency!: string;
+  public currentCurrency!: string;
 
-  @Output()
-  public selectedCurrency: EventEmitter<string> = new EventEmitter<string>();
-  @Output()
-  public isDropdownToggle: EventEmitter<DropdownToggle> = new EventEmitter<DropdownToggle>();
-  @Output()
-  public dropdownMenuOutput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
+  public currencies: [string, boolean][] = [['EUR', false], ['RUB', true], ['USD', false], ['GBP', false]];
 
-  @ViewChild('mainButtons')
-  private mainButtonsPanel!: ElementRef;
-  @ViewChild('dropdown')
-  private dropdownButton!: ElementRef;
   @ViewChild('dropdownMenu')
   private dropdownMenu!: ElementRef;
-  private currentTargetButton!: EventTarget | null;
+  private currentTarget!: EventTarget | null;
+  private isDropdownMenuOpen: boolean = false;
 
   constructor(private renderer: Renderer2) {
   }
 
-  ngAfterViewInit(): void {
-    this.dropdownMenuOutput.emit(this.dropdownMenu);
-    this.updateMainButtons(this.currency);
-  }
-
   ngOnInit(): void {
-    this.currentCurrencySubject.subscribe(value => this.updateMainButtons(value));
+    this.currencies = this.mainCurrencies.map(currency => [currency, currency === this.currentCurrency]);
+
+    this.currencySubject.pipe(tap(value => {
+        this.updateCurrency(value);
+      })
+    )
+      .subscribe()
   }
 
-  private updateMainButtons(value: string): void {
-    Array(...this.mainButtonsPanel.nativeElement.children).forEach((button: HTMLButtonElement) => {
-      if (button.innerText === value) {
-        this.currentTargetButton = button;
-        this.changeClasses(button, 'btn-outline-secondary', 'btn-success');
-      } else {
-        this.changeClasses(button, 'btn-success', 'btn-outline-secondary');
-      }
+  private updateCurrency(targetCurrency: string): void {
+    if (!this.currencies.some(([currency, _]) => currency === targetCurrency)) {
+      this.currencies[this.currencies.length - 1][0] = targetCurrency;
+    }
+    this.currencies.forEach(([currency, _], index) => {
+      this.currencies[index][1] = currency === targetCurrency;
     })
   }
 
-  public onMainButtonClick(target: EventTarget | null, currency: string): void {
-    this.currentCurrencySubject.next(currency);
-    this.isDropdownToggle.emit('');
-    this.currentTargetButton = target;
+  public onMainButtonClick(targetCurrency: string, target: EventTarget | null) {
+    this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
+    this.isDropdownMenuOpen = false;
+    this.currentTarget = target;
+    this.currencySubject.next(targetCurrency);
   }
 
-  public onToggleButtonClick(target: EventTarget | null): void {
-    this.isDropdownToggle.emit(this.converterTogglePosition);
-    if (this.currentTargetButton === target) {
-      this.isDropdownToggle.emit('');
-      this.currentCurrencySubject.next(this.mainButtonsPanel.nativeElement.children[0].innerText);
+  public onToggleButtonClick() {
+    if (!this.isDropdownMenuOpen) {
+      this.renderer.addClass(this.dropdownMenu.nativeElement, 'show');
+    } else {
+      this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
     }
-    this.currentTargetButton = target;
+    this.isDropdownMenuOpen = !this.isDropdownMenuOpen;
   }
 
-  public onDropdownButtonClick(currency: string): void {
-    this.isDropdownToggle.emit('');
-    let target = this.mainButtonsPanel.nativeElement.children[this.mainButtonsPanel.nativeElement.children.length - 1];
-    target.innerText = currency;
-    this.currentCurrencySubject.next(target.innerText);
-  }
-
-  private changeClasses(target: EventTarget | null, removeClass: string, addClass: string): void {
-    this.renderer.removeClass(target, removeClass);
-    this.renderer.addClass(target, addClass);
+  public onDropdownButtonClick(currency: string) {
+    this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
+    this.isDropdownMenuOpen = false;
+    this.currencySubject.next(currency);
   }
 }

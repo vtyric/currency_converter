@@ -3,13 +3,10 @@
   <span class="title">{{title}}</span>
 
   <app-converter-top-panel
-    [mainCurrencies]="mainCurrencies"
     [allCurrencies]="allCurrencies"
-    [converterTogglePosition]="elementPosition"
-    [currentCurrencySubject]="currencySubject"
-    [currency]="currency"
-    (isDropdownToggle)="dropDownToggle($event)"
-    (dropdownMenuOutput)="dropdownMenu($event)">
+    [currencySubject]="currencySubject"
+    [currentCurrency]="currentCurrency"
+    [mainCurrencies]="mainCurrencies">
   </app-converter-top-panel>
 
   <input
