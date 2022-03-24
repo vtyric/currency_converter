@@ -37,20 +37,20 @@ export class MainPageComponent implements OnInit {
       .subscribe();
 
     this.leftCurrency
-      .pipe(tap(value => {
-        if (!this.leftCurrencies.includes(value)) {
-          this.leftCurrencies[this.leftCurrencies.length - 1] = value;
+      .pipe(tap(currency => {
+        if (!this.leftCurrencies.includes(currency)) {
+          this.leftCurrencies[this.leftCurrencies.length - 1] = currency;
         }
-        this.currentLeftCurrency = value;
+        this.currentLeftCurrency = currency;
       }))
       .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
     this.rightCurrency
-      .pipe(tap(value => {
-        if (!this.rightCurrencies.includes(value)) {
-          this.rightCurrencies[this.rightCurrencies.length - 1] = value;
+      .pipe(tap(currency => {
+        if (!this.rightCurrencies.includes(currency)) {
+          this.rightCurrencies[this.rightCurrencies.length - 1] = currency;
         }
-        this.currentRightCurrency = value;
+        this.currentRightCurrency = currency;
       }))
       .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 

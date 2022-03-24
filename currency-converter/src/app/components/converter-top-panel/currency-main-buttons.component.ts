@@ -16,12 +16,10 @@ export class CurrencyMainButtonsComponent implements OnInit {
   public mainCurrencies!: string[];
   @Input()
   public currentCurrency!: string;
-
-  public currencies: [string, boolean][] = [['EUR', false], ['RUB', true], ['USD', false], ['GBP', false]];
+  public currencies!: [string, boolean][];
 
   @ViewChild('dropdownMenu')
   private dropdownMenu!: ElementRef;
-  private currentTarget!: EventTarget | null;
   private isDropdownMenuOpen: boolean = false;
 
   constructor(private renderer: Renderer2) {
@@ -46,10 +44,9 @@ export class CurrencyMainButtonsComponent implements OnInit {
     })
   }
 
-  public onMainButtonClick(targetCurrency: string, target: EventTarget | null) {
+  public onButtonClick(targetCurrency: string) {
     this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
     this.isDropdownMenuOpen = false;
-    this.currentTarget = target;
     this.currencySubject.next(targetCurrency);
   }
 
@@ -60,11 +57,5 @@ export class CurrencyMainButtonsComponent implements OnInit {
       this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
     }
     this.isDropdownMenuOpen = !this.isDropdownMenuOpen;
-  }
-
-  public onDropdownButtonClick(currency: string) {
-    this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
-    this.isDropdownMenuOpen = false;
-    this.currencySubject.next(currency);
   }
 }

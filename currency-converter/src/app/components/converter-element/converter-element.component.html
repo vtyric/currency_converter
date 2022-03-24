@@ -12,7 +12,7 @@
   <input
     (focus)="isInputSelected = true"
     (focusout)="isInputSelected = false"
-    [formControl]="cash"
-    [value]="isInputSelected ? cash.value : cash.value | numericSeparator:3"
+    [formControl]="cashInput"
+    [value]="isInputSelected ? cashInput.value : cashInput.value | numericSeparator:3"
     class="input-box" maxlength="13" type="text">
 </div>

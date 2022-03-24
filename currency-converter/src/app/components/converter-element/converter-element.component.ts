@@ -14,7 +14,7 @@ export class ConverterElementComponent implements OnInit {
   @Input()
   public allCurrencies!: string[];
   @Input()
-  public cash!: FormControl;
+  public cashInput!: FormControl;
   @Input()
   public currencySubject!: Subject<string>;
   @Input()
@@ -28,7 +28,7 @@ export class ConverterElementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cash.valueChanges
+    this.cashInput.valueChanges
       .pipe(
         map(value => value.replace(',', '.').replace(/[^.\d]/g, '')),
         map((value: string) => {
@@ -39,7 +39,7 @@ export class ConverterElementComponent implements OnInit {
           }
           return value;
         }),
-        tap(value => this.cash.patchValue(value, {emitEvent: false}))
+        tap(value => this.cashInput.patchValue(value, {emitEvent: false}))
       )
       .subscribe();
   }

@@ -1,30 +1,29 @@
 <div class="switcher">
 
-  <div class="main" #mainButtons>
+  <div class="main">
     <button
       *ngFor="let currency of currencies"
-      (click)="onMainButtonClick(currency[0],$event.target)"
+      (click)="onButtonClick(currency[0])"
       [ngClass]="currency[1] ? 'btn btn-success' : 'btn btn-outline-secondary'">
       {{currency[0]}}
     </button>
   </div>
 
-    <div
-      class="dropdown">
-      <button
-        #dropdown
-        class="btn btn-outline-secondary dropdown-toggle"
-        (click)="onToggleButtonClick()">
-      </button>
-      <div class="dropdown-menu" #dropdownMenu>
+  <div
+    class="dropdown">
+    <button
+      class="btn btn-outline-secondary dropdown-toggle"
+      (click)="onToggleButtonClick()">
+    </button>
+    <div class="dropdown-menu" #dropdownMenu>
           <span
             *ngFor="let currency of allCurrencies"
-            (click)="onDropdownButtonClick(currency)"
+            (click)="onButtonClick(currency)"
             class="item">
             {{currency}}
           </span>
-      </div>
     </div>
+  </div>
 
 </div>
 
