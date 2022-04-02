@@ -20,6 +20,7 @@ import {NumericSeparatorPipe} from './pipes/numeric-separator.pipe';
 import {CurrencyService} from "./services/currency.service";
 import {HttpClientModule} from "@angular/common/http";
 import {CurrencyMainButtonsComponent} from './components/converter-top-panel/currency-main-buttons.component';
+import {AngularYandexMapsModule} from "angular8-yandex-maps";
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {CurrencyMainButtonsComponent} from './components/converter-top-panel/cur
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularYandexMapsModule
   ],
   providers: [CurrencyService],
   bootstrap: [AppComponent]
