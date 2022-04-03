@@ -21,14 +21,21 @@ export class MapPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.currencyServer.getConvertersGeoData(20)
-        .pipe(
-          tap(value => {
-            this.converters = value.slice(0, 7);
-          }))
-        .subscribe()
-    );
+    let temp = localStorage.getItem('converters');
+
+    if (temp) {
+      this.converters = JSON.parse(temp);
+    } else {
+      this.subscriptions.push(
+        this.currencyServer.getConvertersGeoData(20)
+          .pipe(
+            tap(value => {
+              this.converters = value.slice(0, 7);
+              localStorage.setItem('converters', JSON.stringify(this.converters));
+            }))
+          .subscribe()
+      );
+    }
 
     if (this.objectManagerTarget) {
       this.converters.forEach(c => this.addBalloons(c.id, c.title, c.description, [c.latitude, c.longitude]));
