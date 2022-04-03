@@ -1,12 +1,12 @@
-import {Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {Subject, tap} from "rxjs";
+import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Subject, Subscription, tap} from "rxjs";
 
 @Component({
   selector: 'app-converter-top-panel',
   templateUrl: './currency-main-buttons.component.html',
   styleUrls: ['./currency-main-buttons.component.scss']
 })
-export class CurrencyMainButtonsComponent implements OnInit {
+export class CurrencyMainButtonsComponent implements OnInit, OnDestroy {
 
   @Input()
   public allCurrencies!: string[];
@@ -21,6 +21,7 @@ export class CurrencyMainButtonsComponent implements OnInit {
   @ViewChild('dropdownMenu')
   private dropdownMenu!: ElementRef;
   private isDropdownMenuOpen: boolean = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(private renderer: Renderer2) {
   }
@@ -28,11 +29,18 @@ export class CurrencyMainButtonsComponent implements OnInit {
   ngOnInit(): void {
     this.currencies = this.mainCurrencies.map(currency => [currency, currency === this.currentCurrency]);
 
-    this.currencySubject.pipe(tap(value => {
-        this.updateCurrency(value);
-      })
-    )
-      .subscribe()
+    this.subscriptions.push(
+      this.currencySubject.pipe(
+        tap(value => {
+          this.updateCurrency(value);
+        })
+      )
+        .subscribe()
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   private updateCurrency(targetCurrency: string): void {
