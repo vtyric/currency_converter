@@ -21,6 +21,7 @@ import {CurrencyService} from "./services/currency.service";
 import {HttpClientModule} from "@angular/common/http";
 import {CurrencyMainButtonsComponent} from './components/converter-top-panel/currency-main-buttons.component';
 import {AngularYandexMapsModule} from "angular8-yandex-maps";
+import { NewsComponent } from './components/news/news.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import {AngularYandexMapsModule} from "angular8-yandex-maps";
     ConverterElementComponent,
     NumericSeparatorPipe,
     CurrencyMainButtonsComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,24 @@
+.menu {
+  padding: 0.6rem;
+  width: 100%;
+
+  span {
+    padding-right: 1rem;
+    cursor: pointer;
+  }
+
+  span:last-child {
+    padding-right: 0.3rem;
+  }
+
+  span:first-child {
+    padding-left: 0.3rem;
+  }
+
+  span.selected {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    text-decoration-thickness: 15%;
+    text-decoration-color: #e17021;
+  }
+}
