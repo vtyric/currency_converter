@@ -43,6 +43,10 @@ export class CurrencyMainButtonsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+  /** Порядо методов класса должен быть такой же, как и у полей:
+   * Сначала public, затем protected и только потом private.
+   * Код гайд вам должны были скинуть, нужно ознакомиться с ним и все оформить согласно описанию в нем.
+   */
   private updateCurrency(targetCurrency: string): void {
     if (!this.currencies.some(([currency, _]) => currency === targetCurrency)) {
       this.currencies[this.currencies.length - 1][0] = targetCurrency;
@@ -52,7 +56,12 @@ export class CurrencyMainButtonsComponent implements OnInit, OnDestroy {
     })
   }
 
-  public onButtonClick(targetCurrency: string) {
+  /**
+   * Для всех методов добавить описание в формате jsdoc
+   * Все поля и методы должны быть типизированы, если метод ничего не возвращает, типизируем, как void
+   * @param targetCurrency описание параметра
+   */
+  public onButtonClick(targetCurrency: string): void {
     this.renderer.removeClass(this.dropdownMenu.nativeElement, 'show');
     this.isDropdownMenuOpen = false;
     this.currencySubject.next(targetCurrency);

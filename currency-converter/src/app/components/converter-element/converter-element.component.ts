@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {map, Subject, Subscription, tap} from "rxjs";
+import {map, Subject, Subscription, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-converter-element',
   templateUrl: './converter-element.component.html',
-  styleUrls: ['./converter-element.component.scss']
+  styleUrls: ['./styles/converter-element.component.scss'] // Давай стили класть в отдельную папку в директории компонеты
 })
 export class ConverterElementComponent implements OnInit, OnDestroy {
 
@@ -24,13 +24,16 @@ export class ConverterElementComponent implements OnInit, OnDestroy {
 
   public isInputSelected: boolean = true;
 
-  private subscriptions: Subscription[] = [];
+  // private subscriptions: Subscription[] = [];
+
+  /** Сабжект для отписки при дестрое компоненты */
+  private _unsibscriber: Subject<void> = new Subject<void>()
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
+    // this.subscriptions.push(
       this.cashInput.valueChanges
         .pipe(
           map(value => value.replace(',', '.').replace(/[^.\d]/g, '')),
@@ -42,13 +45,20 @@ export class ConverterElementComponent implements OnInit, OnDestroy {
             }
             return value;
           }),
-          tap(value => this.cashInput.patchValue(value, {emitEvent: false}))
+          tap(value => this.cashInput.patchValue(value, {emitEvent: false})),
+          takeUntil(this._unsibscriber)
         )
         .subscribe()
-    );
+    // );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    // this.subscriptions.forEach(s => s.unsubscribe());
+
+    /** Для отписок желательно юзать опреатор takeUntil() rxjs,
+     * он должен быть последним в цепочке вызовов операторов внутри .pipe()
+     */
+    this._unsibscriber.next();
+    this._unsibscriber.complete();
   }
 }

@@ -17,7 +17,7 @@ export class NumericSeparatorPipe implements PipeTransform {
 
   private getSeparatedString(value: string, divisionLength: number): string {
     return Array(
-      ...Array(...value)
+      ...Array(...value) // Очень странная конструкция, зачем здесь оператор spread
         .filter(c => c !== " ")
         .reverse()
         .reduce((res, cur, index) => index % divisionLength === 0 ? res + " " + cur : res + cur), "")

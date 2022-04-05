@@ -9,6 +9,9 @@ export class CurrencyService {
   constructor(private httpClient: HttpClient) {
   }
 
+  /**
+   *  Все методы классов должны быть объявлены в виде Function Declaration
+   */
   public getLatestCurrencyExchangeRates = (): Observable<LatestCurrenciesResponse> =>
     this.httpClient.get<LatestCurrenciesResponse>('https://api.exchangerate.host/latest');
 
