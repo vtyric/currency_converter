@@ -11,6 +11,9 @@ import {Subject, Subscription, tap} from "rxjs";
 })
 export class MainPageComponent implements OnInit, OnDestroy {
 
+  /** Нужно декомпозировать компоненту, хранение данных и сложная логика в компоненте - это очень плохо, для этого у нас есть сервисы.
+   * Я бы подумал над тем, чтобы добавить компонету конвертора и отдельный модуль для него, и аккумулировать всю логику по обмену там.
+   */
   public currencies!: string[];
   public date!: Date;
   public rates!: [string, number][];

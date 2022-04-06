@@ -1,3 +1,7 @@
+/**
+ * Интрефейсы лучше разнести по отдельным файлам
+ * 1 файл = 1 интерфейс
+ */
 export interface Environment {
   production: boolean;
 }
