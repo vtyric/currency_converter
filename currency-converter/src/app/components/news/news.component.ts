@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
-  styleUrls: ['./news.component.scss']
+  styleUrls: ['./styles/news.component.scss']
 })
 export class NewsComponent implements OnInit {
 
@@ -14,8 +14,7 @@ export class NewsComponent implements OnInit {
   @Input()
   public imgUrl!: string;
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }

@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {map, Subject, Subscription, tap} from "rxjs";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { map, Subject, takeUntil, tap } from "rxjs";
 
 @Component({
   selector: 'app-converter-element',
   templateUrl: './converter-element.component.html',
-  styleUrls: ['./converter-element.component.scss']
+  styleUrls: ['../../styles/converter-element.component.scss']
 })
 export class ConverterElementComponent implements OnInit, OnDestroy {
 
@@ -21,34 +21,33 @@ export class ConverterElementComponent implements OnInit, OnDestroy {
   public mainCurrencies!: string[];
   @Input()
   public currentCurrency!: string;
-
   public isInputSelected: boolean = true;
 
-  private subscriptions: Subscription[] = [];
+  private _unsubscriber: Subject<void> = new Subject<void>()
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.cashInput.valueChanges
-        .pipe(
-          map(value => value.replace(',', '.').replace(/[^.\d]/g, '')),
-          map((value: string) => {
-            if (value.includes('.')) {
-              let temp = value[0] === '.' ? ("0" + value).split('.') : value.split('.');
+    this.cashInput.valueChanges
+      .pipe(
+        map(value => value.replace(',', '.').replace(/[^.\d]/g, '')),
+        map((value: string) => {
+          if (value.includes('.')) {
+            let temp = value[0] === '.' ? ('0' + value).split('.') : value.split('.');
 
-              return temp.shift() + '.' + temp.join("");
-            }
-            return value;
-          }),
-          tap(value => this.cashInput.patchValue(value, {emitEvent: false}))
-        )
-        .subscribe()
-    );
+            return temp.shift() + '.' + temp.join('');
+          }
+          return value;
+        }),
+        tap(value => this.cashInput.patchValue(value, { emitEvent: false })),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+  ngOnDestroy(): void {
+    this._unsubscriber.next();
+    this._unsubscriber.complete();
   }
 }

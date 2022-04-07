@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 
-import {Environment} from "../app/interfaces";
+import { IEnvironment } from "../app/interfaces/IEnvironment";
 
-export const environment: Environment = {
+export const environment: IEnvironment = {
   production: false
 };
 

@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
-import {Converter, GetConvertersGeoDataResponse, LatestCurrenciesResponse} from "../interfaces";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { map, Observable } from "rxjs";
+import { IConverter, IConvertersGeoDataResponse, ILatestCurrenciesResponse } from "../interfaces";
 
 @Injectable()
 export class CurrencyService {
@@ -9,13 +9,23 @@ export class CurrencyService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public getLatestCurrencyExchangeRates = (): Observable<LatestCurrenciesResponse> =>
-    this.httpClient.get<LatestCurrenciesResponse>('https://api.exchangerate.host/latest');
+  /**
+   * Получает последние изменения валют в евро.
+   * @returns {Observable<ILatestCurrenciesResponse>}
+   */
+  public getLatestCurrencyExchangeRates(): Observable<ILatestCurrenciesResponse> {
+    return this.httpClient.get<ILatestCurrenciesResponse>('https://api.exchangerate.host/latest');
+  }
 
-  public getConvertersGeoData = (size: number): Observable<Converter[]> =>
-    this.httpClient.get<GetConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${size}`)
+  /**
+   * Получает список конвертеров.
+   * @param {number} size количество компаниц
+   * @returns {Observable<IConverter[]>}
+   */
+  public getConvertersGeoData(size: number): Observable<IConverter[]> {
+    return this.httpClient.get<IConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${size}`)
       .pipe(
-        map((data: GetConvertersGeoDataResponse[]) =>
+        map((data: IConvertersGeoDataResponse[]) =>
           data
             .filter(d => d.latitude > -60 && d.latitude < 60 && d.longitude > -150 && d.longitude < 150)
             .map(d => ({
@@ -27,4 +37,5 @@ export class CurrencyService {
             })),
         ),
       );
+  }
 }
