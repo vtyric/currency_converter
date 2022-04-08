@@ -1,0 +1,20 @@
+<div class="converter-main">
+
+  <span class="title">{{title}}</span>
+
+  <converter-buttons
+    [allCurrencies]="allCurrencies"
+    [currencySubject]="currencySubject"
+    [currentCurrency]="currentCurrency"
+    [mainCurrencies]="mainCurrencies">
+  </converter-buttons>
+
+  <input
+    (focus)="isInputSelected = true"
+    (focusout)="isInputSelected = false"
+    [formControl]="cashInput"
+    [value]="isInputSelected ? cashInput.value : cashInput.value | numericSeparator:3"
+    class="input-box" maxlength="13" type="text"
+  >
+
+</div>
