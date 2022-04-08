@@ -6,6 +6,7 @@ import { ConverterComponent } from './converter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumericSeparatorPipe } from './pipes/numeric-separator.pipe';
 import { RouterModule } from '@angular/router';
+import { CurrencyExchangeService } from './services/currency-exchange.service';
 
 
 @NgModule({
@@ -15,12 +16,14 @@ import { RouterModule } from '@angular/router';
     ConverterCashInputComponent,
     NumericSeparatorPipe,
   ],
-  providers: [],
+  providers: [
+    CurrencyExchangeService,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forChild([{path: '', component: ConverterComponent}])
+    RouterModule.forChild([{path: '', component: ConverterComponent}]),
   ],
   exports: []
 })
