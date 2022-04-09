@@ -12,9 +12,12 @@ export class NewsComponent implements OnInit {
   @Input()
   public description!: string;
   @Input()
-  public imgUrl!: string;
+  public imgUrl!: string | undefined;
+  @Input()
+  public date!: Date;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
