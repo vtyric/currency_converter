@@ -1,0 +1,17 @@
+<div class="news-container">
+
+  <span class="border border-bottom-0 border-dark rounded-top title">{{news?.title}}</span>
+
+  <img *ngIf="news?.preview" src="{{news?.preview}}" alt="какртинка с превью новости">
+
+  <div class="border border-top-0 border-dark rounded-bottom">
+    <p class="content">{{news?.content}}</p>
+    <a *ngIf="news?.source"
+       href="{{news?.source}}"
+       class="link-secondary source"
+    >
+      источник
+    </a>
+  </div>
+
+</div>

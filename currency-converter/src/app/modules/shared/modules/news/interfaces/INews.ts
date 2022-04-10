@@ -3,6 +3,8 @@ export interface INews {
   type: 'news' | 'post';
   title: string;
   description: string;
+  content: string;
   postCreationDate: Date;
   preview?: string;
+  source?: string;
 }

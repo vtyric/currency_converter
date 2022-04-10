@@ -16,7 +16,9 @@
       [title]="news.title"
       [description]="news.description"
       [imgUrl]="news.preview"
-      [date]="news.postCreationDate">
+      [date]="news.postCreationDate"
+      (click)="onNewsClick(news.id)"
+    >
     </news>
   </div>
 

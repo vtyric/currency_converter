@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NewsService } from './services/news.service';
 import { FilterType } from './types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'news-page',
@@ -15,7 +16,11 @@ export class NewsPageComponent implements OnInit {
   @ViewChild('menu')
   private _menu!: ElementRef;
 
-  constructor(public newsService: NewsService, private _renderer: Renderer2) {
+  constructor(
+    public newsService: NewsService,
+    private _renderer: Renderer2,
+    private _router: Router,
+  ) {
   }
 
   ngOnInit(): void {
@@ -34,6 +39,14 @@ export class NewsPageComponent implements OnInit {
     );
     this._renderer.addClass(menuItem, 'selected');
     this._selectedMenuItem = menuItem;
+  }
+
+  /**
+   * Метод при нажатии на новость, переход к ее описанию.
+   * @param id страницы
+   */
+  public onNewsClick(id: number): void {
+    this._router.navigate([this._router.url, id]);
   }
 
 }
