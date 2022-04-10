@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
           }),
           takeUntil(this._unsubscriber)
         )
-      ;
+        .subscribe();
     }
 
     if (this._objectManagerTarget) {
