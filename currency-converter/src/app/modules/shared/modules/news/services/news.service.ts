@@ -39,7 +39,7 @@ export class NewsService {
       .pipe(
         tap((news: INews[]) => {
           this._news.push(...news);
-          this._news = this._news.slice(0, 6)
+          this._news = this._news.slice(0, 6);
           this._news.sort((a, b) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
         }),
       )

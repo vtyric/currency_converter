@@ -27,7 +27,7 @@ export class NewsRequestService {
             title: d.title,
             description: `By ${d.author}`,
             content: d.content,
-            postCreationDate: new Date(`${value.data[0].date.split(' ').slice(0, -1).join(' ')} 2022, ${d.time.split(',').join(' ')}`),
+            postCreationDate: new Date(`${d.date.split(' ').slice(0, -1).join(' ')} 2022, ${d.time.split(',').join(' ')}`),
             preview: d.imageUrl,
             source: d.url,
           }))
