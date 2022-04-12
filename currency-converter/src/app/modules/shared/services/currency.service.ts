@@ -7,7 +7,7 @@ import { IConverter, IConvertersGeoDataResponse, ILatestCurrenciesResponse } fro
 @Injectable()
 export class CurrencyService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private _httpClient: HttpClient) {
   }
 
   /**
@@ -15,7 +15,7 @@ export class CurrencyService {
    * @returns {Observable<ILatestCurrenciesResponse>}
    */
   public getLatestCurrencyExchangeRates(): Observable<ILatestCurrenciesResponse> {
-    return this.httpClient.get<ILatestCurrenciesResponse>('https://api.exchangerate.host/latest');
+    return this._httpClient.get<ILatestCurrenciesResponse>('https://api.exchangerate.host/latest');
   }
 
   /**
@@ -24,7 +24,7 @@ export class CurrencyService {
    * @returns {Observable<IConverter[]>}
    */
   public getConvertersGeoData(size: number): Observable<IConverter[]> {
-    return this.httpClient.get<IConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${size}`)
+    return this._httpClient.get<IConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${size}`)
       .pipe(
         map((data: IConvertersGeoDataResponse[]) =>
           data

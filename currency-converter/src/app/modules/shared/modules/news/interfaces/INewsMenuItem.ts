@@ -1,6 +1,6 @@
-import { FilterType } from '../types';
+import { BlogNewsType } from '../types';
 
 export interface INewsMenuItem {
-  filter: FilterType;
+  filter: BlogNewsType;
   label: string;
 }

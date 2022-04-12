@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NewsService } from './services/news.service';
-import { FilterType } from './types';
+import { BlogNewsType } from './types';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NewsPageComponent implements OnInit {
 
-  public filter!: FilterType;
+  public filter!: BlogNewsType;
 
   private _selectedMenuItem!: EventTarget | null;
   @ViewChild('menu')
@@ -31,7 +31,7 @@ export class NewsPageComponent implements OnInit {
    * @param menuItem элемент на который нажали
    * @param filter фильтер, который выбирается при нажатии на кнопку
    */
-  public onMenuButtonClick(menuItem: EventTarget | null, filter: FilterType): void {
+  public onMenuButtonClick(menuItem: EventTarget | null, filter: BlogNewsType): void {
     this.filter = filter;
     this._renderer.removeClass(
       this._selectedMenuItem ? this._selectedMenuItem : this._menu.nativeElement.children[0],

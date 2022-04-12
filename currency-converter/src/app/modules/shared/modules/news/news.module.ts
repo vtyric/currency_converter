@@ -6,6 +6,7 @@ import { NewsComponent } from './components/news/news.component';
 import { NewsService } from './services/news.service';
 import '@angular/common/locales/global/ru';
 import { NewsDescriptionModule } from './modules/news-description/news-description.module';
+import { NewsRequestService } from './services/news-request.service';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { NewsDescriptionModule } from './modules/news-description/news-descripti
   ],
   providers: [
     NewsService,
+    NewsRequestService,
     {provide: LOCALE_ID, useValue: 'ru'}
   ]
 })
