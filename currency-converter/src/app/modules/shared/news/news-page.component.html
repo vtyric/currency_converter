@@ -10,7 +10,7 @@
     </span>
   </div>
 
-  <div class="news-container">
+  <div class="news-container" infinityScroll>
     <news
       *ngFor="let news of newsService.getNews(filter)"
       [title]="news.title"

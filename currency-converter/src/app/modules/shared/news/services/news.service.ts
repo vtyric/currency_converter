@@ -7,7 +7,7 @@ import { tap } from 'rxjs';
 @Injectable()
 export class NewsService {
 
-  public newsMenuItems: INewsMenuItem[] = [
+  public readonly newsMenuItems: INewsMenuItem[] = [
     {
       label: 'Всё подряд',
       filter: null,
@@ -22,7 +22,7 @@ export class NewsService {
     },
   ];
 
-  private _news: INews[] = [
+  private readonly _news: INews[] = [
     {
       id: 1,
       title: 'Мой пост',
@@ -33,17 +33,34 @@ export class NewsService {
       postCreationDate: new Date(Date.now()),
     },
   ];
+  private readonly _newsAppendStep: number = 2;
+  private _currentNewsCount: number = 2;
 
   constructor(private _newsRequestService: NewsRequestService) {
     this._newsRequestService.getNews('technology')
       .pipe(
         tap((news: INews[]) => {
-          this._news.push(...news);
-          this._news = this._news.slice(0, 6);
-          this._news.sort((a, b) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
+          this.addNews(news);
         }),
       )
       .subscribe();
+  }
+
+  /**
+   * Добавляет новые новости.
+   * @param { INews[] } news массив новостей для добавления.
+   */
+  public addNews(news: INews[]): void {
+    this._news.push(...news);
+    this._news.sort((a, b) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
+    this.makeStep();
+  }
+
+  /**
+   * Увеличивает количество показываемых новостей.
+   */
+  public makeStep(): void {
+    this._currentNewsCount += this._newsAppendStep;
   }
 
   /**
@@ -52,7 +69,7 @@ export class NewsService {
    * @return { INews[] }
    */
   public getNews(filter: BlogNewsType): INews[] {
-    return filter ? this._news.filter(n => n.type === filter) : this._news;
+    return (filter ? this._news.filter(n => n.type === filter) : this._news).slice(0, this._currentNewsCount);
   }
 
   /**

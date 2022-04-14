@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CurrencyService } from './modules/shared/services/currency.service';
+import { CurrencyService } from './modules/shared/shared/services/currency.service';
 
 @NgModule({
   declarations: [

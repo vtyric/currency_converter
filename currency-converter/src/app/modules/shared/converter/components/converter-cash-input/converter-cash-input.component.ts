@@ -20,7 +20,7 @@ export class ConverterCashInputComponent implements OnInit, OnDestroy {
   public mainCurrencies!: string[];
   @Input()
   public currentCurrency!: string;
-  public isInputSelected: boolean = true;
+  public isInputSelected: boolean = false;
 
   private _unsubscriber: Subject<void> = new Subject<void>()
 

@@ -1,5 +1,3 @@
-import { IEnvironment } from '../app/modules/shared/interfaces';
-
-export const environment: IEnvironment = {
+export const environment = {
   production: true
 };

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { YaReadyEvent } from 'angular8-yandex-maps';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { CurrencyService } from '../../services/currency.service';
-import { IConverter } from '../../interfaces';
+import { CurrencyService } from '../shared/services/currency.service';
+import { IConverter } from '../shared/interfaces';
 
 @Component({
   selector: 'map',

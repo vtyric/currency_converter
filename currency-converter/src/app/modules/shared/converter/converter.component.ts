@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
-import { CurrencyService } from '../../services/currency.service';
-import { ILatestCurrenciesResponse } from '../../interfaces';
+import { CurrencyService } from '../shared/services/currency.service';
+import { ILatestCurrenciesResponse } from '../shared/interfaces';
 import { CurrencyExchangeService } from './services/currency-exchange.service';
 
 
@@ -19,7 +19,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
   public leftInput: FormControl = new FormControl('');
   public rightInput: FormControl = new FormControl('');
 
-  private _unsubscriber: Subject<void> = new Subject<void>()
+  private _unsubscriber: Subject<void> = new Subject<void>();
 
   constructor(private _currencyService: CurrencyService, public currencyExchangeService: CurrencyExchangeService) {
   }

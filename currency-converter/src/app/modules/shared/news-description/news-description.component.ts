@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NewsService } from '../../services/news.service';
+import { NewsService } from '../news/services/news.service';
 import { Router } from '@angular/router';
-import { INews } from '../../interfaces';
+import { INews } from '../news/interfaces';
 
 @Component({
   selector: 'app-styles',
