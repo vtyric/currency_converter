@@ -17,6 +17,8 @@ import { CurrencyService } from './modules/shared/shared/services/currency.servi
   providers: [
     CurrencyService,
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

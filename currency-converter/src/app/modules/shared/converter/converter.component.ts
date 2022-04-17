@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 import { CurrencyService } from '../shared/services/currency.service';
-import { ILatestCurrenciesResponse } from '../shared/interfaces';
+import { ICurrencyDescription, ILatestCurrenciesResponse } from '../shared/interfaces';
 import { CurrencyExchangeService } from './services/currency-exchange.service';
 
 
@@ -14,6 +14,7 @@ import { CurrencyExchangeService } from './services/currency-exchange.service';
 export class ConverterComponent implements OnInit, OnDestroy {
 
   public currencies!: string[];
+  public currenciesDescription!: ICurrencyDescription[];
   public date!: Date;
   public rates!: [string, number][];
   public leftInput: FormControl = new FormControl('');
@@ -44,6 +45,16 @@ export class ConverterComponent implements OnInit, OnDestroy {
           this.date = value.date;
           this.rates = Object.entries(value.rates);
           this.currencies = this.rates.map(x => x[0]);
+        }),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe();
+
+    this._currencyService
+      .getCurrenciesDescription()
+      .pipe(
+        tap((value: ICurrencyDescription[]) => {
+          this.currenciesDescription = value;
         }),
         takeUntil(this._unsubscriber)
       )

@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { IConverter, IConvertersGeoDataResponse, ILatestCurrenciesResponse } from '../interfaces';
-
+import {
+  IConverter,
+  IConvertersGeoDataResponse,
+  ICurrenciesDescriptionResponse,
+  ICurrencyDescription,
+  ILatestCurrenciesResponse
+} from '../interfaces';
 
 @Injectable()
 export class CurrencyService {
@@ -36,6 +41,22 @@ export class CurrencyService {
               id: d.id,
               description: `${d.suffix} ${d.business_name} ${d.industry} ${d.catch_phrase} ${d.phone_number} ${d.full_address}`
             })),
+        ),
+      );
+  }
+
+  /**
+   * Получает массив валют с их описанием.
+   * @returns {Observable<ICurrencyDescription[]>}
+   */
+  public getCurrenciesDescription(): Observable<ICurrencyDescription[]> {
+    return this._httpClient.get<ICurrenciesDescriptionResponse[]>('https://api.currencyfreaks.com/supported-currencies')
+      .pipe(
+        map((data: ICurrenciesDescriptionResponse[]) => data
+          .map(value => ({
+            currency: value.currencyCode,
+            description: value.currencyName,
+          }))
         ),
       );
   }

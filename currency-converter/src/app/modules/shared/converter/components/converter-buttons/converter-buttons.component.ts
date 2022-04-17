@@ -1,11 +1,23 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { ICurrencyButton } from "../../interfaces";
+import { ICurrencyDescription } from "../../../shared/interfaces";
 
 @Component({
   selector: 'converter-buttons',
   templateUrl: './converter-buttons.component.html',
 })
-export class ConverterButtonsComponent implements OnInit, OnDestroy {
+export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   public allCurrencies!: string[];
   @Input()
@@ -14,19 +26,19 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy {
   public mainCurrencies!: string[];
   @Input()
   public currentCurrency!: string;
-  public currencies!: [string, boolean][];
+  @Input()
+  public currencyDescription!: ICurrencyDescription[];
+  public currencies!: ICurrencyButton[];
 
   @ViewChild('dropdownMenu')
   private _dropdownMenu!: ElementRef;
   private _isDropdownMenuOpen: boolean = false;
   private _unsubscriber: Subject<void> = new Subject<void>()
 
-  constructor(private renderer: Renderer2) {
+  constructor(private _renderer: Renderer2) {
   }
 
   ngOnInit(): void {
-    this.currencies = this.mainCurrencies.map(currency => [currency, currency === this.currentCurrency]);
-
     this.currencySubject
       .pipe(
         tap(value => this.updateCurrency(value)),
@@ -40,12 +52,23 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy {
     this._unsubscriber.complete();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.currencyDescription = changes['currencyDescription']?.currentValue;
+
+    this.currencies = this.mainCurrencies.map(currency =>
+      ({
+        selected: currency === this.currentCurrency,
+        name: currency,
+        description: this.getCurrencyDescription(currency),
+      }));
+  }
+
   /**
    * Метод нажатия на кнопку, выбирает валюты.
    * @param {string} targetCurrency
    */
   public onButtonClick(targetCurrency: string): void {
-    this.renderer.removeClass(this._dropdownMenu.nativeElement, 'show');
+    this._renderer.removeClass(this._dropdownMenu.nativeElement, 'show');
     this._isDropdownMenuOpen = false;
     this.currencySubject.next(targetCurrency);
   }
@@ -55,9 +78,9 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy {
    */
   public onToggleButtonClick(): void {
     if (!this._isDropdownMenuOpen) {
-      this.renderer.addClass(this._dropdownMenu.nativeElement, 'show');
+      this._renderer.addClass(this._dropdownMenu.nativeElement, 'show');
     } else {
-      this.renderer.removeClass(this._dropdownMenu.nativeElement, 'show');
+      this._renderer.removeClass(this._dropdownMenu.nativeElement, 'show');
     }
     this._isDropdownMenuOpen = !this._isDropdownMenuOpen;
   }
@@ -68,11 +91,22 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy {
    * @private
    */
   private updateCurrency(targetCurrency: string): void {
-    if (!this.currencies.some(([currency, _]) => currency === targetCurrency)) {
-      this.currencies[this.currencies.length - 1][0] = targetCurrency;
+    if (!this.currencies.some((currency) => currency.name === targetCurrency)) {
+      this.currencies[this.currencies.length - 1].name = targetCurrency;
+      this.currencies[this.currencies.length - 1].description = this.getCurrencyDescription(targetCurrency);
     }
-    this.currencies.forEach(([currency, _], index) => {
-      this.currencies[index][1] = currency === targetCurrency;
+    this.currencies.forEach((currency, index) => {
+      this.currencies[index].selected = currency.name === targetCurrency;
     })
+  }
+
+  /**
+   * Возвращает описание валюты по её названию.
+   * @param currency название валюты
+   * @returns {string}
+   * @private
+   */
+  private getCurrencyDescription(currency: string): string {
+    return this.currencyDescription?.filter(value => value.currency === currency)[0]?.description ?? "";
   }
 }

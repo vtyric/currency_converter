@@ -2,10 +2,12 @@
 
   <div class="main">
     <button
+      tooltip
       *ngFor="let currency of currencies"
-      (click)="onButtonClick(currency[0])"
-      [ngClass]="currency[1] ? 'btn btn-success' : 'btn btn-outline-secondary'">
-      {{currency[0]}}
+      [tooltipText]="currency.description"
+      (click)="onButtonClick(currency.name)"
+      [ngClass]="currency.selected ? 'btn btn-success' : 'btn btn-outline-secondary'">
+      {{currency.name}}
     </button>
   </div>
 

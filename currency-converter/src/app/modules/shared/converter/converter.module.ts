@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumericSeparatorPipe } from './pipes/numeric-separator.pipe';
 import { RouterModule } from '@angular/router';
 import { CurrencyExchangeService } from './services/currency-exchange.service';
+import { TooltipDirective } from "../shared/tooltip/tooltip.directive";
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { CurrencyExchangeService } from './services/currency-exchange.service';
     ConverterButtonsComponent,
     ConverterCashInputComponent,
     NumericSeparatorPipe,
+    TooltipDirective,
   ],
   providers: [
     CurrencyExchangeService,
@@ -27,4 +29,5 @@ import { CurrencyExchangeService } from './services/currency-exchange.service';
   ],
   exports: []
 })
-export class ConverterModule {}
+export class ConverterModule {
+}

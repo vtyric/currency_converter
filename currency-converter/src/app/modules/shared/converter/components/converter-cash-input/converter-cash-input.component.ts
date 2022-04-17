@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Subject, takeUntil, tap } from 'rxjs';
+import { ICurrencyDescription } from "../../../shared/interfaces";
 
 @Component({
   selector: 'converter-cash-input',
@@ -12,6 +13,8 @@ export class ConverterCashInputComponent implements OnInit, OnDestroy {
   public title!: string;
   @Input()
   public allCurrencies!: string[];
+  @Input()
+  public currencyDescription!: ICurrencyDescription[];
   @Input()
   public cashInput!: FormControl;
   @Input()

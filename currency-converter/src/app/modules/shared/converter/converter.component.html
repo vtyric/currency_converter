@@ -8,7 +8,8 @@
         [cashInput]="leftInput"
         [mainCurrencies]="leftCurrencies"
         [currencySubject]="leftCurrencySubject"
-        [currentCurrency]="leftCurrency">
+        [currentCurrency]="leftCurrency"
+        [currencyDescription]="currenciesDescription">
       </converter-cash-input>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -29,7 +30,8 @@
         [cashInput]="rightInput"
         [mainCurrencies]="rightCurrencies"
         [currencySubject]="rightCurrencySubject"
-        [currentCurrency]="rightCurrency">
+        [currentCurrency]="rightCurrency"
+        [currencyDescription]="currenciesDescription">
       </converter-cash-input>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>
