@@ -18,10 +18,22 @@ export class ConverterComponent implements OnInit, OnDestroy {
   public rates!: [string, number][];
   public leftInput: FormControl = new FormControl('');
   public rightInput: FormControl = new FormControl('');
+  public leftCurrencies!: string[];
+  public rightCurrencies!: string[];
+  public leftCurrency!: string;
+  public rightCurrency!: string;
+  public leftCurrencySubject!: Subject<string>;
+  public rightCurrencySubject!: Subject<string>;
 
   private _unsubscriber: Subject<void> = new Subject<void>();
 
-  constructor(private _currencyService: CurrencyService, public currencyExchangeService: CurrencyExchangeService) {
+  constructor(private _currencyService: CurrencyService, private _currencyExchangeService: CurrencyExchangeService) {
+    this.leftCurrencies = _currencyExchangeService.leftCurrencies;
+    this.rightCurrencies = _currencyExchangeService.rightCurrencies;
+    this.leftCurrency = _currencyExchangeService.leftCurrency;
+    this.rightCurrency = _currencyExchangeService.rightCurrency;
+    this.leftCurrencySubject = _currencyExchangeService.leftCurrencySubject;
+    this.rightCurrencySubject = _currencyExchangeService.rightCurrencySubject;
   }
 
   ngOnInit(): void {
@@ -37,19 +49,19 @@ export class ConverterComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    this.currencyExchangeService.leftCurrencySubject
+    this._currencyExchangeService.leftCurrencySubject
       .pipe(
         tap(currency => {
-          this.currencyExchangeService.updateCurrency(currency, 'left');
+          this._currencyExchangeService.updateCurrency(currency, 'left');
         }),
         takeUntil(this._unsubscriber)
       )
       .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
-    this.currencyExchangeService.rightCurrencySubject
+    this._currencyExchangeService.rightCurrencySubject
       .pipe(
         tap(currency => {
-          this.currencyExchangeService.updateCurrency(currency, 'right');
+          this._currencyExchangeService.updateCurrency(currency, 'right');
         }),
         takeUntil(this._unsubscriber)
       )
@@ -59,14 +71,14 @@ export class ConverterComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscriber)
       )
-      .subscribe(value => this.currencyExchangeService
+      .subscribe(value => this._currencyExchangeService
         .updateInputValue(Number.parseFloat(value), this.rates, this.rightInput, 'right'));
 
     this.rightInput.valueChanges
       .pipe(
         takeUntil(this._unsubscriber)
       )
-      .subscribe(value => this.currencyExchangeService
+      .subscribe(value => this._currencyExchangeService
         .updateInputValue(Number.parseFloat(value), this.rates, this.leftInput, 'left'));
   }
 
@@ -79,10 +91,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
    * Меняет местами левые и правые валюты и их значения.
    */
   public OnArrowsClick(): void {
-    this.currencyExchangeService.swapCurrencies();
-    const tempValue = this.leftInput.value;
-    this.leftInput.patchValue(this.rightInput.value, {emitEvent: false});
-    this.rightInput.patchValue(tempValue, {emitEvent: false});
+    this._currencyExchangeService.swapCurrencies();
   }
 
 }

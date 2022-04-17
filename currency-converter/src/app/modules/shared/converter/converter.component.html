@@ -6,9 +6,9 @@
         [title]="'У меня есть'"
         [allCurrencies]="currencies"
         [cashInput]="leftInput"
-        [mainCurrencies]="currencyExchangeService.leftCurrencies"
-        [currencySubject]="currencyExchangeService.leftCurrencySubject"
-        [currentCurrency]="currencyExchangeService.leftCurrency">
+        [mainCurrencies]="leftCurrencies"
+        [currencySubject]="leftCurrencySubject"
+        [currentCurrency]="leftCurrency">
       </converter-cash-input>
       <span class="additional">Конвертер валют онлайн — инструмент, который позволит вам рассчитать соотношения актуальных курсов денежных средств всего мира на сегодня.</span>
     </div>
@@ -27,9 +27,9 @@
         [title]="'Хочу приобрести'"
         [allCurrencies]="currencies"
         [cashInput]="rightInput"
-        [mainCurrencies]="currencyExchangeService.rightCurrencies"
-        [currencySubject]="currencyExchangeService.rightCurrencySubject"
-        [currentCurrency]="currencyExchangeService.rightCurrency">
+        [mainCurrencies]="rightCurrencies"
+        [currencySubject]="rightCurrencySubject"
+        [currentCurrency]="rightCurrency">
       </converter-cash-input>
       <span class="additional">Данные за {{date | date: "yyyy-dd-MM h:mm:ss zzz"}}</span>
     </div>
