@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
@@ -25,10 +25,21 @@ export class ConverterComponent implements OnInit, OnDestroy {
   public rightCurrency!: string;
   public leftCurrencySubject!: Subject<string>;
   public rightCurrencySubject!: Subject<string>;
+  public hiddenCurrenciesSubject: Subject<string> = new Subject<string>();
+  public isLeftToggleOpen: Subject<boolean> = new Subject<boolean>();
+  public isRightToggleOpen: Subject<boolean> = new Subject<boolean>();
+  public dropdownMenu!: ElementRef<HTMLDivElement>;
 
+  private _lastTogglePosition!: 'left' | 'right';
+  private _isLeftToggleOpen: boolean = false;
+  private _isRightToggleOpen: boolean = false;
   private _unsubscriber: Subject<void> = new Subject<void>();
 
-  constructor(private _currencyService: CurrencyService, private _currencyExchangeService: CurrencyExchangeService) {
+  constructor(
+    private _currencyService: CurrencyService,
+    private _currencyExchangeService: CurrencyExchangeService,
+    private _renderer: Renderer2
+  ) {
     this.leftCurrencies = _currencyExchangeService.leftCurrencies;
     this.rightCurrencies = _currencyExchangeService.rightCurrencies;
     this.leftCurrency = _currencyExchangeService.leftCurrency;
@@ -76,7 +87,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this._unsubscriber)
       )
-      .subscribe(_ => this.leftInput.setValue(this.leftInput.value))
+      .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
 
     this.leftInput.valueChanges
       .pipe(
@@ -91,6 +102,47 @@ export class ConverterComponent implements OnInit, OnDestroy {
       )
       .subscribe(value => this._currencyExchangeService
         .updateInputValue(Number.parseFloat(value), this.rates, this.leftInput, 'left'));
+
+    this.isRightToggleOpen
+      .pipe(
+        tap(isRightToggleOpen => {
+          this._isRightToggleOpen = isRightToggleOpen && this._isRightToggleOpen !== isRightToggleOpen;
+          if (this._isRightToggleOpen) {
+            this._lastTogglePosition = 'right';
+            this._isLeftToggleOpen = false;
+          }
+          this.changeDropDownState(this._isRightToggleOpen);
+        }),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe();
+
+    this.isLeftToggleOpen
+      .pipe(
+        tap((isLeftToggleOpen) => {
+          this._isLeftToggleOpen = isLeftToggleOpen && this._isLeftToggleOpen !== isLeftToggleOpen;
+          if (this._isLeftToggleOpen) {
+            this._lastTogglePosition = 'left';
+            this._isRightToggleOpen = false;
+          }
+          this.changeDropDownState(this._isLeftToggleOpen);
+        }),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe();
+
+    this.hiddenCurrenciesSubject
+      .pipe(
+        tap(currency => {
+          if (this._lastTogglePosition === 'right') {
+            this.rightCurrencySubject.next(currency);
+          } else {
+            this.leftCurrencySubject.next(currency);
+          }
+        }),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -105,4 +157,16 @@ export class ConverterComponent implements OnInit, OnDestroy {
     this._currencyExchangeService.swapCurrencies();
   }
 
+  /**
+   * Открывает или закрывает окно со скрытыми валютами.
+   * @param isOpen открыто или закрыто дополнительное окно
+   * @private
+   */
+  private changeDropDownState(isOpen: boolean): void {
+    if (isOpen) {
+      this._renderer.addClass(this.dropdownMenu.nativeElement, 'show');
+    } else {
+      this._renderer.removeClass(this.dropdownMenu.nativeElement, 'show')
+    }
+  }
 }

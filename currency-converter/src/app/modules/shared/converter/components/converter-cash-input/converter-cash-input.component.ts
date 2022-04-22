@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Subject, takeUntil, tap } from 'rxjs';
 import { ICurrencyDescription } from "../../../shared/interfaces";
@@ -23,6 +23,12 @@ export class ConverterCashInputComponent implements OnInit, OnDestroy {
   public mainCurrencies!: string[];
   @Input()
   public currentCurrency!: string;
+  @Input()
+  public hiddenCurrenciesSubject!: Subject<string>;
+  @Input()
+  public isToggleOpen!: Subject<boolean>;
+  @Output()
+  public dropDownMenu: EventEmitter<ElementRef<HTMLDivElement>> = new EventEmitter<ElementRef<HTMLDivElement>>();
   public isInputSelected: boolean = false;
 
   private _unsubscriber: Subject<void> = new Subject<void>()

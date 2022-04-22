@@ -114,3 +114,12 @@
     font-weight: bold;
   }
 }
+
+.currency-tooltip .tooltip-inner {
+  background-color: whitesmoke;
+  color: black;
+  font-size: 100%;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

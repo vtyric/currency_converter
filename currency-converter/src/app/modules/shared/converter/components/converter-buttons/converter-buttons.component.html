@@ -2,10 +2,9 @@
 
   <div class="main">
     <button
-      tooltip
       *ngFor="let currency of currencies"
-      [tooltipText]="currency.description"
-      (click)="onButtonClick(currency.name)"
+      placement="top" ngbTooltip="{{currency.description}}" tooltipClass="currency-tooltip"
+      (click)="onButtonClick(currency.name,'main')"
       [ngClass]="currency.selected ? 'btn btn-success' : 'btn btn-outline-secondary'">
       {{currency.name}}
     </button>
@@ -20,7 +19,8 @@
     <div class="dropdown-menu" #dropdownMenu>
           <span
             *ngFor="let currency of allCurrencies"
-            (click)="onButtonClick(currency)"
+            placement="top" ngbTooltip="{{this.descriptions[currency]}}" tooltipClass="currency-tooltip"
+            (click)="onButtonClick(currency,'hidden')"
             class="item">
             {{currency}}
           </span>
