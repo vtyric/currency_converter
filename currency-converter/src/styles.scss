@@ -83,9 +83,9 @@
     }
 
     .dropdown-menu.show {
-      padding-left: 0.5rem;
+      padding-left: 1.5rem;
       margin-top: 0.5rem;
-      width: auto;
+      width: 40rem;
       display: grid;
       grid-auto-flow: column;
       grid-template-rows: repeat(18, auto);
@@ -94,12 +94,12 @@
     .item {
       font-size: 1rem;
       margin-right: 0.3rem;
+      padding: 0.1rem;
       width: 3rem;
-
     }
 
     .item:hover {
-      background-color: #c7c7f1;
+      background-color: #f6f2f2;
       cursor: pointer;
     }
   }

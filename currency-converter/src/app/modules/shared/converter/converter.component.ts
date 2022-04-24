@@ -75,6 +75,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
       .pipe(
         tap(currency => {
           this._currencyExchangeService.updateCurrency(currency, 'left');
+          this._isLeftToggleOpen = false;
         }),
         takeUntil(this._unsubscriber)
       )
@@ -84,6 +85,7 @@ export class ConverterComponent implements OnInit, OnDestroy {
       .pipe(
         tap(currency => {
           this._currencyExchangeService.updateCurrency(currency, 'right');
+          this._isRightToggleOpen = false;
         }),
         takeUntil(this._unsubscriber)
       )
@@ -107,10 +109,8 @@ export class ConverterComponent implements OnInit, OnDestroy {
       .pipe(
         tap(isRightToggleOpen => {
           this._isRightToggleOpen = isRightToggleOpen && this._isRightToggleOpen !== isRightToggleOpen;
-          if (this._isRightToggleOpen) {
-            this._lastTogglePosition = 'right';
-            this._isLeftToggleOpen = false;
-          }
+          this._isLeftToggleOpen = false;
+          this._lastTogglePosition = this._isRightToggleOpen ? 'right' : this._lastTogglePosition;
           this.changeDropDownState(this._isRightToggleOpen);
         }),
         takeUntil(this._unsubscriber)
@@ -121,10 +121,8 @@ export class ConverterComponent implements OnInit, OnDestroy {
       .pipe(
         tap((isLeftToggleOpen) => {
           this._isLeftToggleOpen = isLeftToggleOpen && this._isLeftToggleOpen !== isLeftToggleOpen;
-          if (this._isLeftToggleOpen) {
-            this._lastTogglePosition = 'left';
-            this._isRightToggleOpen = false;
-          }
+          this._isRightToggleOpen = false;
+          this._lastTogglePosition = this._isLeftToggleOpen ? 'left' : this._lastTogglePosition;
           this.changeDropDownState(this._isLeftToggleOpen);
         }),
         takeUntil(this._unsubscriber)
