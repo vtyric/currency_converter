@@ -35,7 +35,7 @@ const routes: Routes = [
           .then(m => m.LoginModule),
       },
       {
-        path: 'reg',
+        path: 'register',
         loadChildren: (): Promise<RegistrationModule> => import('./registration/registration.module')
           .then(m => m.RegistrationModule),
       }

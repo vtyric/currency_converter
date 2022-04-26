@@ -1,6 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light layout">
   <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1 title">Currency converter</span>
+    <a class="navbar-brand mb-0 h1 title"
+       routerLink="{{buttons['converter'].routerLink}}"
+       (click)="onButtonClick('converter')">
+      Currency converter
+    </a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item"
