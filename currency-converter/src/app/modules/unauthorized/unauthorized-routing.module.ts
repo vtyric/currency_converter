@@ -5,7 +5,8 @@ import { UnauthorizedLayoutComponent } from './unauthorized-layout/unauthorized-
 import { ConverterModule } from '../shared/converter/converter.module';
 import { MapModule } from '../shared/map/map.module';
 import { NewsModule } from '../shared/news/news.module';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { LoginModule } from "./login/login.module";
+import { RegistrationModule } from "./registration/registration.module";
 
 
 const routes: Routes = [
@@ -29,9 +30,14 @@ const routes: Routes = [
           .then(m => m.NewsModule),
       },
       {
-        path: '',
-        loadChildren: (): Promise<AuthenticationModule> => import('./authentication/authentication.module')
-          .then(m => m.AuthenticationModule),
+        path: 'login',
+        loadChildren: (): Promise<LoginModule> => import('./login/login.module')
+          .then(m => m.LoginModule),
+      },
+      {
+        path: 'reg',
+        loadChildren: (): Promise<RegistrationModule> => import('./registration/registration.module')
+          .then(m => m.RegistrationModule),
       }
     ]
   }

@@ -3,18 +3,23 @@
     <span class="navbar-brand mb-0 h1 title">Currency converter</span>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/">Главная</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/map">Карта</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/news">Новости</a>
+        <li class="nav-item"
+            *ngFor="let id of mainButtonsId">
+          <a class="nav-link"
+             [ngClass]="buttons[id].selected ? 'active' : ''"
+             routerLink="{{buttons[id].routerLink}}"
+             (click)="onButtonClick(id)">
+            {{buttons[id].label}}
+          </a>
         </li>
       </ul>
     </div>
-    <a class="nav-link link-secondary mb-0 end" routerLink="/login">Войти</a>
+    <a class="nav-link mb-0 end"
+       [ngClass]="buttons['login'].selected ? 'link-dark' : 'link-secondary'"
+       routerLink="{{buttons['login'].routerLink}}"
+       (click)="onButtonClick('login')">
+      {{buttons['login'].label}}
+    </a>
   </div>
 </nav>
 
