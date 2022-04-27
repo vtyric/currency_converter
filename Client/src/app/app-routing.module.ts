@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedModule } from './modules/unauthorized/unauthorized.module';
 import { AuthorizedModule } from './modules/authorized/authorized.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { AuthGuard } from "./modules/shared/authentification/guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
+    canActivate: [AuthGuard],
     loadChildren: (): Promise<AuthorizedModule> => import('./modules/authorized/authorized-routing.module')
       .then(m => m.AuthorizedRoutingModule),
   },
@@ -31,4 +33,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

@@ -14,7 +14,6 @@ import { UnauthorizedLayoutComponent } from './unauthorized-layout/unauthorized-
     UnauthorizedRoutingModule,
   ],
   providers: [],
-  exports: [],
 })
 export class UnauthorizedModule {
 }

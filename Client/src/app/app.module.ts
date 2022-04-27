@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CurrencyService } from './modules/shared/shared/services/currency.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { JwtModule } from "@auth0/angular-jwt";
+import { AuthGuard } from "./modules/shared/authentification/guards/auth.guard";
+import { AuthService } from "./modules/shared/authentification/services/auth.service";
 
 @NgModule({
   declarations: [
@@ -15,9 +18,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('access_token'),
+        allowedDomains: ['localhost:5001']
+      }
+    })
   ],
   providers: [
     CurrencyService,
+    AuthService,
+    AuthGuard,
   ],
   exports: [],
   bootstrap: [AppComponent]
