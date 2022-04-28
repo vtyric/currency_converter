@@ -20,6 +20,12 @@ export class AuthService {
   ) {
   }
 
+  /**
+   * Метод лоигна пользователя.
+   * @param login
+   * @param password
+   * @return {Observable<IAuthToken>} в токене login, id, role
+   */
   public login(login: string, password: string): Observable<IAuthToken> {
     return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/login`, {login, password})
       .pipe(
@@ -29,6 +35,13 @@ export class AuthService {
       );
   }
 
+  /**
+   * Метод регистрации пользователя.
+   * @param login
+   * @param password
+   * @param role
+   * @return {Observable<IAuthToken>} в токене login, id, role
+   */
   public register(login: string, password: string, role: Role): Observable<IAuthToken> {
     return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/register`, {login, password, role})
       .pipe(
@@ -38,17 +51,29 @@ export class AuthService {
       );
   }
 
+  /**
+   * Проверяет аутентифицирован ли пользователь.
+   * @return{boolean}
+   */
   public isAuthenticated(): boolean {
     let token = localStorage.getItem(this._accessTokenKey);
 
     return !!token && !this._jwtHelper.isTokenExpired(token);
   }
 
+  /**
+   * Совершает выход из системы.
+   */
   public logout(): void {
     localStorage.removeItem(this._accessTokenKey);
     this._router.navigate(['']);
   }
 
+  /**
+   * Устанавливает токен в локал сторедж.
+   * @param token
+   * @private
+   */
   private setToken(token: IAuthToken): void {
     localStorage.setItem(this._accessTokenKey, token.access_token);
   }

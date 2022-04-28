@@ -13,7 +13,7 @@ export class InfinityScrollDirective {
 
   @HostListener('window:scroll', ['$event'])
   public onWindowScroll(): void {
-    if (this._element.nativeElement.clientHeight / window.scrollY < 1.4) {
+    if (this._element.nativeElement.clientHeight / window.scrollY < 1.6) {
       this._newsService.makeStep()
     }
   }

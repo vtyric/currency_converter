@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../news/services/news.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { INews } from '../news/interfaces';
 
 @Component({
@@ -14,9 +14,9 @@ export class NewsDescriptionComponent implements OnInit {
 
   constructor(
     private _newsService: NewsService,
-    private _router: Router,
+    private _route: ActivatedRoute,
   ) {
-    this.news = this._newsService.getNewsById(Number.parseInt(_router.url.split('/').slice(-1)[0]));
+    this.news = this._newsService.getNewsById(Number.parseInt(_route.snapshot.paramMap.get('id') ?? "1"));
   }
 
   ngOnInit(): void {

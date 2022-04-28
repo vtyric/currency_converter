@@ -38,6 +38,10 @@ export class LoginComponent implements OnInit {
     this._unsubscriber.complete();
   }
 
+  /**
+   * Метод отправляющий форму логина.
+   * @param event
+   */
   public onSubmitButtonClick(event: Event): void {
     event.preventDefault();
     this._authService
