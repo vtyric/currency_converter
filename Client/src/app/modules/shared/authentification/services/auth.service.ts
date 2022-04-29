@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Observable, tap } from "rxjs";
-import { IAuthToken } from "../interfaces";
+import { map, Observable, tap } from "rxjs";
+import { IAuthToken, IDecodedToken } from "../interfaces";
 import { environment } from "../../../../../environments/environment";
 import { Role } from "../enums";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Router } from "@angular/router";
+import jwtDecode from "jwt-decode";
 
 @Injectable()
 export class AuthService {
@@ -26,12 +27,13 @@ export class AuthService {
    * @param password
    * @return {Observable<IAuthToken>} в токене login, id, role
    */
-  public login(login: string, password: string): Observable<IAuthToken> {
+  public login(login: string, password: string): Observable<IDecodedToken> {
     return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/login`, {login, password})
       .pipe(
         tap(value => {
           this.setToken(value);
         }),
+        map(token => jwtDecode(token.access_token)),
       );
   }
 
@@ -42,12 +44,13 @@ export class AuthService {
    * @param role
    * @return {Observable<IAuthToken>} в токене login, id, role
    */
-  public register(login: string, password: string, role: Role): Observable<IAuthToken> {
+  public register(login: string, password: string, role: Role): Observable<IDecodedToken> {
     return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/register`, {login, password, role})
       .pipe(
         tap(value => {
           this.setToken(value);
         }),
+        map(token => jwtDecode(token.access_token)),
       );
   }
 

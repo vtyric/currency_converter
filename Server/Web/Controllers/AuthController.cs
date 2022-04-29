@@ -23,8 +23,7 @@ namespace Web.Controllers
 
         private readonly List<User> _users = new()
         {
-            new User {Id = 1, Login = "sada", Password = "1234", Role = Role.User},
-            new User {Id = 2, Login = "asda", Password = "123123", Role = Role.User},
+            new User {Id = 1, Login = "user", Password = "user1234", Role = Role.User},
             new User {Id = 3, Login = "admin", Password = "admin1234", Role = Role.Admin},
         };
 

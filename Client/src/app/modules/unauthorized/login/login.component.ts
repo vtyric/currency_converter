@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
       .pipe(
         tap(value => {
           this.form.reset();
-          this._router.navigate(['auth'])
+          this._router.navigate([value.role === 'Admin' ? 'admin' : 'auth', 'converter'])
         }),
         takeUntil(this._unsubscriber)
       )

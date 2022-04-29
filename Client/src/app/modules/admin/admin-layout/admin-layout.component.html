@@ -17,12 +17,11 @@
       </ul>
     </div>
     <a class="nav-link mb-0 end"
-       [ngClass]="buttons['login'].selected ? 'link-dark' : 'link-secondary'"
-       (click)="onButtonClick('login')">
-      {{buttons['login'].label}}
+       [ngClass]="buttons['logout'].selected ? 'link-dark' : 'link-secondary'"
+       (click)="onButtonClick('logout')">
+      {{buttons['logout'].label}}
     </a>
   </div>
 </nav>
-
 
 <router-outlet></router-outlet>

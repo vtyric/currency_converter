@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { ILayoutButtons } from "../../shared/shared/interfaces";
 import { AbstractLayoutComponent } from "../../shared/shared/layout/abstract-layout.component";
 import { Router } from "@angular/router";
+import { ILayoutButtons } from "../../shared/shared/interfaces";
 import { AuthService } from "../../shared/authentification/services/auth.service";
 
 @Component({
-  selector: 'unauthorized-layout',
-  templateUrl: './unauthorized-layout.component.html',
+  selector: 'app-admin-layout',
+  templateUrl: './admin-layout.component.html',
 })
-export class UnauthorizedLayoutComponent extends AbstractLayoutComponent {
+export class AdminLayoutComponent extends AbstractLayoutComponent {
 
   public override mainButtonsId: string[] = ['converter', 'map', 'news'];
   public override buttons: { [index: string]: ILayoutButtons } =
@@ -16,10 +16,11 @@ export class UnauthorizedLayoutComponent extends AbstractLayoutComponent {
       ['converter']: {label: 'Главная', routerLink: '/converter', selected: true},
       ['map']: {label: 'Где обменять', routerLink: '/map', selected: false},
       ['news']: {label: 'Новости', routerLink: '/news', selected: false},
-      ['login']: {label: 'Войти', routerLink: '/login', selected: false},
+      ['logout']: {label: 'Выйти', routerLink: '/', selected: false},
     };
 
   constructor(router: Router, authService: AuthService) {
     super(router, authService);
   }
+
 }
