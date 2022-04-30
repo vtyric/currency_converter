@@ -17,8 +17,8 @@ export class ConverterComponent implements OnInit, OnDestroy {
   public currenciesDescription!: ICurrencyDescription[];
   public date!: Date;
   public rates!: [string, number][];
-  public leftInput: FormControl = new FormControl('');
-  public rightInput: FormControl = new FormControl('');
+  public leftInput: FormControl = new FormControl(null);
+  public rightInput: FormControl = new FormControl(null);
   public leftCurrencies!: string[];
   public rightCurrencies!: string[];
   public leftCurrency!: string;
@@ -79,7 +79,11 @@ export class ConverterComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this._unsubscriber)
       )
-      .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
+      .subscribe(_ => {
+        if (this.leftInput.value) {
+          this.leftInput.setValue(this.leftInput.value);
+        }
+      });
 
     this._currencyExchangeService.rightCurrencySubject
       .pipe(
@@ -89,7 +93,11 @@ export class ConverterComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this._unsubscriber)
       )
-      .subscribe(_ => this.leftInput.setValue(this.leftInput.value));
+      .subscribe(_ => {
+        if (this.leftInput.value) {
+          this.leftInput.setValue(this.leftInput.value);
+        }
+      });
 
     this.leftInput.valueChanges
       .pipe(

@@ -30,9 +30,9 @@ export class CurrencyExchangeService {
       ?.find(([key, _]) => key === this.rightCurrency) ?? [])[1] ?? 0;
 
     if (controlPosition === 'left') {
-      control.patchValue(this.getExchangeResult(value, leftRate, rightRate).toString());
+      control.patchValue(this.getExchangeResult(value, leftRate, rightRate));
     } else {
-      control.patchValue(this.getExchangeResult(value, rightRate, leftRate).toString(), {emitEvent: false});
+      control.patchValue(this.getExchangeResult(value, rightRate, leftRate), {emitEvent: false});
     }
   }
 
@@ -71,10 +71,10 @@ export class CurrencyExchangeService {
    * @param {number} value значение инпута, которое изменилось
    * @param {number} firstRate цена противоположной валюты к евро
    * @param {number} secondRate цена текущей валюты к евро
-   * @returns {number} измененное значение другого инпута
+   * @returns {string} измененное значение другого инпута
    * @private
    */
-  private getExchangeResult(value: number, firstRate: number, secondRate: number): number {
-    return !value ? 0 : +(value * firstRate / secondRate).toFixed(4);
+  private getExchangeResult(value: number, firstRate: number, secondRate: number): string {
+    return !value ? "" : (value * firstRate / secondRate).toFixed(4);
   }
 }
