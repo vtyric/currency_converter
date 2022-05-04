@@ -9,7 +9,7 @@ public interface IRepository<TEntity, TDataContext>
 {
     Task<IEnumerable<TEntity?>> GetAll();
     Task<TEntity?> GetById(int id);
-    Task<TEntity?> GetByFilter(Expression<Func<TEntity, bool>> filter);
+    TEntity? GetByFilter(Func<TEntity, bool> filter);
     TEntity GetCurrentChange();
     Task DeleteById(int id);
     Task Create(TEntity item);

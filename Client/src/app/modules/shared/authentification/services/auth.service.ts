@@ -28,7 +28,7 @@ export class AuthService {
    * @return {Observable<IAuthToken>} в токене login, id, role
    */
   public login(login: string, password: string): Observable<IDecodedToken> {
-    return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/login`, {login, password})
+    return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/Login`, {login, password})
       .pipe(
         tap(value => {
           this.setToken(value);
@@ -45,7 +45,7 @@ export class AuthService {
    * @return {Observable<IAuthToken>} в токене login, id, role
    */
   public register(login: string, password: string, role: Role): Observable<IDecodedToken> {
-    return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/register`, {login, password, role})
+    return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/Register`, {login, password, role})
       .pipe(
         tap(value => {
           this.setToken(value);

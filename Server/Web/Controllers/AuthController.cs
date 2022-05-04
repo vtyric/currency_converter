@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
-        var user = await AuthenticateUser(request.Login, request.Password);
+        var user = AuthenticateUser(request.Login, request.Password);
 
         if (user != null)
         {
@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
-        var user = await _users.GetByFilter(u => u.Login == request.Login);
+        var user = _users.GetByFilter(u => u.Login == request.Login);
 
         if (user != null)
             return BadRequest("пользователь с таким логином уже зарегистрирован");
@@ -83,8 +83,8 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private async Task<User?> AuthenticateUser(string login, string? password) =>
-        await _users.GetByFilter(u =>
+    private User? AuthenticateUser(string login, string? password) =>
+        _users.GetByFilter(u =>
             u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
 
     private async Task<User> RegisterUser(string login, string password, Role role)

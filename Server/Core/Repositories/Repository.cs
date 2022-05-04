@@ -21,8 +21,11 @@ public class Repository<TEntity, TDataContext> : IRepository<TEntity, TDataConte
 
     public async Task<TEntity?> GetById(int id) => await _dbSet.FindAsync(id);
 
-    public async Task<TEntity?> GetByFilter(Expression<Func<TEntity, bool>> filter) =>
-        await _dbSet.Where(filter).FirstOrDefaultAsync();
+    public TEntity? GetByFilter(Func<TEntity, bool> filter) =>
+        _dbSet
+            .ToList()
+            .Where(filter)
+            .FirstOrDefault();
 
     public TEntity GetCurrentChange() => _dbSet.Local.First();
 
