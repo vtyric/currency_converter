@@ -8,8 +8,8 @@ public class Repository<TEntity, TDataContext> : IRepository<TEntity, TDataConte
     where TEntity : class
     where TDataContext : DbContext
 {
-    private readonly TDataContext _dataContext;
-    private readonly DbSet<TEntity> _dbSet;
+    protected readonly TDataContext _dataContext;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public Repository(TDataContext dataContext)
     {
