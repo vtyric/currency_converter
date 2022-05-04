@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Core.Helpers;
 using Core.Models.AuthOptions;
 using Core.Models.User;
+using Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,19 +17,19 @@ namespace Web.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IOptions<AuthOptions> _authOptions;
-    private readonly DataContext _context;
+    private readonly IRepository<User, DataContext> _users;
 
-    public AuthController(IOptions<AuthOptions> authOptions, DataContext context)
+    public AuthController(IOptions<AuthOptions> authOptions, IRepository<User, DataContext> users)
     {
         _authOptions = authOptions;
-        _context = context;
+        _users = users;
     }
 
-    [Route("login")]
+    [Route("Login")]
     [HttpPost]
-    public IActionResult Login([FromBody] LoginDto request)
+    public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
-        var user = AuthenticateUser(request.Login, request.Password);
+        var user = await AuthenticateUser(request.Login, request.Password);
 
         if (user != null)
         {
@@ -43,17 +44,17 @@ public class AuthController : ControllerBase
         return Unauthorized();
     }
 
-    [Route("register")]
+    [Route("Register")]
     [HttpPost]
-    public IActionResult Register([FromBody] RegisterDto request)
+    public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
-        var user = _context.Users.FirstOrDefault(u => u.Login == request.Login);
+        var user = await _users.GetByFilter(u => u.Login == request.Login);
 
         if (user != null)
             return BadRequest("пользователь с таким логином уже зарегистрирован");
 
-        RegisterUser(request.Login, request.Password, request.Role);
-        var token = GenerateJwtToken(request.Login, user?.Id ?? 2, request.Role);
+        var newUser = await RegisterUser(request.Login, request.Password, request.Role);
+        var token = GenerateJwtToken(newUser.Login, newUser.Id, newUser.Role);
 
         return Ok(new
         {
@@ -82,15 +83,14 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private User? AuthenticateUser(string login, string password) =>
-        _context.Users
-            .ToList()
-            .FirstOrDefault(u =>
-                u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
+    private async Task<User?> AuthenticateUser(string login, string password) =>
+        await _users.GetByFilter(u =>
+            u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
 
-    private void RegisterUser(string login, string password, Role role)
+    private async Task<User> RegisterUser(string login, string password, Role role)
     {
-        _context.Users.Add(new User {Login = login, Password = password, Role = role});
-        _context.SaveChangesAsync();
+        await _users.Create(new User {Login = login, Password = password, Role = role});
+
+        return _users.GetCurrentChange();
     }
 }
