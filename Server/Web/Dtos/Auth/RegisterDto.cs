@@ -1,11 +1,16 @@
-﻿using Core;
+﻿using System.ComponentModel.DataAnnotations;
+using Core.Models.User;
 
-namespace Web.Dtos.Auth
+namespace Web.Dtos.Auth;
+
+public class RegisterDto
 {
-    public class RegisterDto
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public Role Role { get; set; }
-    }
+    [Required] 
+    public string Login { get; set; }
+
+    [Required] 
+    public string Password { get; set; }
+
+    [Required] 
+    public Role Role { get; set; }
 }

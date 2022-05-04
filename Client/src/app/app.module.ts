@@ -21,7 +21,7 @@ import { AuthService } from "./modules/shared/authentification/services/auth.ser
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('access_token'),
-        allowedDomains: ['localhost:5001']
+        allowedDomains: ['localhost:7262']
       }
     })
   ],

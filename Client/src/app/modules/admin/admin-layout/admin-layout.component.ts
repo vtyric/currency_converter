@@ -10,12 +10,13 @@ import { AuthService } from "../../shared/authentification/services/auth.service
 })
 export class AdminLayoutComponent extends AbstractLayoutComponent {
 
-  public override mainButtonsId: string[] = ['converter', 'map', 'news'];
+  public override mainButtonsId: string[] = ['converter', 'map', 'news', 'createNews'];
   public override buttons: { [index: string]: ILayoutButtons } =
     {
       ['converter']: {label: 'Главная', routerLink: '/converter', selected: true},
       ['map']: {label: 'Где обменять', routerLink: '/map', selected: false},
       ['news']: {label: 'Новости', routerLink: '/news', selected: false},
+      ['createNews']: {label: 'Добавить новость', routerLink: '/createNews', selected: false},
       ['logout']: {label: 'Выйти', routerLink: '/', selected: false},
     };
 

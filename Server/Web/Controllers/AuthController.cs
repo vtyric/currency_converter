@@ -1,103 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Core;
-using Core.Domain.Models.AuthOptions;
+using Core.Helpers;
+using Core.Models.AuthOptions;
+using Core.Models.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Web.Auth.Dtos;
+using Web.DbContext;
 using Web.Dtos.Auth;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    private readonly IOptions<AuthOptions> _authOptions;
+    private readonly DataContext _context;
+
+    public AuthController(IOptions<AuthOptions> authOptions, DataContext context)
     {
-        private long _id = 100;
+        _authOptions = authOptions;
+        _context = context;
+    }
 
-        private readonly IOptions<AuthOptions> _authOptions;
+    [Route("login")]
+    [HttpPost]
+    public IActionResult Login([FromBody] LoginDto request)
+    {
+        var user = AuthenticateUser(request.Login, request.Password);
 
-        private readonly List<User> _users = new()
+        if (user != null)
         {
-            new User {Id = 1, Login = "user", Password = "user1234", Role = Role.User},
-            new User {Id = 3, Login = "admin", Password = "admin1234", Role = Role.Admin},
-        };
-
-        public AuthController(IOptions<AuthOptions> authOptions)
-        {
-            _authOptions = authOptions;
-        }
-
-        [Route("login")]
-        [HttpPost]
-        public IActionResult Login([FromBody] LoginDto request)
-        {
-            var user = AuthenticateUser(request.Login, request.Password);
-
-            if (user != null)
-            {
-                var token = GenerateJwtToken(user.Login, user.Id, user.Role);
-
-                return Ok(new
-                {
-                    access_token = token,
-                });
-            }
-
-            return Unauthorized();
-        }
-
-        [Route("register")]
-        [HttpPost]
-        public IActionResult Register([FromBody] RegisterDto request)
-        {
-            var user = _users.FirstOrDefault(u => u.Login == request.Login);
-
-            if (user != null)
-                return BadRequest("пользователь с таким логином уже зарегистрирован");
-
-            RegisterUser(request.Login, request.Password, request.Role);
-            var token = GenerateJwtToken(request.Login, _id, request.Role);
+            var token = GenerateJwtToken(user.Login, user.Id, user.Role);
 
             return Ok(new
             {
-                access_token = token,
+                access_token = token
             });
         }
 
-        private string GenerateJwtToken(string login, long id, Role role)
+        return Unauthorized();
+    }
+
+    [Route("register")]
+    [HttpPost]
+    public IActionResult Register([FromBody] RegisterDto request)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Login == request.Login);
+
+        if (user != null)
+            return BadRequest("пользователь с таким логином уже зарегистрирован");
+
+        RegisterUser(request.Login, request.Password, request.Role);
+        var token = GenerateJwtToken(request.Login, user?.Id ?? 2, request.Role);
+
+        return Ok(new
         {
-            var authParams = _authOptions.Value;
+            access_token = token
+        });
+    }
 
-            var token = new JwtSecurityToken(
-                authParams.Issuer,
-                authParams.Audience,
-                new List<Claim>
-                {
-                    new("login", login),
-                    new("id", id.ToString()),
-                    new("role", role.ToString())
-                },
-                expires: DateTime.Now.AddSeconds(authParams.TokenLifeTime),
-                signingCredentials: new SigningCredentials(authParams.SymmetricSecurityKey,
-                    SecurityAlgorithms.HmacSha256)
-            );
+    private string GenerateJwtToken(string login, long id, Role role)
+    {
+        var authParams = _authOptions.Value;
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        var token = new JwtSecurityToken(
+            authParams.Issuer,
+            authParams.Audience,
+            new List<Claim>
+            {
+                new("login", login),
+                new("id", id.ToString()),
+                new("role", role.ToString())
+            },
+            expires: DateTime.Now.AddSeconds(authParams.TokenLifeTime),
+            signingCredentials: new SigningCredentials(authParams.SymmetricSecurityKey,
+                SecurityAlgorithms.HmacSha256)
+        );
 
-        private User AuthenticateUser(string login, string password)
-        {
-            return _users.SingleOrDefault(u => u.Login == login && u.Password == password);
-        }
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 
-        private void RegisterUser(string login, string password, Role role)
-        {
-            _users.Add(new User {Login = login, Id = _id++, Password = password, Role = role});
-        }
+    private User? AuthenticateUser(string login, string password) =>
+        _context.Users
+            .ToList()
+            .FirstOrDefault(u =>
+                u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
+
+    private void RegisterUser(string login, string password, Role role)
+    {
+        _context.Users.Add(new User {Login = login, Password = password, Role = role});
+        _context.SaveChangesAsync();
     }
 }

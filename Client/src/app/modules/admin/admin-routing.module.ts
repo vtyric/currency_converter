@@ -4,6 +4,7 @@ import { ConverterModule } from "../shared/converter/converter.module";
 import { MapModule } from "../shared/map/map.module";
 import { NewsModule } from "../shared/news/news.module";
 import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
+import { CreateNewsModule } from "./create-news/create-news.module";
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
         loadChildren: (): Promise<NewsModule> => import('../shared/news/news.module')
           .then(m => m.NewsModule),
       },
+      {
+        path: 'createNews',
+        loadChildren: (): Promise<CreateNewsModule> => import('./create-news/create-news.module')
+          .then(m => m.CreateNewsModule),
+      }
     ]
   }
 ];

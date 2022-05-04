@@ -12,7 +12,7 @@ import jwtDecode from "jwt-decode";
 export class AuthService {
 
   private readonly _accessTokenKey: string = 'access_token';
-  private readonly _authApiUrl: string = 'api/auth';
+  private readonly _authApiUrl: string = 'api/Auth';
 
   constructor(
     private _http: HttpClient,

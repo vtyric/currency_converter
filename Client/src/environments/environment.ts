@@ -6,7 +6,7 @@ import { IEnvironment } from "./environment.interface";
 
 export const environment: IEnvironment = {
   production: false,
-  apiUrl: "https://localhost:5001/",
+  apiUrl: "https://localhost:7262/",
 };
 
 /*
