@@ -1,7 +1,7 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Core.Models.News;
+using Core.Repositories;
 using Web.DbContext;
 using Web.Dtos.News;
 
@@ -11,22 +11,33 @@ namespace Web.Controllers;
 [ApiController]
 public class NewsController : ControllerBase
 {
-    private readonly DbSet<News> _news;
+    private readonly IRepository<News, DataContext> _news;
 
-    public NewsController(DataContext context)
+    public NewsController(IRepository<News, DataContext> news)
     {
-        _news = context.News;
+        _news = news;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<News>>> GetNews()
     {
-        return await _news.ToListAsync();
+        return (await _news.GetAll()).ToList();
     }
 
     [HttpPost]
     public async Task<IActionResult> AddNews([FromBody] AddNewsDto request)
     {
+        await _news.Create(new News
+        {
+            Title = request.Title,
+            Content = request.Content,
+            Description = request.Description,
+            PostCreationDate = DateTime.Now,
+            Preview = request?.Preview,
+            Source = request?.Source,
+            Type = "post",
+        });
+
         return Ok();
     }
 }
