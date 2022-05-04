@@ -15,7 +15,7 @@ public static class CryptographyHelper
     }
 
 
-    public static string GetHashedPassword(string salt, string password) =>
+    public static string? GetHashedPassword(string salt, string? password) =>
         Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
             salt: Convert.FromBase64String(salt),

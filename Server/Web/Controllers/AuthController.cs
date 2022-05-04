@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Core.Helpers;
 using Core.Models.AuthOptions;
 using Core.Models.User;
-using Core.Repositories;
+using Core.Repositories.UserRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,9 +17,9 @@ namespace Web.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IOptions<AuthOptions> _authOptions;
-    private readonly IRepository<User, DataContext> _users;
+    private readonly IUserRepository<DataContext> _users;
 
-    public AuthController(IOptions<AuthOptions> authOptions, IRepository<User, DataContext> users)
+    public AuthController(IOptions<AuthOptions> authOptions, IUserRepository<DataContext> users)
     {
         _authOptions = authOptions;
         _users = users;
@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private async Task<User?> AuthenticateUser(string login, string password) =>
+    private async Task<User?> AuthenticateUser(string login, string? password) =>
         await _users.GetByFilter(u =>
             u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
 

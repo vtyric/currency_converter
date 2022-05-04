@@ -4,7 +4,7 @@ namespace Core.Models.User;
 
 public class User
 {
-    private string _password;
+    private string? _password;
 
     public User()
     {
@@ -15,7 +15,7 @@ public class User
 
     public string Salt { get; set; }
 
-    public string Password
+    public string? Password
     {
         get => _password;
         set => _password = GetHashedPassword(Salt, value);
