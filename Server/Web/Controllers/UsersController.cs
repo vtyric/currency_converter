@@ -1,8 +1,7 @@
 ﻿#nullable disable
 using Core.Models.User;
-using Core.Repositories;
+using Core.Repositories.UserRepository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Web.DbContext;
 using Web.Dtos.User;
 
@@ -12,9 +11,9 @@ namespace Web.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IRepository<User, DataContext> _users;
+        private readonly IUserRepository<DataContext> _users;
 
-        public UsersController(IRepository<User, DataContext> users)
+        public UsersController(IUserRepository<DataContext> users)
         {
             _users = users;
         }
@@ -48,11 +47,17 @@ namespace Web.Controllers
         [HttpPost("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto request)
         {
-            var user = await _users.GetById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            await _users.UpdateUser(
+                id,
+                new User
+                {
+                    Email = request?.Email,
+                    LastName = request?.LastName,
+                    FirstName = request?.FirstName,
+                    MiddleName = request?.MiddleName,
+                },
+                request?.Password
+            );
 
             return NoContent();
         }
