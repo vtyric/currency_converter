@@ -24,6 +24,14 @@ public class NewsController : ControllerBase
         return (await _news.GetAll()).ToList();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<News>> GetNewsById(int id)
+    {
+        var news = await _news.GetById(id);
+
+        return news == null ? NotFound() : news;
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddNews([FromBody] AddNewsDto request)
     {
@@ -39,5 +47,13 @@ public class NewsController : ControllerBase
         });
 
         return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteNewsById(int id)
+    {
+        await _news.DeleteById(id);
+
+        return NoContent();
     }
 }

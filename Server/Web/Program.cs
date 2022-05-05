@@ -2,9 +2,7 @@ using Core.Models.AuthOptions;
 using Core.Models.News;
 using Core.Models.User;
 using Core.Repositories;
-using Core.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 using Web.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IRepository<News, DataContext>, Repository<News, DataContext>>();
-builder.Services.AddTransient<IUserRepository<DataContext>, UserRepository<DataContext>>();
+builder.Services.AddTransient<IRepository<User, DataContext>, Repository<User, DataContext>>();
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 

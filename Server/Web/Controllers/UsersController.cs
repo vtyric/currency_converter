@@ -1,6 +1,6 @@
 ﻿#nullable disable
 using Core.Models.User;
-using Core.Repositories.UserRepository;
+using Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Web.DbContext;
 using Web.Dtos.User;
@@ -11,9 +11,9 @@ namespace Web.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository<DataContext> _users;
+        private readonly IRepository<User, DataContext> _users;
 
-        public UsersController(IUserRepository<DataContext> users)
+        public UsersController(IRepository<User, DataContext> users)
         {
             _users = users;
         }
@@ -47,19 +47,21 @@ namespace Web.Controllers
         [HttpPost("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto request)
         {
-            await _users.UpdateUser(
-                id,
-                new User
-                {
-                    Email = request?.Email,
-                    LastName = request?.LastName,
-                    FirstName = request?.FirstName,
-                    MiddleName = request?.MiddleName,
-                },
-                request?.Password
-            );
+            var user = await _users.GetById(id);
 
-            return NoContent();
+            if (user == null)
+                return NotFound();
+
+            user.Email = request?.Email ?? user.Email;
+            user.FirstName = request?.FirstName ?? user.FirstName;
+            user.LastName = request?.LastName ?? user.LastName;
+            user.MiddleName = request?.MiddleName ?? user.MiddleName;
+            user.Role = request?.Role ?? user.Role;
+            user.Password = request?.Password ?? user.Password;
+
+            await _users.UpdateItem(user);
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]

@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 
 namespace Core.Repositories;
@@ -45,4 +44,11 @@ public class Repository<TEntity, TDataContext> : IRepository<TEntity, TDataConte
     }
 
     public async Task Save() => await _dataContext.SaveChangesAsync();
+
+    public async Task UpdateItem(TEntity item)
+    {
+        _dataContext.Entry(item).State = EntityState.Modified;
+
+        await _dataContext.SaveChangesAsync();
+    }
 }

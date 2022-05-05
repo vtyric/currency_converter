@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Core.Helpers;
 using Core.Models.AuthOptions;
 using Core.Models.User;
-using Core.Repositories.UserRepository;
+using Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,9 +17,9 @@ namespace Web.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IOptions<AuthOptions> _authOptions;
-    private readonly IUserRepository<DataContext> _users;
+    private readonly IRepository<User, DataContext> _users;
 
-    public AuthController(IOptions<AuthOptions> authOptions, IUserRepository<DataContext> users)
+    public AuthController(IOptions<AuthOptions> authOptions, IRepository<User, DataContext> users)
     {
         _authOptions = authOptions;
         _users = users;

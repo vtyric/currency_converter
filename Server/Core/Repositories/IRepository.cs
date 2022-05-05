@@ -14,4 +14,5 @@ public interface IRepository<TEntity, TDataContext>
     Task DeleteById(int id);
     Task Create(TEntity item);
     Task Save();
+    Task UpdateItem(TEntity item);
 }
