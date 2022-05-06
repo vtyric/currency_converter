@@ -19,11 +19,14 @@ const routes: Routes = [
   {
     path: 'auth',
     canActivate: [AuthGuard],
+    data: {role: 'User'},
     loadChildren: (): Promise<AuthorizedModule> => import('./modules/authorized/authorized-routing.module')
       .then(m => m.AuthorizedRoutingModule),
   },
   {
     path: 'admin',
+    canActivate: [AuthGuard],
+    data: {role: 'Admin'},
     loadChildren: (): Promise<AdminModule> => import('./modules/admin/admin-routing.module')
       .then(m => m.AdminRoutingModule),
   }

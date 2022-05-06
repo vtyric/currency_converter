@@ -58,10 +58,10 @@ export class AuthService {
    * Проверяет аутентифицирован ли пользователь.
    * @return{boolean}
    */
-  public isAuthenticated(): boolean {
+  public isAuthenticated(role: 'User' | 'Admin' = 'User'): boolean {
     let token = localStorage.getItem(this._accessTokenKey);
 
-    return !!token && !this._jwtHelper.isTokenExpired(token);
+    return !!token && !this._jwtHelper.isTokenExpired(token) && jwtDecode<IDecodedToken>(token).role === role;
   }
 
   /**

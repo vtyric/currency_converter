@@ -4,5 +4,5 @@ export interface IDecodedToken {
   id: string;
   iss: string;
   login: string;
-  role: string;
+  role: 'User' | 'Admin';
 }
