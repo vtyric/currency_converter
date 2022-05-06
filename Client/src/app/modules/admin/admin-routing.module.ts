@@ -30,6 +30,11 @@ const routes: Routes = [
         path: 'createNews',
         loadChildren: (): Promise<CreateNewsModule> => import('./create-news/create-news.module')
           .then(m => m.CreateNewsModule),
+      },
+      {
+        path: 'userList',
+        loadChildren: (): Promise<CreateNewsModule> => import('./user-list/user-list.module')
+          .then(m => m.UserListModule),
       }
     ]
   }

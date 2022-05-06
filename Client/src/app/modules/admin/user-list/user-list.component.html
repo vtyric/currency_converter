@@ -1,0 +1,16 @@
+<div class="container">
+  <h1 class="title">Биржа пользователей</h1>
+
+  <div class="form-group search-group">
+    <label for="search">Поиск по логину</label>
+    <input type="text" class="form-control form-control-lg" id="search" [formControl]="search">
+  </div>
+
+  <div class="items">
+    <user-item
+      *ngFor="let user of users | filter : search.value : 'login'"
+      [user]="user">
+    </user-item>
+  </div>
+
+</div>

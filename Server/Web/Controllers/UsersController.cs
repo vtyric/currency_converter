@@ -22,6 +22,9 @@ namespace Web.Controllers
         public async Task<IEnumerable<GetUserDto>> GetUsers() =>
             (await _users.GetAll()).Select(user => new GetUserDto
             {
+                Login = user.Login,
+                Role = user.Role,
+                Id = user.Id,
                 Email = user?.Email,
                 FirstName = user?.FirstName,
                 LastName = user?.LastName,
@@ -37,6 +40,9 @@ namespace Web.Controllers
                 ? NotFound()
                 : new GetUserDto
                 {
+                    Login = user.Login,
+                    Role = user.Role,
+                    Id = user.Id,
                     Email = user?.Email,
                     FirstName = user?.FirstName,
                     LastName = user?.LastName,

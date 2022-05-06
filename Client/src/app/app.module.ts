@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from "./modules/shared/authentification/guards/auth.guard";
 import { AuthService } from "./modules/shared/authentification/services/auth.service";
+import { UserService } from "./modules/shared/shared/services/user.service";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AuthService } from "./modules/shared/authentification/services/auth.ser
     CurrencyService,
     AuthService,
     AuthGuard,
+    UserService,
   ],
   exports: [],
   bootstrap: [AppComponent]

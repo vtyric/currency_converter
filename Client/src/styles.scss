@@ -128,20 +128,26 @@
 }
 
 .layout {
-  padding: 1rem;
+  padding: 0.9rem;
 
   .title {
-    margin-right: 6rem;
+    font-size: 90%;
+    margin-right: 3rem;
   }
 
   .navbar-nav {
     .nav-item {
+      text-align: left;
       margin-right: 1.25rem;
+
+      .nav-link {
+        font-size: 88%;
+      }
+
     }
   }
 
   .end {
-    margin-right: 3rem;
     font-weight: 400;
   }
 
