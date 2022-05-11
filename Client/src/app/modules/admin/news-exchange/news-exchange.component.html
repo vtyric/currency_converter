@@ -1,5 +1,14 @@
 <breadcrumbs></breadcrumbs>
 
-<p>news-exchange works!</p>
+<div class="navs">
+  <span
+    *ngFor="let item of items"
+    [ngClass]="item.id===selectedItemId ? 'navbar-brand selected': 'navbar-brand'"
+    [routerLink]="'/admin/newsExchange/' + item.id"
+    (click)="onButtonClick(item.id)"
+  >
+    {{item.label}}
+  </span>
+</div>
 
 <router-outlet></router-outlet>

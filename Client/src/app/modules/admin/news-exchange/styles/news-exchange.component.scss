@@ -1,0 +1,19 @@
+.navs {
+  display: flex;
+  justify-content: center;
+
+  :not(.navs:last-child) {
+    margin-right: 4rem;
+  }
+}
+
+.navs:hover {
+  cursor: pointer;
+}
+
+span.selected {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+  text-decoration-thickness: 15%;
+  text-decoration-color: #e17021;
+}

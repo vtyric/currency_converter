@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { RouterModule } from "@angular/router";
 import { CreateNewsModule } from "./create-news/create-news.module";
-import { UpdateNewsModule } from "./update-news/update-news.module";
+import { UpdateNewsListModule } from "./update-news-list/update-news-list.module";
 import { NewsExchangeComponent } from './news-exchange.component';
-import { BreadcrumbsComponent } from "../../shared/shared/breadcrumbs/breadcrumbs.component";
+import { BreadcrumbsModule } from "../../shared/breadcrumbs/breadcrumbs.module";
 
 
 @NgModule({
   declarations: [
     NewsExchangeComponent,
-    BreadcrumbsComponent
+
   ],
   imports: [
     CommonModule,
@@ -31,14 +31,15 @@ import { BreadcrumbsComponent } from "../../shared/shared/breadcrumbs/breadcrumb
             },
             {
               path: 'updateNews',
-              loadChildren: (): Promise<UpdateNewsModule> => import('./update-news/update-news.module')
-                .then(m => m.UpdateNewsModule),
-            }
+              loadChildren: (): Promise<UpdateNewsListModule> => import('./update-news-list/update-news-list.module')
+                .then(m => m.UpdateNewsListModule),
+            },
           ]
         }
       ]
-    )
-  ]
+    ),
+    BreadcrumbsModule
+  ],
 })
 export class NewsExchangeModule {
 }

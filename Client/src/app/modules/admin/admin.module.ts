@@ -6,11 +6,12 @@ import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 
 @NgModule({
   declarations: [
-    AdminLayoutComponent
+    AdminLayoutComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule
   ]
 })
-export class AdminModule {}
+export class AdminModule {
+}

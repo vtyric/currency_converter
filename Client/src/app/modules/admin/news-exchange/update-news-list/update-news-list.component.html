@@ -1,0 +1,18 @@
+<div class="container">
+
+  <div class="form-group search-group">
+    <label for="search">Поиск по заголовку</label>
+    <input
+      type="text"
+      class="form-control form-control-lg"
+      id="search"
+      [formControl]="search"
+      autocomplete="off">
+  </div>
+
+  <news-preview
+    *ngFor="let news of news | filter : search.value : 'title'"
+    [news]="news"
+    (click)="onNewsClick(news.id)">
+  </news-preview>
+</div>

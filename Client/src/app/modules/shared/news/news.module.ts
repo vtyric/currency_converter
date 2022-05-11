@@ -7,7 +7,7 @@ import { NewsService } from './services/news.service';
 import '@angular/common/locales/global/ru';
 import { NewsDescriptionModule } from '../news-description/news-description.module';
 import { InfinityScrollDirective } from "./directives/infinity-scroll.directive";
-import { CommentsConjugationPipe } from "../shared/pipes/commnets-conjugation.pipe";
+import { PipesModule } from "../pipes/pipes.module";
 
 
 @NgModule({
@@ -15,7 +15,6 @@ import { CommentsConjugationPipe } from "../shared/pipes/commnets-conjugation.pi
     NewsPageComponent,
     NewsComponent,
     InfinityScrollDirective,
-    CommentsConjugationPipe,
   ],
   imports: [
     CommonModule,
@@ -30,6 +29,7 @@ import { CommentsConjugationPipe } from "../shared/pipes/commnets-conjugation.pi
           .then(m => m.NewsDescriptionModule),
       }
     ]),
+    PipesModule,
   ],
   providers: [
     NewsService,

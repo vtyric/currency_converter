@@ -1,0 +1,12 @@
+<div class="news border border-secondary rounded-top">
+
+  <img *ngIf="news.preview"
+       src="{{news.preview}}"
+       alt="какая то картинка"
+       class="news-preview"
+  >
+
+  <h4 class="news-title">{{news.title}}</h4>
+  <span class="news-description">{{news.description}}</span>
+
+</div>

@@ -25,6 +25,11 @@ const routes: Routes = [
         loadChildren: (): Promise<NewsModule> => import('../shared/news/news.module')
           .then(m => m.NewsModule),
       },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'converter'
+      }
     ]
   }
 ];

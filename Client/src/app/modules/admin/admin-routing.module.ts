@@ -35,6 +35,11 @@ const routes: Routes = [
         path: 'userList',
         loadChildren: (): Promise<CreateNewsModule> => import('./user-list/user-list.module')
           .then(m => m.UserListModule),
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'converter'
       }
     ]
   }

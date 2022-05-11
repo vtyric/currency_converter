@@ -1,28 +1,26 @@
 <div class="container">
-  <h1>Добавить новость</h1>
 
   <form [formGroup]="form">
 
     <div class="form-group">
       <label for="title">Заголовок</label>
-      <input class="form-control" id="title" placeholder="Заголовок новости" formControlName="title">
+      <input class="form-control form-control-lg" id="title" formControlName="title" autocomplete="off">
     </div>
 
     <div class="form-group">
       <label for="description">Описание новости</label>
-      <input class="form-control" id="description" placeholder="Описание новости" formControlName="description">
+      <input class="form-control form-control-lg" id="description" formControlName="description" autocomplete="off">
     </div>
 
     <div class="form-group">
       <label for="content">Конетент</label>
-      <textarea class="form-control" id="content" rows="5" formControlName="content"></textarea>
+      <textarea class="form-control" id="content" rows="5" formControlName="content" autocomplete="off"></textarea>
     </div>
 
     <div class="form-group">
       <label for="preview">Ссылка на картинку для превью</label>
-      <input class="form-control" id="preview"
-             placeholder="https://ranobehub.org/img/media/114558/b06216ed4a4d8fc4d93507d01a120070.jpeg"
-             formControlName="preview">
+      <input class="form-control form-control-lg" id="preview"
+             formControlName="preview" autocomplete="off">
     </div>
 
     <button type="submit" class="btn btn-outline-secondary" [disabled]="form?.invalid"

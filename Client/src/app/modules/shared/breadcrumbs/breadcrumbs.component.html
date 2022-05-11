@@ -1,0 +1,18 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li *ngFor="let breadcrumb of breadcrumbs; let i = index;"
+        class="breadcrumb-item">
+      <a
+        *ngIf="i===breadcrumbs.length-1; else elseBlock"
+        aria-current="page">{{breadcrumb.label}}
+      </a>
+      <ng-template #elseBlock>
+        <a
+          routerLink="{{breadcrumb.route}}"
+          class="link-dark">{{breadcrumb.label}}
+        </a>
+      </ng-template>
+    </li>
+  </ol>
+</nav>
+

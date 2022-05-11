@@ -7,7 +7,7 @@ export class SearchFilterPipe implements PipeTransform {
       items
       : items.filter(item =>
         filterKey
-          ? item[filterKey].includes(trim)
-          : item.includes(trim));
+          ? item[filterKey].toUpperCase().includes(trim.toUpperCase())
+          : item.toUpperCase().includes(trim.toUpperCase()));
   }
 }
