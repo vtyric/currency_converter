@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { INews, INewsMenuItem } from '../interfaces';
 import { BlogNewsType } from '../types';
 import { NewsRequestService } from './news-request.service';
-import { tap } from 'rxjs';
+import { mergeMap, tap } from 'rxjs';
 
 @Injectable()
 export class NewsService {
@@ -22,25 +22,19 @@ export class NewsService {
     },
   ];
 
-  private readonly _news: INews[] = [
-    {
-      id: 1,
-      title: 'Мой пост',
-      description: 'Просто какой то текст для поста',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab eveniet excepturi nemo recusandae, sed voluptates!',
-      preview: 'https://ranobehub.org/img/media/114558/b06216ed4a4d8fc4d93507d01a120070.jpeg',
-      type: 'post',
-      postCreationDate: new Date(Date.now()),
-    },
-  ];
+  private readonly _news: INews[] = [];
   private readonly _newsAppendStep: number = 2;
   private _currentNewsCount: number = 2;
 
   constructor(private _newsRequestService: NewsRequestService) {
-    this._newsRequestService.getNews('technology')
+    this._newsRequestService.getNews()
       .pipe(
         tap((news: INews[]) => {
           this.addNews(news);
+        }),
+        mergeMap(() => this._newsRequestService.getPosts()),
+        tap((posts: INews[]) => {
+          this.addNews(posts);
         }),
       )
       .subscribe();

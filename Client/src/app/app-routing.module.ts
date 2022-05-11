@@ -3,13 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedModule } from './modules/unauthorized/unauthorized.module';
 import { AuthorizedModule } from './modules/authorized/authorized.module';
 import { AdminModule } from './modules/admin/admin.module';
-import { AuthGuard } from "./modules/shared/authentification/guards/auth.guard";
+import { AuthGuard } from "./guards/auth.guard";
+import { RedirectRoleGuard } from "./guards/redirect-role.guard";
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/converter',
+    redirectTo: '',
+    canActivate: [RedirectRoleGuard]
   },
   {
     path: '',

@@ -49,6 +49,25 @@ public class NewsController : ControllerBase
         return Ok();
     }
 
+    [HttpPost("{id}")]
+    public async Task<IActionResult> UpdateNewsById(int id, [FromBody] UpdateNewsDto request)
+    {
+        if (await _news.GetById(id) is { } news)
+        {
+            news.Content = request?.Content ?? news.Content;
+            news.Description = request?.Description ?? news.Description;
+            news.Preview = request?.Preview ?? news.Preview;
+            news.Source = request?.Source ?? news.Source;
+            news.Title = request?.Title ?? news.Title;
+
+            await _news.UpdateItem(news);
+
+            return Ok();
+        }
+
+        return NotFound();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNewsById(int id)
     {

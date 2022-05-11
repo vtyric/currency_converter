@@ -1,3 +1,35 @@
 <div class="container">
   <h1>Добавить новость</h1>
+
+  <form [formGroup]="form">
+
+    <div class="form-group">
+      <label for="title">Заголовок</label>
+      <input class="form-control" id="title" placeholder="Заголовок новости" formControlName="title">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Описание новости</label>
+      <input class="form-control" id="description" placeholder="Описание новости" formControlName="description">
+    </div>
+
+    <div class="form-group">
+      <label for="content">Конетент</label>
+      <textarea class="form-control" id="content" rows="5" formControlName="content"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="preview">Ссылка на картинку для превью</label>
+      <input class="form-control" id="preview"
+             placeholder="https://ranobehub.org/img/media/114558/b06216ed4a4d8fc4d93507d01a120070.jpeg"
+             formControlName="preview">
+    </div>
+
+    <button type="submit" class="btn btn-outline-secondary" [disabled]="form?.invalid"
+            (click)="onSubmitButtonClick()">
+      Добавить новость
+    </button>
+
+  </form>
+
 </div>

@@ -1,5 +1,5 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
-import {NewsService} from '../services/news.service';
+import { Directive, ElementRef, HostListener } from '@angular/core';
+import { NewsService } from '../services/news.service';
 
 @Directive({
   selector: '[infinityScroll]'

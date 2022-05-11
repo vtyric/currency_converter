@@ -1,15 +1,18 @@
-import { newsType } from '../types';
-
 export interface INewsRequest {
-  category: newsType;
-  data: {
-    author: string,
-    content: string,
-    date: string,
-    imageUrl: string,
-    readMoreUrl: string,
-    time: string,
-    title: string,
-    url: string,
-  }[];
+  id: number,
+  title: string,
+  url: string,
+  imageUrl: string,
+  newsSite: string,
+  summary: string,
+  publishedAt: string,
+  updatedAt: string,
+  featured: boolean,
+  launches: [
+    {
+      id: string,
+      provider: string
+    }
+  ],
+  events: []
 }

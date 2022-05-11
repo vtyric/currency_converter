@@ -20,19 +20,19 @@ export class UserItemComponent implements OnInit {
   ngOnInit(): void {
     this.infos = [
       [
-        'Login',
+        'Логин',
         this.user.login
       ],
       [
-        'Email',
+        'Емэйл',
         this.user.email ?? this._notFilledLabel
       ],
       [
-        'Role',
+        'Роль',
         this.user.role === Role.User ? 'User' : 'Admin'
       ],
       [
-        'FIO',
+        'ФИО',
         `${this.user.firstName ?? this._notFilledLabel} ${this.user.lastName ?? this._notFilledLabel} ${this.user.middleName ?? this._notFilledLabel}`
       ]
     ];

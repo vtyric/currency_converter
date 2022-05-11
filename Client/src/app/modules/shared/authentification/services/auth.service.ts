@@ -61,7 +61,7 @@ export class AuthService {
   public isAuthenticated(role: 'User' | 'Admin' = 'User'): boolean {
     let token = localStorage.getItem(this._accessTokenKey);
 
-    return !!token && !this._jwtHelper.isTokenExpired(token) && jwtDecode<IDecodedToken>(token).role === role;
+    return !!token && !this._jwtHelper.isTokenExpired(token) && jwtDecode<IDecodedToken>(token)?.role === role;
   }
 
   /**
