@@ -4,7 +4,8 @@ import { ConverterModule } from "../shared/converter/converter.module";
 import { MapModule } from "../shared/map/map.module";
 import { NewsModule } from "../shared/news/news.module";
 import { AdminLayoutComponent } from "./admin-layout/admin-layout.component";
-import { CreateNewsModule } from "./create-news/create-news.module";
+import { CreateNewsModule } from "./news-exchange/create-news/create-news.module";
+import { NewsExchangeModule } from "./news-exchange/news-exchange.module";
 
 const routes: Routes = [
   {
@@ -25,11 +26,10 @@ const routes: Routes = [
         path: 'news',
         loadChildren: (): Promise<NewsModule> => import('../shared/news/news.module')
           .then(m => m.NewsModule),
-      },
-      {
-        path: 'createNews',
-        loadChildren: (): Promise<CreateNewsModule> => import('./create-news/create-news.module')
-          .then(m => m.CreateNewsModule),
+      }, {
+        path: 'newsExchange',
+        loadChildren: (): Promise<NewsExchangeModule> => import('./news-exchange/news-exchange.module')
+          .then(m => m.NewsExchangeModule),
       },
       {
         path: 'userList',

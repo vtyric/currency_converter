@@ -6,8 +6,8 @@ import { NewsComponent } from './components/news/news.component';
 import { NewsService } from './services/news.service';
 import '@angular/common/locales/global/ru';
 import { NewsDescriptionModule } from '../news-description/news-description.module';
-import { NewsRequestService } from './services/news-request.service';
 import { InfinityScrollDirective } from "./directives/infinity-scroll.directive";
+import { CommentsConjugationPipe } from "../shared/pipes/commnets-conjugation.pipe";
 
 
 @NgModule({
@@ -15,6 +15,7 @@ import { InfinityScrollDirective } from "./directives/infinity-scroll.directive"
     NewsPageComponent,
     NewsComponent,
     InfinityScrollDirective,
+    CommentsConjugationPipe,
   ],
   imports: [
     CommonModule,

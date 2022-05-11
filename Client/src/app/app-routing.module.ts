@@ -31,6 +31,10 @@ const routes: Routes = [
     data: {role: 'Admin'},
     loadChildren: (): Promise<AdminModule> => import('./modules/admin/admin-routing.module')
       .then(m => m.AdminRoutingModule),
+  },
+  {
+    path: '**',
+    redirectTo: '',
   }
 ];
 

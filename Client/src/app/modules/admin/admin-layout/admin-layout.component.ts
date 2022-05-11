@@ -16,7 +16,7 @@ export class AdminLayoutComponent extends AbstractLayoutComponent {
       ['converter']: {label: 'Главная', routerLink: '/converter', selected: true},
       ['map']: {label: 'Где обменять', routerLink: '/map', selected: false},
       ['news']: {label: 'Новости', routerLink: '/news', selected: false},
-      ['createNews']: {label: 'Добавить новость', routerLink: '/createNews', selected: false},
+      ['createNews']: {label: 'Биржа новостей', routerLink: '/newsExchange', selected: false},
       ['userList']: {label: 'Биржа пользователей', routerLink: '/userList', selected: false},
       ['logout']: {label: 'Выйти', routerLink: '/', selected: false},
     };

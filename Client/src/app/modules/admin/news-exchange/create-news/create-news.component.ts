@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NewsRequestService } from "../../shared/news/services/news-request.service";
+import { NewsRequestService } from "../../../shared/news/services/news-request.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subject, takeUntil } from "rxjs";
 

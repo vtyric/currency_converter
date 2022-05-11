@@ -15,6 +15,8 @@ export class NewsComponent implements OnInit {
   public imgUrl!: string | undefined;
   @Input()
   public date!: Date;
+  @Input()
+  public commentsCount!: number | undefined;
 
   constructor() {
   }

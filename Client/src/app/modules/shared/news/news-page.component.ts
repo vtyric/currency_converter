@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import { NewsService } from './services/news.service';
 import { BlogNewsType } from './types';
 import { Router } from '@angular/router';
+import { INews, INewsMenuItem } from "./interfaces";
 
 @Component({
   selector: 'news-page',
@@ -11,6 +12,8 @@ import { Router } from '@angular/router';
 export class NewsPageComponent implements OnInit {
 
   public filter!: BlogNewsType;
+  public news!: INews[];
+  public newsMenuItems!: INewsMenuItem[];
 
   private _selectedMenuItem!: EventTarget | null;
   @ViewChild('menu')
@@ -24,6 +27,7 @@ export class NewsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.newsMenuItems = this.newsService.newsMenuItems;
   }
 
   /**

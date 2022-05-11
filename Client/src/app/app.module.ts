@@ -36,7 +36,6 @@ import { NewsRequestService } from "./modules/shared/news/services/news-request.
     UserService,
     NewsRequestService,
   ],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

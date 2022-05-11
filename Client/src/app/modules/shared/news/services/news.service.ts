@@ -30,10 +30,12 @@ export class NewsService {
     this._newsRequestService.getNews()
       .pipe(
         tap((news: INews[]) => {
+          news.forEach(n => n.commentsCount = this.getRandomCommentsCount())
           this.addNews(news);
         }),
         mergeMap(() => this._newsRequestService.getPosts()),
         tap((posts: INews[]) => {
+          posts.forEach(p => p.commentsCount = this.getRandomCommentsCount())
           this.addNews(posts);
         }),
       )
@@ -48,6 +50,14 @@ export class NewsService {
     this._news.push(...news);
     this._news.sort((a, b) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
     this.makeStep();
+  }
+
+  /**
+   * Возвращает случайное количество комментариев для постов.
+   * @return {number}
+   */
+  public getRandomCommentsCount(): number {
+    return Math.floor(Math.random() * 300);
   }
 
   /**

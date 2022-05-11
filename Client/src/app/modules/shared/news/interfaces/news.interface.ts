@@ -7,4 +7,5 @@ export interface INews {
   postCreationDate: Date;
   preview?: string;
   source?: string;
+  commentsCount?: number;
 }
