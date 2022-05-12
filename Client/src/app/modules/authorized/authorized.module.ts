@@ -5,13 +5,13 @@ import { AuthorizedLayoutComponent } from './authorized-layout/authorized-layout
 
 
 @NgModule({
-  declarations: [
-    AuthorizedLayoutComponent
-  ],
-  imports: [
-    CommonModule,
-    AuthorizedRoutingModule,
-  ]
+    declarations: [
+        AuthorizedLayoutComponent
+    ],
+    imports: [
+        CommonModule,
+        AuthorizedRoutingModule,
+    ]
 })
 export class AuthorizedModule {
 }

@@ -1,11 +1,11 @@
-<breadcrumbs></breadcrumbs>
+<app-breadcrumbs></app-breadcrumbs>
 
 <div class="navs">
   <span
+    (click)="onButtonClick(item.id)"
     *ngFor="let item of items"
     [ngClass]="item.id===selectedItemId ? 'navbar-brand selected': 'navbar-brand'"
     [routerLink]="'/admin/newsExchange/' + item.id"
-    (click)="onButtonClick(item.id)"
   >
     {{item.label}}
   </span>

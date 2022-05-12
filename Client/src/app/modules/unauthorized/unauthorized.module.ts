@@ -6,14 +6,14 @@ import { UnauthorizedLayoutComponent } from './unauthorized-layout/unauthorized-
 
 
 @NgModule({
-  declarations: [
-    UnauthorizedLayoutComponent,
-  ],
-  imports: [
-    CommonModule,
-    UnauthorizedRoutingModule,
-  ],
-  providers: [],
+    declarations: [
+        UnauthorizedLayoutComponent,
+    ],
+    imports: [
+        CommonModule,
+        UnauthorizedRoutingModule,
+    ],
+    providers: [],
 })
 export class UnauthorizedModule {
 }

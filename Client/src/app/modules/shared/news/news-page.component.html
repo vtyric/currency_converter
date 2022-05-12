@@ -1,26 +1,26 @@
 <div class="container">
 
-  <div class="border border-secondary menu" #menu>
+  <div #menu class="border border-secondary menu">
     <span
+      (click)="onMenuButtonClick($event.target, newsMenuItem.filter)"
       *ngFor="let newsMenuItem of newsService.newsMenuItems; let i = index;"
       [ngClass]="i === 0 ? 'selected' : ''"
-      (click)="onMenuButtonClick($event.target, newsMenuItem.filter)"
     >
       {{newsMenuItem.label}}
     </span>
   </div>
 
-  <div class="news-container" infinityScroll>
-    <news
+  <div appInfinityScroll class="news-container">
+    <app-news
+      (click)="onNewsClick(news.id)"
       *ngFor="let news of newsService.getNews(filter)"
-      [title]="news.title"
+      [commentsCount]="news.commentsCount"
+      [date]="news.postCreationDate"
       [description]="news.description"
       [imgUrl]="news.preview"
-      [date]="news.postCreationDate"
-      [commentsCount]="news.commentsCount"
-      (click)="onNewsClick(news.id)"
+      [title]="news.title"
     >
-    </news>
+    </app-news>
   </div>
 
 </div>

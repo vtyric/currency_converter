@@ -1,14 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'news',
-  templateUrl: './news.component.html',
-  styleUrls: ['./styles/news.component.scss']
+    selector: 'app-news',
+    templateUrl: './news.component.html',
+    styleUrls: ['./styles/news.component.scss']
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent {
 
   @Input()
-  public title!: string;
+    public title!: string;
   @Input()
   public description!: string;
   @Input()
@@ -19,9 +19,6 @@ export class NewsComponent implements OnInit {
   public commentsCount!: number | undefined;
 
   constructor() {
-  }
-
-  ngOnInit(): void {
   }
 
 }

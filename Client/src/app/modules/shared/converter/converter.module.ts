@@ -7,27 +7,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumericSeparatorPipe } from './pipes/numeric-separator.pipe';
 import { RouterModule } from '@angular/router';
 import { CurrencyExchangeService } from './services/currency-exchange.service';
-import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
-  declarations: [
-    ConverterComponent,
-    ConverterButtonsComponent,
-    ConverterCashInputComponent,
-    NumericSeparatorPipe,
-  ],
-  providers: [
-    CurrencyExchangeService,
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterModule.forChild([{path: '', component: ConverterComponent}]),
-    NgbTooltipModule,
-  ],
-  exports: []
+    declarations: [
+        ConverterComponent,
+        ConverterButtonsComponent,
+        ConverterCashInputComponent,
+        NumericSeparatorPipe,
+    ],
+    providers: [
+        CurrencyExchangeService,
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        RouterModule.forChild([{ path: '', component: ConverterComponent }]),
+        NgbTooltipModule,
+    ],
+    exports: []
 })
 export class ConverterModule {
 }

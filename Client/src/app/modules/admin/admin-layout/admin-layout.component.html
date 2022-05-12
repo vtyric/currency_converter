@@ -1,24 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light layout">
   <div class="container-fluid">
-    <a class="navbar-brand mb-0 h1 title"
-       (click)="onButtonClick('converter')">
+    <a (click)="onButtonClick('converter')"
+       class="navbar-brand mb-0 h1 title">
       Currency converter
     </a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
-        <li class="nav-item"
-            *ngFor="let id of mainButtonsId">
-          <a class="nav-link"
+        <li *ngFor="let id of mainButtonsId"
+            class="nav-item">
+          <a (click)="onButtonClick(id)"
              [ngClass]="buttons[id].selected ? 'active' : ''"
-             (click)="onButtonClick(id)">
+             class="nav-link">
             {{buttons[id].label}}
           </a>
         </li>
       </ul>
     </div>
-    <a class="nav-link mb-0 end"
+    <a (click)="onButtonClick('logout')"
        [ngClass]="buttons['logout'].selected ? 'link-dark' : 'link-secondary'"
-       (click)="onButtonClick('logout')">
+       class="nav-link mb-0 end">
       {{buttons['logout'].label}}
     </a>
   </div>

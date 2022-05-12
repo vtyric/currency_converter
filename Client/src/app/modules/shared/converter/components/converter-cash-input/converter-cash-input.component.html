@@ -2,16 +2,16 @@
 
   <span class="title">{{title}}</span>
 
-  <converter-buttons
+  <app-converter-buttons
+    (dropDownMenu)="dropDownMenu.emit($event)"
     [allCurrencies]="allCurrencies"
+    [currencyDescriptions]="currencyDescription"
     [currencySubject]="currencySubject"
     [currentCurrency]="currentCurrency"
-    [mainCurrencies]="mainCurrencies"
-    [currencyDescriptions]="currencyDescription"
-    [isToggleOpen]="isToggleOpen"
     [hiddenCurrenciesSubject]="hiddenCurrenciesSubject"
-    (dropDownMenu)="dropDownMenu.emit($event)">
-  </converter-buttons>
+    [isToggleOpen]="isToggleOpen"
+    [mainCurrencies]="mainCurrencies">
+  </app-converter-buttons>
 
   <input
     (focus)="isInputSelected = true"

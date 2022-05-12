@@ -1,26 +1,26 @@
 import { Component } from '@angular/core';
-import { AbstractLayoutComponent } from "../../shared/shared/layout/abstract-layout.component";
-import { ILayoutButtons } from "../../shared/shared/interfaces";
-import { Router } from "@angular/router";
-import { AuthService } from "../../shared/authentification/services/auth.service";
+import { AbstractLayoutComponent } from '../../shared/shared/layout/abstract-layout.component';
+import { ILayoutButtons } from '../../shared/shared/interfaces';
+import { Router } from '@angular/router';
+import { AuthService } from '../../shared/authentification/services/auth.service';
 
 @Component({
-  selector: 'app-authorized-layout',
-  templateUrl: './authorized-layout.component.html',
+    selector: 'app-authorized-layout',
+    templateUrl: './authorized-layout.component.html',
 })
 export class AuthorizedLayoutComponent extends AbstractLayoutComponent {
 
-  public override mainButtonsId: string[] = ['converter', 'map', 'news'];
-  public override buttons: { [index: string]: ILayoutButtons } =
-    {
-      ['converter']: {label: 'Главная', routerLink: '/converter', selected: true},
-      ['map']: {label: 'Где обменять', routerLink: '/map', selected: false},
-      ['news']: {label: 'Новости', routerLink: '/news', selected: false},
-      ['account']: {label: 'Войти', routerLink: '/account', selected: false},
-      ['logout']: {label: 'Выйти', routerLink: '/', selected: false},
-    };
+    public override mainButtonsId: string[] = ['converter', 'map', 'news'];
+    public override buttons: { [index: string]: ILayoutButtons } =
+        {
+            ['converter']: { label: 'Главная', routerLink: '/converter', selected: true },
+            ['map']: { label: 'Где обменять', routerLink: '/map', selected: false },
+            ['news']: { label: 'Новости', routerLink: '/news', selected: false },
+            ['account']: { label: 'Войти', routerLink: '/account', selected: false },
+            ['logout']: { label: 'Выйти', routerLink: '/', selected: false },
+        };
 
-  constructor(router: Router, authService: AuthService) {
-    super(router, authService);
-  }
+    constructor(router: Router, authService: AuthService) {
+        super(router, authService);
+    }
 }

@@ -5,13 +5,13 @@ import { NewsDescriptionComponent } from './news-description.component';
 
 
 @NgModule({
-  declarations: [
-    NewsDescriptionComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([{path: '', component: NewsDescriptionComponent}]),
-  ],
+    declarations: [
+        NewsDescriptionComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild([{ path: '', component: NewsDescriptionComponent }]),
+    ],
 
 })
 export class NewsDescriptionModule {}

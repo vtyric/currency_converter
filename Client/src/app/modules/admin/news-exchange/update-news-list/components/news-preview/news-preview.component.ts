@@ -1,20 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { INews } from "../../../../../shared/news/interfaces";
+import { Component, Input } from '@angular/core';
+import { INews } from '../../../../../shared/news/interfaces';
 
 @Component({
-  selector: 'news-preview',
-  templateUrl: './news-preview.component.html',
-  styleUrls: ['./styles/news-preview.component.scss']
+    selector: 'app-news-preview',
+    templateUrl: './news-preview.component.html',
+    styleUrls: ['./styles/news-preview.component.scss']
 })
-export class NewsPreviewComponent implements OnInit {
+export class NewsPreviewComponent {
 
   @Input()
-  public news!: INews;
+    public news!: INews;
 
   constructor() {
   }
-
-  ngOnInit(): void {
-  }
-
 }

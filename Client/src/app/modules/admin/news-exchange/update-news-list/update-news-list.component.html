@@ -3,16 +3,16 @@
   <div class="form-group search-group">
     <label for="search">Поиск по заголовку</label>
     <input
-      type="text"
+      [formControl]="search"
+      autocomplete="off"
       class="form-control form-control-lg"
       id="search"
-      [formControl]="search"
-      autocomplete="off">
+      type="text">
   </div>
 
-  <news-preview
+  <app-news-preview
+    (click)="onNewsClick(news.id)"
     *ngFor="let news of news | filter : search.value : 'title'"
-    [news]="news"
-    (click)="onNewsClick(news.id)">
-  </news-preview>
+    [news]="news">
+  </app-news-preview>
 </div>

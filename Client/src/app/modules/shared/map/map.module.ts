@@ -6,13 +6,13 @@ import { AngularYandexMapsModule } from 'angular8-yandex-maps';
 
 
 @NgModule({
-  declarations: [
-    MapComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([{path: '', component: MapComponent}]),
-    AngularYandexMapsModule,
-  ]
+    declarations: [
+        MapComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild([{ path: '', component: MapComponent }]),
+        AngularYandexMapsModule,
+    ]
 })
 export class MapModule {}

@@ -1,4 +1,4 @@
-import { Role } from "../../authentification/enums";
+import { Role } from '../../authentification/enums';
 
 export interface IUser {
   id: number,

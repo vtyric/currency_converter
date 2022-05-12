@@ -1,21 +1,21 @@
 <div class="container">
   <h1 class="title">Биржа пользователей</h1>
-
+  
   <div class="form-group search-group">
     <label for="search">Поиск по логину</label>
     <input
-      type="text"
+      [formControl]="search"
+      autocomplete="off"
       class="form-control form-control-lg"
       id="search"
-      [formControl]="search"
-      autocomplete="off">
+      type="text">
   </div>
-
+  
   <div class="items">
-    <user-item
+    <app-user-item
       *ngFor="let user of users | filter : search.value : 'login'"
       [user]="user">
-    </user-item>
+    </app-user-item>
   </div>
 
 </div>
