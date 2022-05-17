@@ -11,12 +11,14 @@ export class RedirectRoleGuard implements CanActivate {
     }
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this._authService.isAuthenticated('User')) {
+        const currentUserRole: 'User' | 'Admin' | null = this._authService.getCurrentUserRole();
+
+        if (currentUserRole === 'User') {
             this._router.navigate(['auth/converter']);
 
             return false;
         }
-        if (this._authService.isAuthenticated('Admin')) {
+        if (currentUserRole === 'Admin') {
             this._router.navigate(['admin/converter']);
 
             return false;

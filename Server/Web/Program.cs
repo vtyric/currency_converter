@@ -1,22 +1,25 @@
 using Core.Models.AuthOptions;
+using Core.Models.Comment;
 using Core.Models.News;
 using Core.Models.User;
-using Core.Repositories; 
+using Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Web.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-// Add services to the container.
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IRepository<News, DataContext>, Repository<News, DataContext>>();
 builder.Services.AddTransient<IRepository<User, DataContext>, Repository<User, DataContext>>();
+builder.Services.AddTransient<IRepository<Comment, DataContext>, Repository<Comment, DataContext>>();
 
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 
@@ -41,7 +44,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

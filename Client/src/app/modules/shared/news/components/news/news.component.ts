@@ -7,18 +7,18 @@ import { Component, Input } from '@angular/core';
 })
 export class NewsComponent {
 
-  @Input()
+    @Input()
     public title!: string;
-  @Input()
-  public description!: string;
-  @Input()
-  public imgUrl!: string | undefined;
-  @Input()
-  public date!: Date;
-  @Input()
-  public commentsCount!: number | undefined;
+    @Input()
+    public description!: string;
+    @Input()
+    public imgUrl!: string | undefined;
+    @Input()
+    public date!: Date;
+    @Input()
+    public commentsCount!: number | undefined;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
 }

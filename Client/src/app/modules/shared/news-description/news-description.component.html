@@ -1,18 +1,18 @@
 <div class="news-container">
-
+  
   <span class="border border-bottom-0 border-dark rounded-top title">{{news?.title}}</span>
-
-  <img *ngIf="news?.preview" src="{{news?.preview}}" alt="какртинка с превью новости">
-
+  
+  <img *ngIf="news?.preview" alt="какртинка с превью новости" src="{{news?.preview}}">
+  
   <div class="border border-top-0 border-dark rounded-bottom">
     <p class="content">{{news?.content}}</p>
-    <a *ngIf="news?.source"
-       href="{{news?.source}}"
-       target="_blank"
-       class="link-secondary source"
-    >
-      источник
-    </a>
+  </div>
+  
+  <div>
+    <app-comments
+      [news]="news"
+      userId="{{userId}}">
+    </app-comments>
   </div>
 
 </div>

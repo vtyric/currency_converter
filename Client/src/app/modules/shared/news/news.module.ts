@@ -8,6 +8,7 @@ import '@angular/common/locales/global/ru';
 import { NewsDescriptionModule } from '../news-description/news-description.module';
 import { InfinityScrollDirective } from './directives/infinity-scroll.directive';
 import { PipesModule } from '../pipes/pipes.module';
+import { CommentsModule } from '../comments/comments.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { PipesModule } from '../pipes/pipes.module';
             }
         ]),
         PipesModule,
+        CommentsModule,
     ],
     providers: [
         NewsService,

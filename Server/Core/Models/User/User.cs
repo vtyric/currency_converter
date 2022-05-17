@@ -1,10 +1,20 @@
-﻿using static Core.Helpers.CryptographyHelper;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using static Core.Helpers.CryptographyHelper;
 
 namespace Core.Models.User;
 
 public class User
 {
     private string _password;
+    private List<Comment.Comment>? _comments;
+
+    private readonly ILazyLoader _lazyLoader;
+
+    public User(ILazyLoader lazyLoader)
+    {
+        Salt = GetSalt();
+        _lazyLoader = lazyLoader;
+    }
 
     public User()
     {
@@ -24,6 +34,12 @@ public class User
     public string Login { get; set; }
 
     public Role Role { get; set; }
+
+    public virtual List<Comment.Comment>? Comments
+    {
+        get => _lazyLoader.Load(this, ref _comments);
+        set => _comments = value;
+    }
 
     public string? LastName { get; set; }
 

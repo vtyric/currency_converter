@@ -1,0 +1,49 @@
+.comments-block {
+  padding-top: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .comments {
+    width: 100%;
+  }
+
+  .comments-block {
+    width: 100%;
+
+    .comments-input {
+      display: flex;
+
+      button {
+        width: auto;
+        margin-right: 0.5rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.7rem;
+      }
+
+      margin-bottom: 1.5rem;
+      height: 3rem;
+      width: 100%;
+    }
+
+    .hint {
+      margin-bottom: 0.4rem;
+      padding: 0.5rem;
+    }
+  }
+
+  .firstComment {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5rem;
+  }
+}
+
+.link {
+  margin-top: 0.3rem;
+}

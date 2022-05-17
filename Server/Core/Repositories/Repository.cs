@@ -16,7 +16,7 @@ public class Repository<TEntity, TDataContext> : IRepository<TEntity, TDataConte
         _dbSet = dataContext.Set<TEntity>();
     }
 
-    public async Task<IEnumerable<TEntity>> GetAll() => await _dbSet.ToListAsync();
+    public async Task<IEnumerable<TEntity?>> GetAll() => await _dbSet.ToListAsync();
 
     public async Task<TEntity?> GetById(int id) => await _dbSet.FindAsync(id);
 
@@ -25,6 +25,12 @@ public class Repository<TEntity, TDataContext> : IRepository<TEntity, TDataConte
             .ToList()
             .Where(filter)
             .FirstOrDefault();
+
+    public List<TEntity> GetListByFilter(Func<TEntity, bool> filter) =>
+        _dbSet
+            .ToList()
+            .Where(filter)
+            .ToList();
 
     public TEntity GetCurrentChange() => _dbSet.Local.First();
 

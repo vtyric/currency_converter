@@ -30,12 +30,10 @@ export class NewsService {
         this._newsRequestService.getNews()
             .pipe(
                 tap((news: INews[]) => {
-                    news.forEach((n: INews) => n.commentsCount = this.getRandomCommentsCount());
                     this.addNews(news);
                 }),
                 mergeMap(() => this._newsRequestService.getPosts()),
                 tap((posts: INews[]) => {
-                    posts.forEach((p: INews) => p.commentsCount = this.getRandomCommentsCount());
                     this.addNews(posts);
                 }),
             )
@@ -53,14 +51,6 @@ export class NewsService {
     }
 
     /**
-     * Возвращает случайное количество комментариев для постов.
-     * @return {number}
-     */
-    public getRandomCommentsCount(): number {
-        return Math.floor(Math.random() * 300);
-    }
-
-    /**
      * Увеличивает количество показываемых новостей.
      */
     public makeStep(): void {
@@ -72,7 +62,7 @@ export class NewsService {
      * @param { BlogNewsType } filter без филтра null, только посты 'post', толко новости 'news'
      * @return { INews[] }
      */
-    public getNews(filter: BlogNewsType): INews[] {
+    public getNews(filter: BlogNewsType = null): INews[] {
         return (filter ? this._news.filter((n: INews) => n.type === filter) : this._news).slice(0, this._currentNewsCount);
     }
 
@@ -82,6 +72,8 @@ export class NewsService {
      * @return { INews | undefined }
      */
     public getNewsById(id: number): INews | undefined {
+        console.log(this._news);
+
         return this._news.find((n: INews) => n.id === id);
     }
 

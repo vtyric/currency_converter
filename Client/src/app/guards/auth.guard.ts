@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this._authService.isAuthenticated(route.data['role'])) {
+        if (this._authService.isAuthenticatedByRole(route.data['role'])) {
             return true;
         }
         this._authService.logout();

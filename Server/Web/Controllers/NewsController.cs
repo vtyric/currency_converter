@@ -19,17 +19,39 @@ public class NewsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<News>>> GetNews()
+    public async Task<ActionResult<IEnumerable<GetNewsDto>>> GetNews()
     {
-        return (await _news.GetAll()).ToList();
+        return (await _news.GetAll())
+            .Select(n => new GetNewsDto
+            {
+                Id = n.Id,
+                Title = n.Title,
+                CommentsCount = n.Comments?.Count ?? 0,
+                Description = n.Description,
+                Content = n.Content,
+                PostCreationDate = n.PostCreationDate,
+                Preview = n?.Preview,
+            })
+            .ToList();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<News>> GetNewsById(int id)
+    public async Task<ActionResult<GetNewsDto>> GetNewsById(int id)
     {
         var news = await _news.GetById(id);
 
-        return news == null ? NotFound() : news;
+        return news == null
+            ? NotFound()
+            : new GetNewsDto
+            {
+                Id = news.Id,
+                Title = news.Title,
+                CommentsCount = news.Comments?.Count ?? 0,
+                Description = news.Description,
+                Content = news.Content,
+                PostCreationDate = news.PostCreationDate,
+                Preview = news?.Preview,
+            };
     }
 
     [HttpPost]

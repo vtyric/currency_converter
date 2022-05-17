@@ -7,10 +7,10 @@ import { CurrencyService } from './modules/shared/shared/services/currency.servi
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './guards/auth.guard';
-import { AuthService } from './modules/shared/authentification/services/auth.service';
 import { UserService } from './modules/shared/shared/services/user.service';
 import { RedirectRoleGuard } from './guards/redirect-role.guard';
 import { NewsRequestService } from './modules/shared/news/services/news-request.service';
+import { AuthentificationModule } from './modules/shared/authentification/authentification.module';
 
 @NgModule({
     declarations: [
@@ -20,6 +20,7 @@ import { NewsRequestService } from './modules/shared/news/services/news-request.
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
+        AuthentificationModule,
         NgbModule,
         JwtModule.forRoot({
             config: {
@@ -30,7 +31,6 @@ import { NewsRequestService } from './modules/shared/news/services/news-request.
     ],
     providers: [
         CurrencyService,
-        AuthService,
         AuthGuard,
         RedirectRoleGuard,
         UserService,

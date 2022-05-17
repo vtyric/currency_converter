@@ -14,6 +14,8 @@ export class AuthService {
     private readonly _accessTokenKey: string = 'access_token';
     private readonly _authApiUrl: string = 'api/Auth';
 
+    private _token!: string | null;
+
     constructor(
         private _http: HttpClient,
         private _jwtHelper: JwtHelperService,
@@ -28,7 +30,7 @@ export class AuthService {
      * @return {Observable<IAuthToken>} в токене login, id, role
      */
     public login(login: string, password: string): Observable<IDecodedToken> {
-        return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/Login`, { login, password })
+        return this._http.post<IAuthToken>(`${ environment.apiUrl }${ this._authApiUrl }/Login`, { login, password })
             .pipe(
                 tap((value: IAuthToken) => {
                     this.setToken(value);
@@ -45,7 +47,11 @@ export class AuthService {
      * @return {Observable<IAuthToken>} в токене login, id, role
      */
     public register(login: string, password: string, role: Role): Observable<IDecodedToken> {
-        return this._http.post<IAuthToken>(`${environment.apiUrl}${this._authApiUrl}/Register`, { login, password, role })
+        return this._http.post<IAuthToken>(`${ environment.apiUrl }${ this._authApiUrl }/Register`, {
+            login,
+            password,
+            role
+        })
             .pipe(
                 tap((value: IAuthToken) => {
                     this.setToken(value);
@@ -55,13 +61,27 @@ export class AuthService {
     }
 
     /**
-     * Проверяет аутентифицирован ли пользователь.
-     * @return{boolean}
+     * Проверяет авторизован ли пользователь с какой-то ролью.
+     * @return {boolean}
      */
-    public isAuthenticated(role: 'User' | 'Admin' = 'User'): boolean {
-        const token: string | null = localStorage.getItem(this._accessTokenKey);
+    public isAuthenticatedByRole(role: 'User' | 'Admin' = 'User'): boolean {
+        return this.getCurrentUserRole() === role;
+    }
 
-        return !!token && !this._jwtHelper.isTokenExpired(token) && jwtDecode<IDecodedToken>(token)?.role === role;
+    /**
+     * Возвращает текущую роль полььзователя, null если он не авторизован.
+     * @returns {"User" | "Admin" | null}
+     */
+    public getCurrentUserRole(): 'User' | 'Admin' | null {
+        return this.isTokenValid() && !!this._token ? jwtDecode<IDecodedToken>(this._token)?.role : null;
+    }
+
+    /**
+     * Возвращает id текущего пользователя, null если он не авторизован.
+     * @returns {"User" | "Admin" | null}
+     */
+    public getCurrentUserId(): string | null {
+        return this.isTokenValid() && !!this._token ? jwtDecode<IDecodedToken>(this._token)?.id : null;
     }
 
     /**
@@ -79,5 +99,16 @@ export class AuthService {
      */
     private setToken(token: IAuthToken): void {
         localStorage.setItem(this._accessTokenKey, token.access_token);
+    }
+
+    /**
+     * Проверяет валиден ли токен, сохраняет его в поле.
+     * @returns {boolean}
+     * @private
+     */
+    private isTokenValid(): boolean {
+        this._token = localStorage.getItem(this._accessTokenKey);
+
+        return !!this._token && !this._jwtHelper.isTokenExpired(this._token);
     }
 }

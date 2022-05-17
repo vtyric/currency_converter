@@ -1,5 +1,5 @@
 <div class="container">
-
+  
   <div #menu class="border border-secondary menu">
     <span
       (click)="onMenuButtonClick($event.target, newsMenuItem.filter)"
@@ -9,7 +9,7 @@
       {{newsMenuItem.label}}
     </span>
   </div>
-
+  
   <div appInfinityScroll class="news-container">
     <app-news
       (click)="onNewsClick(news.id)"

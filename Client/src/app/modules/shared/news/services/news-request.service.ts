@@ -19,16 +19,17 @@ export class NewsRequestService {
      */
     public getNews(): Observable<INews[]> {
         return this._httpClient
-            .get<INewsRequest[]>(`https://api.spaceflightnewsapi.net/v3/articles?_limit=${this._limit}&_start=${this._start}`)
+            .get<INewsRequest[]>(`https://api.spaceflightnewsapi.net/v3/articles?_limit=${ this._limit }&_start=${ this._start }`)
             .pipe(
                 map((value: INewsRequest[]) => value
                     .map((d: INewsRequest) => ({
                         id: d.id,
                         type: 'news',
                         title: d.title,
-                        description: `By ${d.newsSite}`,
+                        description: `By ${ d.newsSite }`,
                         content: d.summary,
                         postCreationDate: new Date(d.publishedAt),
+                        commentsCount: Math.floor(Math.random() * 300),
                         preview: d.imageUrl,
                         source: d.url,
                     })),
@@ -44,9 +45,9 @@ export class NewsRequestService {
      * @param {string} preview
      * @param {string} source
      */
-    public createPost(title: string, description: string, content: string, preview: string | undefined, source: string | undefined): Observable<any> {
+    public createPost(title: string, description: string, content: string, preview: string | undefined, source: string | undefined): Observable<Object> {
         return this._httpClient
-            .post(`${environment.apiUrl}api/News`, {
+            .post(`${ environment.apiUrl }api/News`, {
                 title,
                 description,
                 content,
@@ -55,13 +56,13 @@ export class NewsRequestService {
             });
     }
 
-    /**1
+    /**
      * Поулчает все посты.
      * @return {Observable<INews[]>}
      */
     public getPosts(): Observable<INews[]> {
         return this._httpClient
-            .get<INews[]>(`${environment.apiUrl}api/News`)
+            .get<INews[]>(`${ environment.apiUrl }api/News`)
             .pipe(
                 map((posts: INews[]) => posts
                     .map((post: INews) => ({
@@ -72,6 +73,7 @@ export class NewsRequestService {
                         content: post.content,
                         postCreationDate: new Date(post.postCreationDate),
                         preview: post.preview,
+                        commentsCount: post.commentsCount,
                     }))
                 ),
             );

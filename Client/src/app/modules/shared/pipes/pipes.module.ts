@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CommentsConjugationPipe, SearchFilterPipe } from './index';
+import { CommentsConjugationPipe, SearchFilterPipe } from './pipes';
 
 @NgModule({
     declarations: [
