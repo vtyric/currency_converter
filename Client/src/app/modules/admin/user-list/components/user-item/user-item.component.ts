@@ -10,6 +10,7 @@ import { Role } from '../../../../shared/authentification/enums';
 export class UserItemComponent implements OnInit {
     @Input()
     public user!: IUser;
+    /** Тут можно добавит интерфейс, чтобы упростить типизацию IUserInfoItem[] */
     public infos!: Array<[string, string]>;
 
     private _notFilledLabel: string = 'не заполнено';

@@ -48,6 +48,9 @@ export class ConverterComponent implements OnInit, OnDestroy {
         this.rightCurrencySubject = _currencyExchangeService.rightCurrencySubject;
     }
 
+    /** Хук на 100 строк - это сильно. Вынести логику в отдельный метод, декомпозировать.
+     * Нужно избегать логики в компонентах, компоненты отвечают за view (представление), логики тут должно быть по минимуму. Логику выносить в сервисы (если связано с формой - форм менеджер)
+     */
     public ngOnInit(): void {
         this._currencyService
             .getLatestCurrencyExchangeRates()

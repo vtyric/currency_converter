@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        /** Инициализация формы не зависит от параметров, зачем ее в хук тогда запихивать? Можно просто поле form сразу проинициализировать */
         this.form = new FormGroup({
             login: new FormControl(null, [
                 Validators.required,
