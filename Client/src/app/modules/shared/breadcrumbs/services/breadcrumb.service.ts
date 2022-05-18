@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class BreadcrumbService {
 
+  /** Зачем хранить словарь? У марщрутов есть поле data, данные для хлебных крошек можно хранить там. https://angular.io/api/router/Route#data */
     private _dictionary: { [index: string]: string } = {
         '': 'Главная',
         '/auth': 'Главная',

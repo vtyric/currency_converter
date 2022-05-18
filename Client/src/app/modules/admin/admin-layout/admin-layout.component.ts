@@ -11,6 +11,7 @@ import { AuthService } from '../../shared/authentification/services/auth.service
 export class AdminLayoutComponent extends AbstractLayoutComponent {
 
     public override mainButtonsId: string[] = ['converter', 'map', 'news', 'createNews', 'userList'];
+    /** Тут что-то намудрил с типизацией. Простую мпу здесь нальзя нельзя использовать? Или отдельный интерфейс создать для такого типа данных */
     public override buttons: { [index: string]: ILayoutButtons } =
         {
             ['converter']: { label: 'Главная', routerLink: '/converter', selected: true },

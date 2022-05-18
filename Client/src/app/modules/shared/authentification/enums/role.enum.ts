@@ -1,4 +1,5 @@
+/** Можно типизировать и вызывать в коде Role.user */
 export enum Role {
-    user,
-    admin,
+    user = 'user',
+    admin= 'admin'
 }

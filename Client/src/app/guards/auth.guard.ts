@@ -10,6 +10,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     ) {
     }
 
+    /**
+     * Метод разрашающий переход по маршруту
+     * @param route ActivatedRouteSnapshot
+     * @param state RouterStateSnapshot
+     * @returns boolean
+     */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         if (this._authService.isAuthenticatedByRole(route.data['role'])) {
             return true;
@@ -20,6 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return false;
     }
 
+    /** Описание метода в формате JSDoc */
     public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(childRoute, state);
     }

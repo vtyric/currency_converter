@@ -22,25 +22,57 @@
         "unused-imports"
       ],
       "rules": {
-        "@angular-eslint/directive-selector": [
+        "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "browser",
+                "onlyDependOnLibsWithTags": [
+                  "common",
+                  "browser"
+                ]
+              },
+              {
+                "sourceTag": "mobile",
+                "onlyDependOnLibsWithTags": [
+                  "common",
+                  "mobile"
+                ]
+              },
+              {
+                "sourceTag": "common",
+                "onlyDependOnLibsWithTags": [
+                  "common"
+                ]
+              },
+              {
+                "sourceTag": "feature",
+                "onlyDependOnLibsWithTags": [
+                  "feature",
+                  "ui",
+                  "base"
+                ]
+              },
+              {
+                "sourceTag": "ui",
+                "onlyDependOnLibsWithTags": [
+                  "ui",
+                  "base"
+                ]
+              },
+              {
+                "sourceTag": "base",
+                "onlyDependOnLibsWithTags": [
+                  "base"
+                ]
+              }
+            ]
           }
         ],
         "prefer-const": "error",
         "semi": "error",
-        "unused-imports/no-unused-imports": "warn",
         "padding-line-between-statements": [
           "error",
           {
@@ -52,6 +84,7 @@
         "@typescript-eslint/member-ordering": [
           "error",
           {
+            // Пока нет getter, setter, abstract-field, abstract-method, но на гите обещают добавить
             "default": [
               "static-field",
               "static-method",
@@ -202,6 +235,32 @@
         "@angular-eslint/no-outputs-metadata-property": "error",
         "@angular-eslint/use-lifecycle-interface": "error",
         "@angular-eslint/use-pipe-transform-interface": "error",
+        "jsdoc/require-jsdoc": [
+          "error",
+          {
+            "contexts": [
+              "MethodDefinition:not([key.name=\"constructor\"]):not([key.name=\"ngOnInit\"]):not([key.name=\"ngOnDestroy\"]):not([key.name=\"ngOnChanges\"]):not([key.name=\"ngDoCheck\"]):not([key.name=\"ngAfterContentInit\"]):not([key.name=\"ngAfterContentChecked\"]):not([key.name=\"ngAfterViewInit\"]):not([key.name=\"ngAfterViewChecked\"])"
+            ],
+            "require": {
+              "ArrowFunctionExpression": false,
+              "ClassDeclaration": false,
+              "ClassExpression": false,
+              "FunctionDeclaration": true,
+              "FunctionExpression": true
+            }
+          }
+        ],
+        "valid-jsdoc": [
+          "error",
+          {
+            "requireParamDescription": false,
+            "requireReturnDescription": false,
+            "requireReturnType": false,
+            "requireParamType": false,
+            "requireReturn": false,
+            "matchDescription": "\\S"
+          }
+        ],
         "max-classes-per-file": [
           "error",
           1
@@ -228,7 +287,8 @@
         "object-curly-spacing": [
           "error",
           "always"
-        ]
+        ],
+        "unused-imports/no-unused-imports": "warn"
       }
     },
     {

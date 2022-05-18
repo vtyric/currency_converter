@@ -4,12 +4,14 @@ import { AuthService } from '../modules/shared/authentification/services/auth.se
 
 @Injectable()
 export class RedirectRoleGuard implements CanActivate {
+
     constructor(
         private _router: Router,
         private _authService: AuthService,
     ) {
     }
 
+    /** Описание метода в формате JSDoc */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const currentUserRole: 'User' | 'Admin' | null = this._authService.getCurrentUserRole();
 
