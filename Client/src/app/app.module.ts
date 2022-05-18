@@ -11,6 +11,7 @@ import { UserService } from './modules/shared/shared/services/user.service';
 import { RedirectRoleGuard } from './guards/redirect-role.guard';
 import { NewsRequestService } from './modules/shared/news/services/news-request.service';
 import { AuthentificationModule } from './modules/shared/authentification/authentification.module';
+import { NewsService } from './modules/shared/news/services/news.service';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { AuthentificationModule } from './modules/shared/authentification/authen
         RedirectRoleGuard,
         UserService,
         NewsRequestService,
+        NewsService,
     ],
     bootstrap: [AppComponent]
 })

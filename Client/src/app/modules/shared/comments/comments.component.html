@@ -2,13 +2,13 @@
   
   <div *ngIf="news?.type==='post'; else notPost" class="comments-block">
     <div class="comments-block">
-      <span *ngIf="user === null"
+      <span *ngIf="userId === null"
             class="hint border border-danger rounded-0">
         Авторизуйтесь, чтобы оставлять комментарии у постов
       </span>
       <div class="comments-input">
         <button (click)="onAddButtonClick()"
-                [disabled]="user === null || form.invalid"
+                [disabled]="userId === null || form.invalid"
                 class="btn btn-outline-secondary">
           отправить
         </button>

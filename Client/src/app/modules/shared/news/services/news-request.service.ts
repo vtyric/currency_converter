@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, merge, Observable } from 'rxjs';
 import { INews, INewsRequest } from '../interfaces';
 import { environment } from '../../../../../environments/environment';
 
@@ -76,6 +76,26 @@ export class NewsRequestService {
                         commentsCount: post.commentsCount,
                     }))
                 ),
+            );
+    }
+
+    /**
+     * Получает все новости и посты.
+     * @returns {Observable<INews[]>}
+     */
+    public getAllNews(): Observable<INews[]> {
+        return merge(this.getNews(), this.getPosts());
+    }
+
+    /**
+     * Находит новость по id среди всех постов и новостей.
+     * @param {number} id
+     * @returns {Observable<INews>}
+     */
+    public getNewsById(id: number): Observable<INews> {
+        return this.getAllNews()
+            .pipe(
+                map((news: INews[]) => news.filter((n: INews) => n.id === id)[0]),
             );
     }
 

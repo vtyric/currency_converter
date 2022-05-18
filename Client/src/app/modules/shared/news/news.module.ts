@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NewsPageComponent } from './news-page.component';
 import { RouterModule } from '@angular/router';
 import { NewsComponent } from './components/news/news.component';
-import { NewsService } from './services/news.service';
 import '@angular/common/locales/global/ru';
-import { NewsDescriptionModule } from '../news-description/news-description.module';
 import { InfinityScrollDirective } from './directives/infinity-scroll.directive';
 import { PipesModule } from '../pipes/pipes.module';
 import { CommentsModule } from '../comments/comments.module';
+import { NewsDescriptionModule } from '../news-description/news-description.module';
 
 
 @NgModule({
@@ -26,15 +25,14 @@ import { CommentsModule } from '../comments/comments.module';
             },
             {
                 path: ':id',
-                loadChildren: (): Promise<NewsDescriptionModule> => import('../news-description/news-description.module')
-                    .then((m: any) => m.NewsDescriptionModule),
+                loadChildren: ((): Promise<NewsDescriptionModule> => import('../news-description/news-description.module')
+                    .then((m: any) => m.NewsDescriptionModule)),
             }
         ]),
         PipesModule,
         CommentsModule,
     ],
     providers: [
-        NewsService,
         { provide: LOCALE_ID, useValue: 'ru' }
     ]
 })

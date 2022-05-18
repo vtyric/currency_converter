@@ -1,8 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { INews } from '../news/interfaces';
 import { UserService } from '../shared/services/user.service';
-import { mergeMap, of, Subject, takeUntil, tap } from 'rxjs';
-import { IUser } from '../shared/interfaces';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { CommentService } from './services/comment.service';
 import { IComment } from './interfaces';
 import { FormControl, Validators } from '@angular/forms';
@@ -12,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
     templateUrl: './comments.component.html',
     styleUrls: ['./styles/comments.component.scss']
 })
-export class CommentsComponent implements OnInit, OnDestroy {
+export class CommentsComponent implements OnDestroy, OnChanges {
 
     @Input()
     public news!: INews | undefined;
@@ -20,7 +19,6 @@ export class CommentsComponent implements OnInit, OnDestroy {
     public userId!: string | null;
     public form: FormControl = new FormControl(null, [Validators.required, Validators.minLength(3)]);
     public comments!: IComment[];
-    public user!: IUser | null;
 
     private _unsubscriber: Subject<void> = new Subject<void>();
 
@@ -30,23 +28,18 @@ export class CommentsComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    public ngOnInit(): void {
-        this._commentService
-            .getCommentByNewsId(this.news?.id ?? 2)
-            .pipe(
-                tap((comments: IComment[]) => {
-                    this.comments = comments;
-                }),
-                mergeMap(() => this.userId
-                    ? this._userService.getUserById(Number.parseInt(this.userId))
-                    : of(null)
-                ),
-                tap((user: null | IUser) => {
-                    this.user = user;
-                }),
-                takeUntil(this._unsubscriber)
-            )
-            .subscribe();
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (changes['news'].currentValue) {
+            this._commentService
+                .getCommentByNewsId(changes['news'].currentValue.id)
+                .pipe(
+                    tap((comments: IComment[]) => {
+                        this.comments = comments;
+                    }),
+                    takeUntil(this._unsubscriber)
+                )
+                .subscribe();
+        }
     }
 
     public ngOnDestroy(): void {
@@ -67,6 +60,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
                 .subscribe();
 
             this.form.reset();
+            window.location.reload();
         }
     }
 }

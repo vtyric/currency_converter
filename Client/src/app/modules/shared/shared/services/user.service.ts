@@ -12,19 +12,19 @@ export class UserService {
     }
 
     /**
-   * Получает список всех пользователей.
-   * @return {Observable<IUser[]>}
-   */
+     * Получает список всех пользователей.
+     * @return {Observable<IUser[]>}
+     */
     public getAllUsers(): Observable<IUser[]> {
-        return this._httpClient.get<IUser[]>(`${environment.apiUrl}${this._apiUrl}`);
+        return this._httpClient.get<IUser[]>(`${ environment.apiUrl }${ this._apiUrl }`);
     }
 
     /**
-   * Получает пользователя по id.
-   * @param {number} id
-   * @return {Observable<IUser>}
-   */
+     * Получает пользователя по id.
+     * @param {number} id
+     * @return {Observable<IUser>}
+     */
     public getUserById(id: number): Observable<IUser> {
-        return this._httpClient.get<IUser>(`${environment.apiUrl}${this._apiUrl}${id}`);
+        return this._httpClient.get<IUser>(`${ environment.apiUrl }${ this._apiUrl }/${ id }`);
     }
 }

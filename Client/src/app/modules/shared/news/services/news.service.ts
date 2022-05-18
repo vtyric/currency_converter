@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { INews, INewsMenuItem } from '../interfaces';
 import { BlogNewsType } from '../types';
 import { NewsRequestService } from './news-request.service';
-import { mergeMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 @Injectable()
 export class NewsService {
@@ -27,14 +27,10 @@ export class NewsService {
     private _currentNewsCount: number = 2;
 
     constructor(private _newsRequestService: NewsRequestService) {
-        this._newsRequestService.getNews()
+        this._newsRequestService.getAllNews()
             .pipe(
                 tap((news: INews[]) => {
                     this.addNews(news);
-                }),
-                mergeMap(() => this._newsRequestService.getPosts()),
-                tap((posts: INews[]) => {
-                    this.addNews(posts);
                 }),
             )
             .subscribe();
