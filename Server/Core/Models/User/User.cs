@@ -33,7 +33,7 @@ public class User
 
     public string Login { get; set; }
 
-    public Role Role { get; set; }
+    public string Role { get; set; }
 
     public virtual List<Comment.Comment>? Comments
     {

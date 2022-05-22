@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IUser } from '../../../../shared/shared/interfaces';
-import { Role } from '../../../../shared/authentification/enums';
+import { IUserInfoItem } from '../../interfaces';
 
 @Component({
     selector: 'app-user-item',
@@ -10,7 +10,7 @@ import { Role } from '../../../../shared/authentification/enums';
 export class UserItemComponent implements OnInit {
     @Input()
     public user!: IUser;
-    public infos!: Array<[string, string]>;
+    public infos!: IUserInfoItem[];
 
     private _notFilledLabel: string = 'не заполнено';
 
@@ -19,22 +19,22 @@ export class UserItemComponent implements OnInit {
 
     public ngOnInit(): void {
         this.infos = [
-            [
-                'Логин',
-                this.user.login
-            ],
-            [
-                'Емэйл',
-                this.user.email ?? this._notFilledLabel
-            ],
-            [
-                'Роль',
-                this.user.role === Role.user ? 'User' : 'Admin'
-            ],
-            [
-                'ФИО',
-                `${this.user.firstName ?? this._notFilledLabel} ${this.user.lastName ?? this._notFilledLabel} ${this.user.middleName ?? this._notFilledLabel}`
-            ]
+            {
+                userInfoName: 'Логин',
+                userInfo: this.user.login
+            },
+            {
+                userInfoName: 'Емэйл',
+                userInfo: this.user.email ?? this._notFilledLabel
+            },
+            {
+                userInfoName: 'Роль',
+                userInfo: this.user.role
+            },
+            {
+                userInfoName: 'ФИО',
+                userInfo: `${ this.user.firstName ?? this._notFilledLabel } ${ this.user.lastName ?? this._notFilledLabel } ${ this.user.middleName ?? this._notFilledLabel }`
+            }
         ];
     }
 }

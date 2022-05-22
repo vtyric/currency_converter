@@ -1,6 +1,4 @@
-﻿using Core.Models.User;
-
-namespace Web.Dtos.User;
+﻿namespace Web.Dtos.User;
 
 public class UpdateUserDto
 {
@@ -14,5 +12,5 @@ public class UpdateUserDto
 
     public string? Password { get; set; }
 
-    public Role? Role { get; set; }
+    public string? Role { get; set; }
 }

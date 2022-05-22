@@ -15,10 +15,10 @@ export class CommentService {
      * @param {number} userId
      * @param {number} newsId
      * @param {string} text
-     * @returns {Observable<Object>}
      */
-    public addComment(userId: number, newsId: number, text: string): Observable<Object> {
-        return this._httpClient.post(`${ environment.apiUrl }api/Comment`, { userId, newsId, text });
+    public addComment(userId: number, newsId: number, text: string): void {
+        this._httpClient.post(`${ environment.apiUrl }api/Comment`, { userId, newsId, text })
+            .subscribe();
     }
 
     /**
@@ -33,10 +33,10 @@ export class CommentService {
     /**
      * Удаляет комментарии у новости по id.
      * @param {number} id
-     * @returns {Observable<Object>}
      */
-    public deleteCommentById(id: number): Observable<Object> {
-        return this._httpClient.delete(`${ environment.apiUrl }api/Comment/${ id }`);
+    public deleteCommentById(id: number): void {
+        this._httpClient.delete(`${ environment.apiUrl }api/Comment/${ id }`)
+            .subscribe();
     }
 
 }

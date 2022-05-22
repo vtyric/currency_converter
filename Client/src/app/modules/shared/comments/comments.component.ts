@@ -52,13 +52,7 @@ export class CommentsComponent implements OnDestroy, OnChanges {
      */
     public onAddButtonClick(): void {
         if (this.userId !== null && this.news && this.news?.id !== null) {
-            this._commentService
-                .addComment(Number.parseInt(this.userId), this.news.id, this.form.value)
-                .pipe(
-                    takeUntil(this._unsubscriber)
-                )
-                .subscribe();
-
+            this._commentService.addComment(Number.parseInt(this.userId), this.news.id, this.form.value);
             this.form.reset();
             window.location.reload();
         }

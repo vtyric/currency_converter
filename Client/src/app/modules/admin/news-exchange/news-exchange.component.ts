@@ -34,7 +34,7 @@ export class NewsExchangeComponent implements OnInit {
                 filter((event: any) => event instanceof NavigationEnd),
                 tap(
                     (event: NavigationEnd) => {
-                        this.updateCurrentElement((event as NavigationEnd).url);
+                        this.updateCurrentElement(event.url);
                     },
                 ),
                 takeUntil(this._unsubscriber)

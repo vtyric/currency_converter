@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../../shared/authentification/services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -9,9 +9,18 @@ import { IDecodedToken } from '../../shared/authentification/interfaces';
     selector: 'app-login',
     templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnDestroy {
 
-    public form!: FormGroup;
+    public form: FormGroup = new FormGroup({
+        login: new FormControl(null, [
+            Validators.required,
+            Validators.minLength(4),
+        ]),
+        password: new FormControl(null, [
+            Validators.required,
+            Validators.minLength(6),
+        ]),
+    });
 
     private _unsubscriber: Subject<void> = new Subject<void>();
 
@@ -21,19 +30,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    public ngOnInit(): void {
-        this.form = new FormGroup({
-            login: new FormControl(null, [
-                Validators.required,
-                Validators.minLength(4),
-            ]),
-            password: new FormControl(null, [
-                Validators.required,
-                Validators.minLength(6),
-            ]),
-        });
-    }
-
     public ngOnDestroy(): void {
         this._unsubscriber.next();
         this._unsubscriber.complete();
@@ -41,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     /**
      * Метод отправляющий форму логина.
-     * @param event
+     * @param {Event} event
      */
     public onSubmitButtonClick(event: Event): void {
         event.preventDefault();
@@ -50,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             .pipe(
                 tap((value: IDecodedToken) => {
                     this.form.reset();
-                    this._router.navigate([value.role === 'Admin' ? 'admin' : 'auth', 'converter']);
+                    this._router.navigate([value.role.toLowerCase()]);
                 }),
                 takeUntil(this._unsubscriber)
             )

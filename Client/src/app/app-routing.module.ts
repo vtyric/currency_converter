@@ -5,6 +5,7 @@ import { AuthorizedModule } from './modules/authorized/authorized.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthGuard } from './guards/auth.guard';
 import { RedirectRoleGuard } from './guards/redirect-role.guard';
+import { Role } from './modules/shared/authentification/enums';
 
 const routes: Routes = [
     {
@@ -19,16 +20,16 @@ const routes: Routes = [
             .then((m: any) => m.UnauthorizedRoutingModule),
     },
     {
-        path: 'auth',
+        path: 'user',
         canActivate: [AuthGuard],
-        data: { role: 'User' },
+        data: { role: Role.user },
         loadChildren: (): Promise<AuthorizedModule> => import('./modules/authorized/authorized-routing.module')
             .then((m: any) => m.AuthorizedRoutingModule),
     },
     {
         path: 'admin',
         canActivate: [AuthGuard],
-        data: { role: 'Admin' },
+        data: { role: Role.admin },
         loadChildren: (): Promise<AdminModule> => import('./modules/admin/admin-routing.module')
             .then((m: any) => m.AdminRoutingModule),
     },

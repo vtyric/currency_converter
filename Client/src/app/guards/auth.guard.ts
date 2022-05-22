@@ -10,6 +10,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     ) {
     }
 
+    /**
+     * Метод разрашающий переход по маршруту.
+     * @param {ActivatedRouteSnapshot} route
+     * @param {RouterStateSnapshot} state
+     * @returns {boolean}
+     */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         if (this._authService.isAuthenticatedByRole(route.data['role'])) {
             return true;
@@ -20,6 +26,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return false;
     }
 
+    /**
+     * Метод разрешающий переходить дочерним элементам по маршруту.
+     * @param {ActivatedRouteSnapshot} childRoute
+     * @param {RouterStateSnapshot} state
+     * @returns {boolean}
+     */
     public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(childRoute, state);
     }

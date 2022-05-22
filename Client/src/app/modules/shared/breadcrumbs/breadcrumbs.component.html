@@ -1,15 +1,15 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb d-flex justify-content-start">
     <li *ngFor="let breadcrumb of breadcrumbs; let i = index;"
         class="breadcrumb-item">
       <a
-        *ngIf="i===breadcrumbs.length-1; else elseBlock"
+        *ngIf="i===breadcrumbs.length - 1; else elseBlock"
         aria-current="page">{{breadcrumb.label}}
       </a>
       <ng-template #elseBlock>
         <a
-          routerLink="{{breadcrumb.route}}"
-          class="link-dark">{{breadcrumb.label}}
+          class="link-dark"
+          routerLink="{{breadcrumb.route}}">{{breadcrumb.label}}
         </a>
       </ng-template>
     </li>

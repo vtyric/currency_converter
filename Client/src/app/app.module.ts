@@ -25,7 +25,7 @@ import { NewsService } from './modules/shared/news/services/news.service';
         NgbModule,
         JwtModule.forRoot({
             config: {
-                tokenGetter: () => localStorage.getItem('access_token'),
+                tokenGetter: () => localStorage.getItem('accessToken'),
                 allowedDomains: ['localhost:7262']
             }
         })

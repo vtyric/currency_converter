@@ -11,7 +11,7 @@ import jwtDecode from 'jwt-decode';
 @Injectable()
 export class AuthService {
 
-    private readonly _accessTokenKey: string = 'access_token';
+    private readonly _accessTokenKey: string = 'accessToken';
     private readonly _authApiUrl: string = 'api/Auth';
 
     private _token!: string | null;
@@ -35,7 +35,7 @@ export class AuthService {
                 tap((value: IAuthToken) => {
                     this.setToken(value);
                 }),
-                map((token: IAuthToken) => jwtDecode(token.access_token)),
+                map((token: IAuthToken) => jwtDecode(token.accessToken)),
             );
     }
 
@@ -56,15 +56,16 @@ export class AuthService {
                 tap((value: IAuthToken) => {
                     this.setToken(value);
                 }),
-                map((token: IAuthToken) => jwtDecode(token.access_token)),
+                map((token: IAuthToken) => jwtDecode(token.accessToken)),
             );
     }
 
     /**
-     * Проверяет авторизован ли пользователь с какой-то ролью.
-     * @return {boolean}
+     * Проверяет аутентифицирован ли пользователь.
+     * @param {Role} role
+     * @returns {boolean}
      */
-    public isAuthenticatedByRole(role: 'User' | 'Admin' = 'User'): boolean {
+    public isAuthenticatedByRole(role: Role = Role.user): boolean {
         return this.getCurrentUserRole() === role;
     }
 
@@ -72,7 +73,7 @@ export class AuthService {
      * Возвращает текущую роль полььзователя, null если он не авторизован.
      * @returns {"User" | "Admin" | null}
      */
-    public getCurrentUserRole(): 'User' | 'Admin' | null {
+    public getCurrentUserRole(): Role | null {
         return this.isTokenValid() && !!this._token ? jwtDecode<IDecodedToken>(this._token)?.role : null;
     }
 
@@ -94,11 +95,11 @@ export class AuthService {
 
     /**
      * Устанавливает токен в локал сторедж.
-     * @param token
+     * @param {IAuthToken} token
      * @private
      */
     private setToken(token: IAuthToken): void {
-        localStorage.setItem(this._accessTokenKey, token.access_token);
+        localStorage.setItem(this._accessTokenKey, token.accessToken);
     }
 
     /**

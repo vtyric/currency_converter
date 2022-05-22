@@ -23,7 +23,8 @@ import { UpdateNewsModule } from '../update-news/update-news.module';
             {
                 path: ':id',
                 loadChildren: (): Promise<UpdateNewsModule> => import('../update-news/update-news.module')
-                    .then((m: any) => m.UpdateNewsModule)
+                    .then((m: any) => m.UpdateNewsModule),
+                data: { place: ['Главная', 'Биржа новостей', 'Обновить новость', 'новость'] }
             }
         ]),
         ReactiveFormsModule,

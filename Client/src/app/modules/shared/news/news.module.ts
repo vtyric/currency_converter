@@ -8,6 +8,7 @@ import { InfinityScrollDirective } from './directives/infinity-scroll.directive'
 import { PipesModule } from '../pipes/pipes.module';
 import { CommentsModule } from '../comments/comments.module';
 import { NewsDescriptionModule } from '../news-description/news-description.module';
+import { BreadcrumbsModule } from '../breadcrumbs/breadcrumbs.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { NewsDescriptionModule } from '../news-description/news-description.modu
             {
                 path: '',
                 component: NewsPageComponent,
+                data: { place: ['Главная', 'Новости'] }
             },
             {
                 path: ':id',
@@ -31,6 +33,7 @@ import { NewsDescriptionModule } from '../news-description/news-description.modu
         ]),
         PipesModule,
         CommentsModule,
+        BreadcrumbsModule,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'ru' }

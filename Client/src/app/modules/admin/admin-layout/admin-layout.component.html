@@ -9,17 +9,17 @@
         <li *ngFor="let id of mainButtonsId"
             class="nav-item">
           <a (click)="onButtonClick(id)"
-             [ngClass]="buttons[id].selected ? 'active' : ''"
+             [ngClass]="buttons.get(id)?.selected ? 'active' : ''"
              class="nav-link">
-            {{buttons[id].label}}
+            {{buttons.get(id)?.label}}
           </a>
         </li>
       </ul>
     </div>
     <a (click)="onButtonClick('logout')"
-       [ngClass]="buttons['logout'].selected ? 'link-dark' : 'link-secondary'"
+       [ngClass]="buttons.get('logout')?.selected ? 'link-dark' : 'link-secondary'"
        class="nav-link mb-0 end">
-      {{buttons['logout'].label}}
+      {{buttons.get('logout')?.label}}
     </a>
   </div>
 </nav>

@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
 
             return Ok(new
             {
-                access_token = token
+                accessToken = token
             });
         }
 
@@ -58,11 +58,11 @@ public class AuthController : ControllerBase
 
         return Ok(new
         {
-            access_token = token
+            accessToken = token
         });
     }
 
-    private string GenerateJwtToken(string login, long id, Role role)
+    private string GenerateJwtToken(string login, long id, string role)
     {
         var authParams = _authOptions.Value;
 
@@ -73,7 +73,7 @@ public class AuthController : ControllerBase
             {
                 new("login", login),
                 new("id", id.ToString()),
-                new("role", role.ToString())
+                new("role", role)
             },
             expires: DateTime.Now.AddSeconds(authParams.TokenLifeTime),
             signingCredentials: new SigningCredentials(authParams.SymmetricSecurityKey,
@@ -87,7 +87,7 @@ public class AuthController : ControllerBase
         _users.GetByFilter(u =>
             u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
 
-    private async Task<User> RegisterUser(string login, string password, Role role)
+    private async Task<User> RegisterUser(string login, string password, string role)
     {
         await _users.Create(new User {Login = login, Password = password, Role = role});
 

@@ -63,7 +63,9 @@ namespace Web.Controllers
             user.LastName = request?.LastName ?? user.LastName;
             user.MiddleName = request?.MiddleName ?? user.MiddleName;
             user.Role = request?.Role ?? user.Role;
-            user.Password = request?.Password ?? user.Password;
+
+            if (request is {Password: { }})
+                user.Password = request.Password;
 
             await _users.UpdateItem(user);
 

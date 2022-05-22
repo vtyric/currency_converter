@@ -28,11 +28,13 @@ import { BreadcrumbsModule } from '../../shared/breadcrumbs/breadcrumbs.module';
                             path: 'createNews',
                             loadChildren: (): Promise<CreateNewsModule> => import('./create-news/create-news.module')
                                 .then((m: any) => m.CreateNewsModule),
+                            data: { place: ['Главная', 'Биржа новостей', 'Добавить ноовсть'] }
                         },
                         {
                             path: 'updateNews',
                             loadChildren: (): Promise<UpdateNewsListModule> => import('./update-news-list/update-news-list.module')
                                 .then((m: any) => m.UpdateNewsListModule),
+                            data: { place: ['Главная', 'Биржа новостей', 'Обновить новость'] }
                         },
                     ]
                 }

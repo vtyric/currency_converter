@@ -8,7 +8,7 @@ public class GetUserDto
 
     public string Login { get; set; }
 
-    public Role Role { get; set; }
+    public string Role { get; set; }
 
     public string? LastName { get; set; }
 

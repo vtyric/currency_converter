@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../modules/shared/authentification/services/auth.service';
+import { Role } from '../modules/shared/authentification/enums';
 
 @Injectable()
 export class RedirectRoleGuard implements CanActivate {
@@ -10,15 +11,21 @@ export class RedirectRoleGuard implements CanActivate {
     ) {
     }
 
+    /**
+     * Метод определяющий, какую страницу показывать при запуске приложения.
+     * @param {ActivatedRouteSnapshot} route
+     * @param {RouterStateSnapshot} state
+     * @returns {boolean}
+     */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        const currentUserRole: 'User' | 'Admin' | null = this._authService.getCurrentUserRole();
+        const currentUserRole: Role | null = this._authService.getCurrentUserRole();
 
-        if (currentUserRole === 'User') {
-            this._router.navigate(['auth/converter']);
+        if (currentUserRole === Role.user) {
+            this._router.navigate(['user/converter']);
 
             return false;
         }
-        if (currentUserRole === 'Admin') {
+        if (currentUserRole === Role.admin) {
             this._router.navigate(['admin/converter']);
 
             return false;
