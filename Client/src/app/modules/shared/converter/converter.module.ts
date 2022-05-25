@@ -6,8 +6,8 @@ import { ConverterComponent } from './converter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumericSeparatorPipe } from './pipes/numeric-separator.pipe';
 import { RouterModule } from '@angular/router';
-import { CurrencyExchangeService } from './services/currency-exchange.service';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConverterFormService, ConverterToggleService, CurrencyExchangeService } from './services';
 
 
 @NgModule({
@@ -19,6 +19,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     ],
     providers: [
         CurrencyExchangeService,
+        ConverterToggleService,
+        ConverterFormService,
     ],
     imports: [
         CommonModule,

@@ -1,29 +1,32 @@
 <div class="switcher">
-
+  
   <div class="main">
     <button
-      *ngFor="let currency of currencies"
-      placement="top" ngbTooltip="{{currency.description}}" tooltipClass="currency-tooltip"
-      (click)="onButtonClick(currency.name,'main')"
-      [ngClass]="currency.selected ? 'btn btn-success' : 'btn btn-outline-secondary'">
-      {{currency.name}}
+      (click)="onButtonClick(currencyButton.name,'main')"
+      *ngFor="let currencyButton of currenciesButtons"
+      [ngClass]="currencyButton.selected ? 'btn btn-success' : 'btn btn-outline-secondary'"
+      [ngbTooltip]="currencyButton.description"
+      placement="top"
+      tooltipClass="currency-tooltip">
+      {{currencyButton.name}}
     </button>
   </div>
-
+  
   <div
     class="dropdown">
     <button
-      class="btn btn-outline-secondary dropdown-toggle"
-      (click)="onToggleButtonClick()">
+      (click)="onToggleButtonClick()"
+      class="btn btn-outline-secondary dropdown-toggle">
     </button>
-    <div class="dropdown-menu" #dropdownMenu>
-          <span
-            *ngFor="let currency of allCurrencies"
-            placement="top" ngbTooltip="{{this.descriptions[currency]}}" tooltipClass="currency-tooltip"
-            (click)="onButtonClick(currency,'hidden')"
-            class="item">
-            {{currency}}
-          </span>
+    <div #dropdownMenu class="dropdown-menu">
+      <span
+        (click)="onButtonClick(currency,'hidden')"
+        *ngFor="let currency of currencies"
+        [ngbTooltip]="descriptions.get(currency)" class="item"
+        placement="top"
+        tooltipClass="currency-tooltip">
+        {{currency}}
+      </span>
     </div>
   </div>
 

@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { map, Subject, takeUntil, tap } from 'rxjs';
 import { ICurrencyDescription } from '../../../shared/interfaces';
+import { ConverterFormService } from '../../services';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-converter-cash-input',
@@ -12,44 +13,35 @@ export class ConverterCashInputComponent implements OnInit, OnDestroy {
     @Input()
     public title!: string;
     @Input()
-    public allCurrencies!: string[];
+    public currencies!: string[];
     @Input()
-    public currencyDescription!: ICurrencyDescription[];
+    public currencyDescription!: ICurrencyDescription;
     @Input()
-    public cashInput!: FormControl;
-    @Input()
-    public currencySubject!: Subject<string>;
-    @Input()
-    public mainCurrencies!: string[];
-    @Input()
-    public currentCurrency!: string;
-    @Input()
-    public hiddenCurrenciesSubject!: Subject<string>;
-    @Input()
-    public isToggleOpen!: Subject<boolean>;
+    public position!: 'left' | 'right';
     @Output()
-    public dropDownMenu: EventEmitter<ElementRef<HTMLDivElement>> = new EventEmitter<ElementRef<HTMLDivElement>>();
+    public dropdownMenu: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
+
     public isInputSelected: boolean = false;
+    public formControl!: FormControl;
 
     private _unsubscriber: Subject<void> = new Subject<void>();
 
-    constructor() {
+    constructor(
+        private _converterFormService: ConverterFormService,
+    ) {
     }
 
     public ngOnInit(): void {
-        this.cashInput.valueChanges
+        this.formControl = this._converterFormService.getInputByPosition(this.position);
+
+        this.formControl.valueChanges
             .pipe(
-                map((value: string) => value.replace(',', '.').replace(/[^.\d]/g, '')),
-                map((value: string) => {
-                    if (value.includes('.')) {
-                        const temp: string[] = value[0] === '.' ? ('0' + value).split('.') : value.split('.');
-
-                        return temp.shift() + '.' + temp.join('');
-                    }
-
-                    return value;
-                }),
-                tap((value: string) => this.cashInput.patchValue(value, { emitEvent: false })),
+                map((value: string) => this._converterFormService.removeCommas(value)),
+                map((value: string) => this._converterFormService.makeValueStartWithZero(value)),
+                tap((value: string) => this._converterFormService
+                    .getInputByPosition(this.position)
+                    .patchValue(value, { emitEvent: false })
+                ),
                 takeUntil(this._unsubscriber)
             )
             .subscribe();

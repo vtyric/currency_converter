@@ -8,53 +8,52 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    Renderer2,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { ICurrencyButton } from '../../interfaces';
 import { ICurrencyDescription } from '../../../shared/interfaces';
+import { ConverterToggleService, CurrencyExchangeService } from '../../services';
 
 @Component({
     selector: 'app-converter-buttons',
     templateUrl: './converter-buttons.component.html',
 })
-export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class ConverterButtonsComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
     @Input()
-    public allCurrencies!: string[];
+    public currencies!: string[];
     @Input()
-    public currencySubject!: Subject<string>;
+    public currencyDescriptions!: ICurrencyDescription;
     @Input()
-    public mainCurrencies!: string[];
-    @Input()
-    public currentCurrency!: string;
-    @Input()
-    public currencyDescriptions!: ICurrencyDescription[];
-    @Input()
-    public isToggleOpen!: Subject<boolean>;
-    @Input()
-    public hiddenCurrenciesSubject!: Subject<string>;
+    public position!: 'left' | 'right';
     @Output()
-    public dropDownMenu: EventEmitter<ElementRef<HTMLDivElement>> = new EventEmitter<ElementRef<HTMLDivElement>>();
+    public dropdownMenu: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
 
-    public currencies!: ICurrencyButton[];
-    public descriptions: { [index: string]: string } = {};
+    public currenciesButtons!: ICurrencyButton[];
+    public descriptions: Map<string, string> = new Map<string, string>();
 
     @ViewChild('dropdownMenu')
     private _dropdownMenu!: ElementRef;
     private _unsubscriber: Subject<void> = new Subject<void>();
 
-    constructor(private _renderer: Renderer2) {
+    constructor(
+        private _converterToggleService: ConverterToggleService,
+        private _currencyExchangeService: CurrencyExchangeService,
+    ) {
     }
 
     public ngOnInit(): void {
-        this.currencySubject
+        this._currencyExchangeService.getSubjectByPosition(this.position)
             .pipe(
-                tap((value: string) => this.updateCurrency(value)),
+                tap((currency: string) => this.updateCurrencyButtons(currency)),
                 takeUntil(this._unsubscriber)
             )
             .subscribe();
+    }
+
+    public ngAfterViewInit(): void {
+        this.dropdownMenu.emit(this._dropdownMenu);
     }
 
     public ngOnDestroy(): void {
@@ -63,22 +62,21 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges, 
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
-        this.currencyDescriptions = changes['currencyDescriptions']?.currentValue;
+        if (changes['currencyDescriptions']?.currentValue) {
+            this.currencyDescriptions = changes['currencyDescriptions']?.currentValue;
 
-        this.currencyDescriptions?.forEach((d: ICurrencyDescription) => {
-            this.descriptions[d.currency] = d.description;
-        });
+            Object.entries(this.currencyDescriptions)?.forEach(([currency, description]: [string, string]) => {
+                this.descriptions.set(currency, description);
+            });
 
-        this.currencies = this.mainCurrencies.map((currency: string) =>
-            ({
-                selected: currency === this.currentCurrency,
-                name: currency,
-                description: this.descriptions[currency],
-            }));
-    }
-
-    public ngAfterViewInit(): void {
-        this.dropDownMenu.emit(this._dropdownMenu);
+            this.currenciesButtons = this._currencyExchangeService.getCurrenciesByPosition(this.position)
+                .map((currency: string) =>
+                    ({
+                        selected: currency === this._currencyExchangeService.getCurrencyByPosition(this.position),
+                        name: currency,
+                        description: this.descriptions.get(currency) ?? '',
+                    }));
+        }
     }
 
     /**
@@ -87,11 +85,12 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges, 
      * @param {'hidden' | 'main'} type вид кнопки
      */
     public onButtonClick(targetCurrency: string, type: 'hidden' | 'main'): void {
-        this.isToggleOpen.next(false);
+        this.updateToggle(false);
+
         if (type === 'main') {
-            this.currencySubject.next(targetCurrency);
+            this._currencyExchangeService.getSubjectByPosition(this.position).next(targetCurrency);
         } else {
-            this.hiddenCurrenciesSubject.next(targetCurrency);
+            this._currencyExchangeService.getHiddenCurrenciesSubject().next(targetCurrency);
         }
     }
 
@@ -99,7 +98,20 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges, 
      * Метод нажатия на открывающую панель, открывает или закрывает её.
      */
     public onToggleButtonClick(): void {
-        this.isToggleOpen.next(true);
+        this.updateToggle(true);
+    }
+
+    /**
+     * Обновляет состояние переключателя в зависимости от его позиции.
+     * @param {boolean} state
+     * @private
+     */
+    private updateToggle(state: boolean): void {
+        if (this.position === 'left') {
+            this._converterToggleService.isLeftToggleOpen.next(state);
+        } else {
+            this._converterToggleService.isRightToggleOpen.next(state);
+        }
     }
 
     /**
@@ -107,13 +119,13 @@ export class ConverterButtonsComponent implements OnInit, OnDestroy, OnChanges, 
      * @param {string} targetCurrency
      * @private
      */
-    private updateCurrency(targetCurrency: string): void {
-        if (!this.currencies.some((currency: ICurrencyButton) => currency.name === targetCurrency)) {
-            this.currencies[this.currencies.length - 1].name = targetCurrency;
-            this.currencies[this.currencies.length - 1].description = this.descriptions[targetCurrency];
+    private updateCurrencyButtons(targetCurrency: string): void {
+        if (!this.currenciesButtons.some((currencyButton: ICurrencyButton) => currencyButton.name === targetCurrency)) {
+            this.currenciesButtons[this.currenciesButtons.length - 1].name = targetCurrency;
+            this.currenciesButtons[this.currenciesButtons.length - 1].description = this.descriptions.get(targetCurrency) ?? '';
         }
-        this.currencies.forEach((currency: ICurrencyButton, index: number) => {
-            this.currencies[index].selected = currency.name === targetCurrency;
+        this.currenciesButtons.forEach((currency: ICurrencyButton, index: number) => {
+            this.currenciesButtons[index].selected = currency.name === targetCurrency;
         });
     }
 }

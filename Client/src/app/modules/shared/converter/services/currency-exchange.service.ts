@@ -1,80 +1,142 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, tap } from 'rxjs';
+import { ConverterToggleService } from './converter-toggle.service';
+import { ConverterFormService } from './converter-form.service';
 
 @Injectable()
 export class CurrencyExchangeService {
 
-    public leftCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
-    public rightCurrencies: string[] = ['USD', 'RUB', 'GBP', 'CNY'];
-    public leftCurrency: string = this.leftCurrencies[0];
-    public rightCurrency: string = this.rightCurrencies[0];
-    public leftCurrencySubject: Subject<string> = new Subject<string>();
-    public rightCurrencySubject: Subject<string> = new Subject<string>();
+    private _leftCurrencies: string[] = ['RUB', 'USD', 'GBP', 'CNY'];
+    private _rightCurrencies: string[] = ['USD', 'RUB', 'GBP', 'CNY'];
+    private _leftCurrency: string = this._leftCurrencies[0];
+    private _rightCurrency: string = this._rightCurrencies[0];
+    private _leftCurrencySubject: Subject<string> = new Subject<string>();
+    private _rightCurrencySubject: Subject<string> = new Subject<string>();
+    private _hiddenCurrenciesSubject: Subject<string> = new Subject<string>();
 
-    constructor() {
+    constructor(
+        private _converterToggleService: ConverterToggleService,
+        private _converterFormService: ConverterFormService,
+    ) {
+        this._converterFormService.leftCurrency = this._leftCurrency;
+        this._converterFormService.rightCurrency = this._rightCurrency;
+
+        this._leftCurrencySubject
+            .pipe(
+                tap((currency: string) => {
+                    this._converterFormService.leftCurrency = currency;
+                    this.updateCurrency(currency, 'left');
+                }),
+                tap(() => this.updateInputValue(this._converterFormService.getInputByPosition('left').value)),
+            )
+            .subscribe();
+
+        this._rightCurrencySubject
+            .pipe(
+                tap((currency: string) => {
+                    this._converterFormService.rightCurrency = currency;
+                    this.updateCurrency(currency, 'right');
+                }),
+                tap(() => this.updateInputValue(this._converterFormService.getInputByPosition('left').value))
+            )
+            .subscribe();
+
+        this._hiddenCurrenciesSubject
+            .pipe(
+                tap((currency: string) => this.updateHiddenCurrencies(currency)),
+            )
+            .subscribe();
     }
 
     /**
-     * Обновляет значение противоположного инпута по заданной формуле в методе.
-     * @param {number} value значение инпута
-     * @param {[string, number][]} rates массив валют
-     * @param {FormControl} control контрол, который нужно обновить
-     * @param {'left' | 'right'} controlPosition положение передаваемого контрола
-     * @private
+     * Возвращает subject в зависимости от позиции.
+     * @param {"left" | "right"} position
+     * @returns {Subject<string>}
      */
-    public updateInputValue(value: number, rates: Array<[string, number]>, control: FormControl, controlPosition: 'left' | 'right'): void {
-        const leftRate: number = (rates
-            ?.find(([currency]: [string, number]) => currency === this.leftCurrency) ?? [])[1] ?? 0;
-        const rightRate: number = (rates
-            ?.find(([currency]: [string, number]) => currency === this.rightCurrency) ?? [])[1] ?? 0;
-
-        if (controlPosition === 'left') {
-            control.patchValue(this.getExchangeResult(value, leftRate, rightRate));
-        } else {
-            control.patchValue(this.getExchangeResult(value, rightRate, leftRate), { emitEvent: false });
-        }
+    public getSubjectByPosition(position: 'left' | 'right'): Subject<string> {
+        return position === 'left' ? this._leftCurrencySubject : this._rightCurrencySubject;
     }
 
     /**
-     * Обновляет значение одного из currency.
-     * @param {string} currency новое значение валюты
-     * @param {'left' | 'right'} currencyPosition левая или правая валюта
+     * Возвращает subject скрытых валют
+     * @returns {Subject<string>}
      */
-    public updateCurrency(currency: string, currencyPosition: 'left' | 'right'): void {
-        if (currencyPosition === 'left' && !this.leftCurrencies.includes(currency)) {
-            this.leftCurrencies[this.leftCurrencies.length - 1] = currency;
-        } else if (currencyPosition === 'right' && !this.rightCurrencies.includes(currency)) {
-            this.rightCurrencies[this.rightCurrencies.length - 1] = currency;
-        }
-        if (currencyPosition === 'left') {
-            this.leftCurrency = currency;
-        } else {
-            this.rightCurrency = currency;
-        }
+    public getHiddenCurrenciesSubject(): Subject<string> {
+        return this._hiddenCurrenciesSubject;
+    }
+
+    /**
+     * Возвращает валюты в зависимости от позиции.
+     * @param {"left" | "right"} position
+     * @returns {string[]}
+     */
+    public getCurrenciesByPosition(position: 'left' | 'right'): string[] {
+        return position === 'left' ? this._leftCurrencies : this._rightCurrencies;
+    }
+
+    /**
+     * Возвращвет валюту в зависимости от позиции.
+     * @param {"left" | "right"} position
+     * @returns {string}
+     */
+    public getCurrencyByPosition(position: 'left' | 'right'): string {
+        return position === 'left' ? this._leftCurrency : this._rightCurrency;
     }
 
     /**
      * Меняет местами currency и currencies.
      */
     public swapCurrencies(): void {
-        const tempCurrencies: string[] = this.leftCurrencies;
-        this.leftCurrencies = this.rightCurrencies;
-        this.rightCurrencies = tempCurrencies;
-        const tempCurrency: string = this.leftCurrency;
-        this.leftCurrencySubject.next(this.rightCurrency);
-        this.rightCurrencySubject.next(tempCurrency);
+        const tempCurrencies: string[] = this._leftCurrencies;
+        this._leftCurrencies = this._rightCurrencies;
+        this._rightCurrencies = tempCurrencies;
+        const tempCurrency: string = this._leftCurrency;
+        this._leftCurrencySubject.next(this._rightCurrency);
+        this._rightCurrencySubject.next(tempCurrency);
     }
 
     /**
-     * Переводит валюту из firstRate в secondRate.
-     * @param {number} value значение инпута, которое изменилось
-     * @param {number} firstRate цена противоположной валюты к евро
-     * @param {number} secondRate цена текущей валюты к евро
-     * @returns {string} измененное значение другого инпута
+     * Обновляет значение одного из currency.
+     * @param {string} currency новое значение валюты
+     * @param {'left' | 'right'} currencyPosition левая или правая валюта
      * @private
      */
-    private getExchangeResult(value: number, firstRate: number, secondRate: number): string {
-        return !value ? '' : (value * firstRate / secondRate).toFixed(4);
+    private updateCurrency(currency: string, currencyPosition: 'left' | 'right'): void {
+        if (currencyPosition === 'left' && !this._leftCurrencies.includes(currency)) {
+            this._leftCurrencies[this._leftCurrencies.length - 1] = currency;
+        } else if (currencyPosition === 'right' && !this._rightCurrencies.includes(currency)) {
+            this._rightCurrencies[this._rightCurrencies.length - 1] = currency;
+        }
+        if (currencyPosition === 'left') {
+            this._leftCurrency = currency;
+        } else {
+            this._rightCurrency = currency;
+        }
+    }
+
+    /**
+     * Обновляет значение контролла.
+     * @param {string} value
+     * @private
+     */
+    private updateInputValue(value: string): void {
+        if (value) {
+            this._converterFormService.getInputByPosition('left').setValue(value);
+        }
+    }
+
+    /**
+     * Обновляет выьранную в dropdownMenu валюту.
+     * @param {string} currency
+     * @private
+     */
+    private updateHiddenCurrencies(currency: string): void {
+        if (this._converterToggleService.lastTogglePosition === 'right') {
+            this._converterFormService.rightCurrency = currency;
+            this._rightCurrencySubject.next(currency);
+        } else {
+            this._converterFormService.leftCurrency = currency;
+            this._leftCurrencySubject.next(currency);
+        }
     }
 }

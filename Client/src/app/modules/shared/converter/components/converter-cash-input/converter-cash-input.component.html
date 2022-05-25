@@ -1,23 +1,19 @@
 <div class="converter-main">
-
+  
   <span class="title">{{title}}</span>
-
+  
   <app-converter-buttons
-    (dropDownMenu)="dropDownMenu.emit($event)"
-    [allCurrencies]="allCurrencies"
+    (dropdownMenu)="dropdownMenu.emit($event)"
+    [currencies]="currencies"
     [currencyDescriptions]="currencyDescription"
-    [currencySubject]="currencySubject"
-    [currentCurrency]="currentCurrency"
-    [hiddenCurrenciesSubject]="hiddenCurrenciesSubject"
-    [isToggleOpen]="isToggleOpen"
-    [mainCurrencies]="mainCurrencies">
+    [position]="position">
   </app-converter-buttons>
-
+  
   <input
     (focus)="isInputSelected = true"
     (focusout)="isInputSelected = false"
-    [formControl]="cashInput"
-    [value]="isInputSelected ? cashInput.value : cashInput.value | numericSeparator:3"
+    [formControl]="formControl"
+    [value]="isInputSelected ? formControl.value : formControl.value | numericSeparator:3"
     class="input-box" maxlength="13" type="text"
   >
 
