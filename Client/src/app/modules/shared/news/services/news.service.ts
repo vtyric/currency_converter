@@ -68,8 +68,6 @@ export class NewsService {
      * @return { INews | undefined }
      */
     public getNewsById(id: number): INews | undefined {
-        console.log(this._news);
-
         return this._news.find((n: INews) => n.id === id);
     }
 

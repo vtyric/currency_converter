@@ -31,7 +31,7 @@ export class ConverterFormService {
         this._leftInput.valueChanges
             .pipe(
                 tap((value: string) => {
-                    this.updateInputValue(Number.parseFloat(value), rates, this._rightInput, 'right');
+                    this.updateInputValue(+value, rates, this._rightInput, 'right');
                 })
             )
             .subscribe();
@@ -39,7 +39,7 @@ export class ConverterFormService {
         this._rightInput.valueChanges
             .pipe(
                 tap((value: string) => {
-                    this.updateInputValue(Number.parseFloat(value), rates, this._leftInput, 'left');
+                    this.updateInputValue(+value, rates, this._leftInput, 'left');
                 })
             )
             .subscribe();

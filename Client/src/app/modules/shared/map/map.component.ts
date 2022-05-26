@@ -3,6 +3,7 @@ import { YaReadyEvent } from 'angular8-yandex-maps';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { CurrencyService } from '../shared/services/currency.service';
 import { IConverter } from '../shared/interfaces';
+import { ConverterMapService } from './services/converter-map.service';
 
 @Component({
     selector: 'app-map',
@@ -12,12 +13,16 @@ import { IConverter } from '../shared/interfaces';
 export class MapComponent implements OnInit, OnDestroy {
 
     public converters!: IConverter[];
+    public mapInitialCoordinates: [number, number] = [29.676936, 17.706003];
 
     private _map!: ymaps.Map;
     private _objectManagerTarget!: ymaps.ObjectManager;
     private _unsubscriber: Subject<void> = new Subject<void>();
 
-    constructor(private _currencyServer: CurrencyService) {
+    constructor(
+        private _currencyService: CurrencyService,
+        private _mapService: ConverterMapService,
+    ) {
     }
 
     public ngOnInit(): void {
@@ -25,21 +30,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
         if (temp) {
             this.converters = JSON.parse(temp);
-        } else {
-            this._currencyServer.getConvertersGeoData(20)
-                .pipe(
-                    tap((value: IConverter[]) => {
-                        this.converters = value.slice(0, 7);
-                        localStorage.setItem('converters', JSON.stringify(this.converters));
-                    }),
-                    takeUntil(this._unsubscriber)
-                )
-                .subscribe();
+
+            return;
         }
 
-        if (this._objectManagerTarget) {
-            this.converters.forEach((c: IConverter) => this.addBalloons(c.id, c.title, c.description, [c.latitude, c.longitude]));
-        }
+        this._currencyService.getConvertersGeoData(20)
+            .pipe(
+                tap((converters: IConverter[]) => this.addConverters(converters)),
+                takeUntil(this._unsubscriber)
+            )
+            .subscribe();
     }
 
     public ngOnDestroy(): void {
@@ -51,8 +51,8 @@ export class MapComponent implements OnInit, OnDestroy {
      * Метод вызываемый при загрузки карты.
      * @param {YaReadyEvent<ymaps.Map>} event
      */
-    public onMapReady(event: YaReadyEvent<ymaps.Map>,): void {
-        this._map = event.target;
+    public onMapReady({ target }: YaReadyEvent<ymaps.Map>,): void {
+        this._map = target;
         this._map.controls.remove('searchControl');
         this._map.controls.remove('geolocationControl');
         this._map.controls.remove('trafficControl');
@@ -64,7 +64,7 @@ export class MapComponent implements OnInit, OnDestroy {
      */
     public onObjectManagerReady({ target }: YaReadyEvent<ymaps.ObjectManager>): void {
         this._objectManagerTarget = target;
-        this.converters?.forEach((c: IConverter) => this.addBalloons(c.id, c.title, c.description, [c.latitude, c.longitude]));
+        this._mapService.addAllConvertersToMap(this.converters, target);
     }
 
     /**
@@ -76,25 +76,13 @@ export class MapComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Добавляет балун на яндекс карту.
-     * @param {number} id
-     * @param {string} title hintContent
-     * @param {string} description balloonContent
-     * @param {[number, number]} coordinates
+     * При получение конвертеров добавляет их на карту и в localSorage
+     * @param {IConverter[]} converters
      * @private
      */
-    private addBalloons(id: number, title: string, description: string, coordinates: [number, number]): void {
-        this._objectManagerTarget.add({
-            type: 'Feature',
-            id: id,
-            geometry: {
-                type: 'Point',
-                coordinates: coordinates
-            },
-            properties: {
-                hintContent: title,
-                balloonContent: description
-            }
-        });
+    private addConverters(converters: IConverter[]): void {
+        this.converters = converters.slice(0, 7);
+        localStorage.setItem('converters', JSON.stringify(this.converters));
+        this._mapService.addAllConvertersToMap(this.converters, this._objectManagerTarget);
     }
 }

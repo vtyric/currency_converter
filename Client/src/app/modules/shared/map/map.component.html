@@ -1,27 +1,27 @@
 <div>
   <div class="main">
-
+    
     <div class="converters">
       <h3 class="converters-title">Наши конвертеры</h3>
       <span
+        (click)="onConverterClick([converter.latitude, converter.longitude])"
         *ngFor="let converter of converters"
-        class="border title"
-        (click)="onConverterClick([converter.latitude, converter.longitude])">
+        class="border title">
         {{converter.title}}
       </span>
     </div>
-
+    
     <div class="map">
       <ya-map
-        [center]="[29.676936, 17.706003]" [zoom]="2"
-        (ready)="onMapReady($event)"
+        (ready)="onMapReady($event)" [center]="mapInitialCoordinates"
+        [zoom]="2"
       >
         <ya-object-manager
           (ready)="onObjectManagerReady($event)">
         </ya-object-manager>
-
+      
       </ya-map>
     </div>
-
+  
   </div>
 </div>

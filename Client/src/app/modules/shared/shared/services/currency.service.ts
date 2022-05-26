@@ -50,9 +50,6 @@ export class CurrencyService {
      * @returns {Observable<ICurrencyDescription[]>}
      */
     public getCurrenciesDescription(): Observable<ICurrencyDescription> {
-        return this._httpClient.get<ICurrenciesDescriptionResponse>('https://api.currencyfreaks.com/currency-symbols')
-            .pipe(
-                map((data: ICurrenciesDescriptionResponse) => data),
-            );
+        return this._httpClient.get<ICurrenciesDescriptionResponse>('https://api.currencyfreaks.com/currency-symbols');
     }
 }
