@@ -25,8 +25,6 @@ export class NewsService {
 
     private readonly _news: INews[] = [];
     private readonly _newsRequestStep: number = 5;
-    private _start: number = 0;
-    private _limit: number = 5;
 
     constructor(private _newsRequestService: NewsRequestService) {
         this._newsRequestService.getAllNews()
@@ -43,10 +41,10 @@ export class NewsService {
      */
     public getNewsByRequest(): void {
         if (this.filter === 'news') {
-            this._start = this._limit;
-            this._limit += this._newsRequestStep;
+            this._newsRequestService.start = this._newsRequestService.limit;
+            this._newsRequestService.limit += this._newsRequestStep;
 
-            this._newsRequestService.getNews(this._start, this._limit)
+            this._newsRequestService.getNews()
                 .pipe(
                     tap((news: INews[]) => this.addNews(news))
                 )

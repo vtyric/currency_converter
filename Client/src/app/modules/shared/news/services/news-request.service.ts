@@ -7,14 +7,19 @@ import { environment } from '../../../../../environments/environment';
 @Injectable()
 export class NewsRequestService {
 
+    public start: number = 0;
+    public limit: number = 5;
+
     constructor(private _httpClient: HttpClient) {
     }
 
     /**
      * Получает новсти про космос.
-     * @return {Observable<INews[]>}
+     * @param {number} start
+     * @param {number} limit
+     * @returns {Observable<INews[]>}
      */
-    public getNews(limit: number = 5, start: number = 0): Observable<INews[]> {
+    public getNews(start: number = this.start, limit: number = this.limit): Observable<INews[]> {
         return this._httpClient
             .get<INewsRequest[]>(`https://api.spaceflightnewsapi.net/v3/articles?_limit=${ limit }&_start=${ start }`)
             .pipe(
@@ -78,10 +83,12 @@ export class NewsRequestService {
 
     /**
      * Получает все новости и посты.
+     * @param {number} start
+     * @param {number} limit
      * @returns {Observable<INews[]>}
      */
-    public getAllNews(): Observable<INews[]> {
-        return merge(this.getNews(), this.getPosts());
+    public getAllNews(start: number = this.start, limit: number = this.limit): Observable<INews[]> {
+        return merge(this.getNews(start, limit), this.getPosts());
     }
 
     /**
@@ -90,7 +97,7 @@ export class NewsRequestService {
      * @returns {Observable<INews>}
      */
     public getNewsById(id: number): Observable<INews> {
-        return this.getAllNews()
+        return this.getAllNews(0, this.limit * 50)
             .pipe(
                 map((news: INews[]) => news.filter((n: INews) => n.id === id)[0]),
             );
