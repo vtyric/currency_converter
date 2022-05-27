@@ -5,7 +5,7 @@
   <div #menu class="border border-secondary menu">
     <span
       (click)="onMenuButtonClick($event.target, newsMenuItem.filter)"
-      *ngFor="let newsMenuItem of newsService.newsMenuItems; let i = index;"
+      *ngFor="let newsMenuItem of newsMenuItems; let i = index;"
       [ngClass]="i === 0 ? 'selected' : ''"
     >
       {{newsMenuItem.label}}
@@ -15,7 +15,7 @@
   <div appInfinityScroll class="news-container">
     <app-news
       (click)="onNewsClick(news.id)"
-      *ngFor="let news of newsService.getNews(filter)"
+      *ngFor="let news of getNews()"
       [commentsCount]="news.commentsCount"
       [date]="news.postCreationDate"
       [description]="news.description"

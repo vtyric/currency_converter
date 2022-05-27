@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NewsService } from '../news/services/news.service';
 import { ActivatedRoute } from '@angular/router';
 import { INews } from '../news/interfaces';
 import { AuthService } from '../authentification/services/auth.service';
@@ -19,7 +18,6 @@ export class NewsDescriptionComponent implements OnInit, OnDestroy {
     private _unsubscriber: Subject<void> = new Subject<void>();
 
     constructor(
-        private _newsService: NewsService,
         private _newsRequestService: NewsRequestService,
         private _route: ActivatedRoute,
         private _authService: AuthService,

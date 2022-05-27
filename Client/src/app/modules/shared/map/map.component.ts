@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._currencyService.getConvertersGeoData(20)
+        this._currencyService.getConvertersGeoData()
             .pipe(
                 tap((converters: IConverter[]) => this.addConverters(converters)),
                 takeUntil(this._unsubscriber)

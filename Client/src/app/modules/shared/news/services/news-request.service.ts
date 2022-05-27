@@ -7,9 +7,6 @@ import { environment } from '../../../../../environments/environment';
 @Injectable()
 export class NewsRequestService {
 
-    private _limit: number = 10;
-    private _start: number = 0;
-
     constructor(private _httpClient: HttpClient) {
     }
 
@@ -17,9 +14,9 @@ export class NewsRequestService {
      * Получает новсти про космос.
      * @return {Observable<INews[]>}
      */
-    public getNews(): Observable<INews[]> {
+    public getNews(limit: number = 5, start: number = 0): Observable<INews[]> {
         return this._httpClient
-            .get<INewsRequest[]>(`https://api.spaceflightnewsapi.net/v3/articles?_limit=${ this._limit }&_start=${ this._start }`)
+            .get<INewsRequest[]>(`https://api.spaceflightnewsapi.net/v3/articles?_limit=${ limit }&_start=${ start }`)
             .pipe(
                 map((value: INewsRequest[]) => value
                     .map((d: INewsRequest) => ({

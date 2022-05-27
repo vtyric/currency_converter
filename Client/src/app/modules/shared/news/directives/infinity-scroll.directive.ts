@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { NewsService } from '../services/news.service';
 
 @Directive({
@@ -6,15 +6,21 @@ import { NewsService } from '../services/news.service';
 })
 export class InfinityScrollDirective {
 
+    @Input()
+    public additionalPaddingTop: number = 705;
+
     constructor(
-    private _element: ElementRef,
-    private _newsService: NewsService) {
+        private _element: ElementRef,
+        private _newsService: NewsService) {
     }
 
-  @HostListener('window:scroll', ['$event'])
+    @HostListener('window:scroll', ['$event'])
     public onWindowScroll(): void {
-        if (this._element.nativeElement.clientHeight / window.scrollY < 1.6) {
-            this._newsService.makeStep();
+        const { clientHeight }: { clientHeight: number } = this._element.nativeElement;
+        const yPosition: number = window.scrollY + this.additionalPaddingTop;
+
+        if (clientHeight <= yPosition) {
+            this._newsService.getNewsByRequest();
         }
     }
 

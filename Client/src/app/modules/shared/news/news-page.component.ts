@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { NewsService } from './services/news.service';
 import { BlogNewsType } from './types';
 import { Router } from '@angular/router';
@@ -9,10 +9,8 @@ import { INews, INewsMenuItem } from './interfaces';
     templateUrl: './news-page.component.html',
     styleUrls: ['./styles/news-page.component.scss']
 })
-export class NewsPageComponent implements OnInit {
+export class NewsPageComponent {
 
-    public filter!: BlogNewsType;
-    public news!: INews[];
     public newsMenuItems!: INewsMenuItem[];
 
     private _selectedMenuItem!: EventTarget | null;
@@ -20,14 +18,19 @@ export class NewsPageComponent implements OnInit {
     private _menu!: ElementRef;
 
     constructor(
-        public newsService: NewsService,
+        private _newsService: NewsService,
         private _renderer: Renderer2,
         private _router: Router,
     ) {
+        this.newsMenuItems = this._newsService.newsMenuItems;
     }
 
-    public ngOnInit(): void {
-        this.newsMenuItems = this.newsService.newsMenuItems;
+    /**
+     * Отдает новости, которые есть в NewsService.
+     * @returns {INews[]}
+     */
+    public getNews(): INews[] {
+        return this._newsService.getNews();
     }
 
     /**
@@ -36,11 +39,8 @@ export class NewsPageComponent implements OnInit {
      * @param filter фильтер, который выбирается при нажатии на кнопку
      */
     public onMenuButtonClick(menuItem: EventTarget | null, filter: BlogNewsType): void {
-        this.filter = filter;
-        this._renderer.removeClass(
-            this._selectedMenuItem ? this._selectedMenuItem : this._menu.nativeElement.children[0],
-            'selected'
-        );
+        this._newsService.filter = filter;
+        this._renderer.removeClass(this._selectedMenuItem ?? this._menu.nativeElement.children[0], 'selected');
         this._renderer.addClass(menuItem, 'selected');
         this._selectedMenuItem = menuItem;
     }

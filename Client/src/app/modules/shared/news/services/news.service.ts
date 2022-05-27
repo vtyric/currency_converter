@@ -9,10 +9,6 @@ export class NewsService {
 
     public readonly newsMenuItems: INewsMenuItem[] = [
         {
-            label: 'Всё подряд',
-            filter: null,
-        },
-        {
             label: 'Новости',
             filter: 'news',
         },
@@ -20,11 +16,17 @@ export class NewsService {
             label: 'Посты',
             filter: 'post',
         },
+        {
+            label: 'Всё подряд',
+            filter: null,
+        },
     ];
+    public filter: BlogNewsType = 'news';
 
     private readonly _news: INews[] = [];
-    private readonly _newsAppendStep: number = 2;
-    private _currentNewsCount: number = 2;
+    private readonly _newsRequestStep: number = 5;
+    private _start: number = 0;
+    private _limit: number = 5;
 
     constructor(private _newsRequestService: NewsRequestService) {
         this._newsRequestService.getAllNews()
@@ -37,38 +39,36 @@ export class NewsService {
     }
 
     /**
-     * Добавляет новые новости.
-     * @param { INews[] } news массив новостей для добавления.
+     * Загружает новые новости, когда filter='news', добавляет их в коллекцию.
      */
-    public addNews(news: INews[]): void {
-        this._news.push(...news);
-        this._news.sort((a: INews, b: INews) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
-        this.makeStep();
-    }
+    public getNewsByRequest(): void {
+        if (this.filter === 'news') {
+            this._start = this._limit;
+            this._limit += this._newsRequestStep;
 
-    /**
-     * Увеличивает количество показываемых новостей.
-     */
-    public makeStep(): void {
-        this._currentNewsCount += this._newsAppendStep;
+            this._newsRequestService.getNews(this._start, this._limit)
+                .pipe(
+                    tap((news: INews[]) => this.addNews(news))
+                )
+                .subscribe();
+        }
     }
 
     /**
      * Возвращает все новости с каким то фильтром.
-     * @param { BlogNewsType } filter без филтра null, только посты 'post', толко новости 'news'
      * @return { INews[] }
      */
-    public getNews(filter: BlogNewsType = null): INews[] {
-        return (filter ? this._news.filter((n: INews) => n.type === filter) : this._news).slice(0, this._currentNewsCount);
+    public getNews(): INews[] {
+        return this.filter ? this._news.filter((n: INews) => n.type === this.filter) : this._news;
     }
 
     /**
-     * Получает новость по id.
-     * @param { number } id новости
-     * @return { INews | undefined }
+     * Добавляет новые новости.
+     * @param {INews[]} news
+     * @private
      */
-    public getNewsById(id: number): INews | undefined {
-        return this._news.find((n: INews) => n.id === id);
+    private addNews(news: INews[]): void {
+        this._news.push(...news);
+        this._news.sort((a: INews, b: INews) => b.postCreationDate.getTime() - a.postCreationDate.getTime());
     }
-
 }

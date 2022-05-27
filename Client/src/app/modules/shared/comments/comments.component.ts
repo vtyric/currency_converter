@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { INews } from '../news/interfaces';
-import { UserService } from '../shared/services/user.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { CommentService } from './services/comment.service';
 import { IComment } from './interfaces';
@@ -23,7 +22,6 @@ export class CommentsComponent implements OnDestroy, OnChanges {
     private _unsubscriber: Subject<void> = new Subject<void>();
 
     constructor(
-        private _userService: UserService,
         private _commentService: CommentService,
     ) {
     }
@@ -34,7 +32,7 @@ export class CommentsComponent implements OnDestroy, OnChanges {
                 .getCommentByNewsId(changes['news'].currentValue.id)
                 .pipe(
                     tap((comments: IComment[]) => {
-                        this.comments = comments;
+                        this.comments = comments.reverse();
                     }),
                     takeUntil(this._unsubscriber)
                 )

@@ -25,11 +25,10 @@ export class CurrencyService {
 
     /**
      * Получает список конвертеров.
-     * @param {number} size количество компаниц
      * @returns {Observable<IConverter[]>}
      */
-    public getConvertersGeoData(size: number): Observable<IConverter[]> {
-        return this._httpClient.get<IConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${ size }`)
+    public getConvertersGeoData(): Observable<IConverter[]> {
+        return this._httpClient.get<IConvertersGeoDataResponse[]>(`https://random-data-api.com/api/company/random_company?size=${ 20 }`)
             .pipe(
                 map((data: IConvertersGeoDataResponse[]) =>
                     data
