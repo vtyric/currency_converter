@@ -5,13 +5,13 @@
       <label for="login">Логин</label>
       <input class="form-control" formControlName="login" id="login" placeholder="логин" type="text">
       <div class="errors">
-        <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && password?.value === ''"
+        <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && login?.value === ''"
                class="text-danger error">
           Обязательное поле.
         </small>
         <small *ngIf="login?.errors?.['minlength']"
                class="text-danger error">
-          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов
+          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
     </div>
@@ -25,7 +25,7 @@
         </small>
         <small *ngIf="password?.errors?.['minlength']"
                class="text-danger error">
-          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов
+          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
     </div>

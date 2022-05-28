@@ -12,7 +12,7 @@
         </small>
         <small *ngIf="login?.errors?.['minlength']"
                class="text-danger error">
-          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов
+          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
     </div>
@@ -27,7 +27,7 @@
         </small>
         <small *ngIf="password?.errors?.['minlength']"
                class="text-danger error">
-          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов
+          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
     </div>
@@ -44,7 +44,7 @@
         </small>
         <small *ngIf="(repeatPassword?.dirty || repeatPassword?.touched) && password?.value !== repeatPassword?.value"
                class="text-danger error">
-          Пароли должны совпадать
+          Пароли должны совпадать.
         </small>
       </div>
     </div>
