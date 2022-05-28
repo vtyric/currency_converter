@@ -3,20 +3,40 @@
   <div [formGroup]="form">
     <div class="form-group">
       <label for="login">Логин</label>
-      <input type="text" id="login" class="form-control" placeholder="логин" formControlName="login">
+      <input class="form-control" formControlName="login" id="login" placeholder="логин" type="text">
+      <div class="errors">
+        <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && password?.value === ''"
+               class="text-danger error">
+          Обязательное поле.
+        </small>
+        <small *ngIf="login?.errors?.['minlength']"
+               class="text-danger error">
+          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов
+        </small>
+      </div>
     </div>
     <div class="form-group">
       <label for="password">Пароль</label>
-      <input type="password" id="password" class="form-control" placeholder="введите пароль" formControlName="password">
+      <input class="form-control" formControlName="password" id="password" placeholder="введите пароль" type="password">
+      <div class="errors">
+        <small *ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.value === ''"
+               class="text-danger error">
+          Обязательное поле.
+        </small>
+        <small *ngIf="password?.errors?.['minlength']"
+               class="text-danger error">
+          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов
+        </small>
+      </div>
     </div>
   </div>
-  <button class="btn btn-outline-secondary login-button"
+  <button (click)="onSubmitButtonClick($event)"
           [disabled]="form.invalid"
-          (click)="onSubmitButtonClick($event)">
+          class="btn btn-outline-secondary login-button">
     войти
   </button>
-
+  
   <span class="registration-hint">Впервые тут?</span>
-  <a routerLink="/register" class="link-primary create-account">Создать аккаунт</a>
+  <a class="link-primary create-account" routerLink="/register">Создать аккаунт</a>
 
 </form>

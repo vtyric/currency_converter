@@ -1,18 +1,60 @@
-<form class="container">
+<form autocomplete="off" class="container">
   <h1 class="header">Регистрация</h1>
-  <div class="form-group">
-    <label for="login">Логин</label>
-    <input type="text" id="login" class="form-control" placeholder="логин">
+  <div [formGroup]="form">
+    <div class="form-group">
+      <label for="login">Логин</label>
+      <input class="form-control" formControlName="login" id="login" placeholder="логин"
+             type="text">
+      <div class="errors">
+        <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && login?.value === ''"
+               class="text-danger error">
+          Обязательное поле.
+        </small>
+        <small *ngIf="login?.errors?.['minlength']"
+               class="text-danger error">
+          Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов
+        </small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль</label>
+      <input class="form-control" formControlName="password"
+             id="password" placeholder="введите пароль" type="password">
+      <div class="errors">
+        <small *ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.value === ''"
+               class="text-danger error">
+          Обязательное поле.
+        </small>
+        <small *ngIf="password?.errors?.['minlength']"
+               class="text-danger error">
+          Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов
+        </small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="repeat-password">Пароль</label>
+      <input class="form-control" formControlName="repeatPassword"
+             id="repeat-password" placeholder="введите пароль ещё раз" required
+             type="password">
+      <div class="errors">
+        <small
+          *ngIf="repeatPassword?.invalid && (repeatPassword?.dirty || repeatPassword?.touched) && repeatPassword?.value === ''"
+          class="text-danger error">
+          Обязательное поле.
+        </small>
+        <small *ngIf="(repeatPassword?.dirty || repeatPassword?.touched) && password?.value !== repeatPassword?.value"
+               class="text-danger error">
+          Пароли должны совпадать
+        </small>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="password">Пароль</label>
-    <input type="password" id="password" class="form-control" placeholder="введите пароль">
-  </div>
-  <div class="form-group">
-    <label for="repeat-password">Пароль</label>
-    <input type="password" id="repeat-password" class="form-control" placeholder="введите пароль ещё раз">
-  </div>
-  <button type="submit" class="btn btn-outline-primary login-button">зарегистрироваться</button>
+  <button (click)="onSubmitButtonClick($event)"
+          [disabled]="form.invalid || password?.value !== repeatPassword?.value"
+          class="btn btn-outline-primary login-button"
+          type="submit">
+    зарегистрироваться
+  </button>
   <span class="registration-hint">У вас уже есть аккаунт?</span>
-  <a routerLink="/login" class="link-primary create-account">Войдите</a>
+  <a class="link-primary create-account" routerLink="/login">Войдите</a>
 </form>

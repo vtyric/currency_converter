@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../../shared/authentification/services/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { IDecodedToken } from '../../shared/authentification/interfaces';
@@ -28,6 +28,22 @@ export class LoginComponent implements OnDestroy {
         private _authService: AuthService,
         private _router: Router,
     ) {
+    }
+
+    /**
+     * Возвращает control password из формы.
+     * @returns {AbstractControl | null}
+     */
+    public get password(): AbstractControl | null {
+        return this.form.get('password');
+    }
+
+    /**
+     * Возвращет control login из формы.
+     * @returns {AbstractControl | null}
+     */
+    public get login(): AbstractControl | null {
+        return this.form.get('login');
     }
 
     public ngOnDestroy(): void {

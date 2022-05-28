@@ -21,9 +21,20 @@ a {
     }
 
     input {
-      margin-bottom: 2rem;
       width: 18rem;
     }
+
+    .errors {
+      display: flex;
+      flex-direction: column;
+
+      .error {
+        padding-top: 0.6rem;
+        font-size: 75%;
+      }
+    }
+
+    margin-bottom: 1.2rem;
   }
 
   .login-button {
