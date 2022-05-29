@@ -2,10 +2,10 @@
   <ol class="breadcrumb d-flex justify-content-start">
     <li *ngFor="let breadcrumb of breadcrumbs; let i = index;"
         class="breadcrumb-item">
-      <a
+      <span
         *ngIf="i===breadcrumbs.length - 1; else elseBlock"
         aria-current="page">{{breadcrumb.label}}
-      </a>
+      </span>
       <ng-template #elseBlock>
         <a
           class="link-dark"
