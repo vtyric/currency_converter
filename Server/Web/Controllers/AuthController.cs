@@ -51,7 +51,7 @@ public class AuthController : ControllerBase
         var user = _users.GetByFilter(u => u.Login == request.Login);
 
         if (user != null)
-            return BadRequest("пользователь с таким логином уже зарегистрирован");
+            return Unauthorized();
 
         var newUser = await RegisterUser(request.Login, request.Password, request.Role);
         var token = GenerateJwtToken(newUser.Login, newUser.Id, newUser.Role);
@@ -83,7 +83,7 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private User? AuthenticateUser(string login, string? password) =>
+    private User? AuthenticateUser(string login, string password) =>
         _users.GetByFilter(u =>
             u.Login == login && CryptographyHelper.GetHashedPassword(u.Salt, password) == u.Password);
 

@@ -6,11 +6,11 @@
       <input class="form-control" formControlName="login" id="login" placeholder="логин" type="text">
       <div class="errors">
         <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && login?.value === ''"
-               class="text-danger error">
+               class="text-danger error-message">
           Обязательное поле.
         </small>
         <small *ngIf="login?.errors?.['minlength']"
-               class="text-danger error">
+               class="text-danger error-message">
           Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
@@ -20,11 +20,11 @@
       <input class="form-control" formControlName="password" id="password" placeholder="введите пароль" type="password">
       <div class="errors">
         <small *ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.value === ''"
-               class="text-danger error">
+               class="text-danger error-message">
           Обязательное поле.
         </small>
         <small *ngIf="password?.errors?.['minlength']"
-               class="text-danger error">
+               class="text-danger error-message">
           Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>

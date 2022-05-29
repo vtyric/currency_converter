@@ -12,6 +12,8 @@ import { RedirectRoleGuard } from './guards/redirect-role.guard';
 import { NewsRequestService } from './modules/shared/news/services/news-request.service';
 import { AuthentificationModule } from './modules/shared/authentification/authentification.module';
 import { NewsService } from './modules/shared/news/services/news.service';
+import { GlobalErrorHandlerModule } from './modules/shared/error/global-error-handler.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -23,12 +25,14 @@ import { NewsService } from './modules/shared/news/services/news.service';
         HttpClientModule,
         AuthentificationModule,
         NgbModule,
+        GlobalErrorHandlerModule,
         JwtModule.forRoot({
             config: {
                 tokenGetter: () => localStorage.getItem('accessToken'),
                 allowedDomains: ['localhost:7262']
             }
-        })
+        }),
+        BrowserAnimationsModule
     ],
     providers: [
         CurrencyService,

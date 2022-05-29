@@ -178,5 +178,23 @@ a {
   font-size: 100%;
 }
 
+.notification-error {
+  background-color: brown !important;
+  color: white !important;
+  min-width: 40rem !important;
+  font-size: 12px !important;
+  margin-bottom: 1rem !important;
+  line-height: 30px !important;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

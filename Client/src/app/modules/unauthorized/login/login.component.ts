@@ -57,15 +57,17 @@ export class LoginComponent implements OnDestroy {
      */
     public onSubmitButtonClick(event: Event): void {
         event.preventDefault();
+        
         this._authService
             .login(this.form.value.login, this.form.value.password)
             .pipe(
                 tap((value: IDecodedToken) => {
-                    this.form.reset();
                     this._router.navigate([value.role.toLowerCase()]);
                 }),
                 takeUntil(this._unsubscriber)
             )
             .subscribe();
+
+        this.form.reset();
     }
 }

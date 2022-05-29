@@ -70,16 +70,19 @@ export class RegistrationComponent implements OnDestroy {
      */
     public onSubmitButtonClick(event: Event): void {
         event.preventDefault();
+
         this._authService
             .register(this.form.value.login, this.form.value.password, Role.user)
             .pipe(
                 tap((value: IDecodedToken) => {
-                    this.form.reset();
                     this._router.navigate([value.role.toLowerCase()]);
+                    this.form.reset();
                 }),
                 takeUntil(this._unsubscriber)
             )
             .subscribe();
+
+        this.form.reset();
     }
 
 }

@@ -7,11 +7,11 @@
              type="text">
       <div class="errors">
         <small *ngIf="login?.invalid && (login?.dirty || login?.touched) && login?.value === ''"
-               class="text-danger error">
+               class="text-danger error-message">
           Обязательное поле.
         </small>
         <small *ngIf="login?.errors?.['minlength']"
-               class="text-danger error">
+               class="text-danger error-message">
           Логин должен быть не менее {{login?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
@@ -22,11 +22,11 @@
              id="password" placeholder="введите пароль" type="password">
       <div class="errors">
         <small *ngIf="password?.invalid && (password?.dirty || password?.touched) && password?.value === ''"
-               class="text-danger error">
+               class="text-danger error-message">
           Обязательное поле.
         </small>
         <small *ngIf="password?.errors?.['minlength']"
-               class="text-danger error">
+               class="text-danger error-message">
           Пароль должен быть не менее {{password?.errors?.['minlength']?.['requiredLength']}} символов.
         </small>
       </div>
@@ -39,11 +39,11 @@
       <div class="errors">
         <small
           *ngIf="repeatPassword?.invalid && (repeatPassword?.dirty || repeatPassword?.touched) && repeatPassword?.value === ''"
-          class="text-danger error">
+          class="text-danger error-message">
           Обязательное поле.
         </small>
         <small *ngIf="(repeatPassword?.dirty || repeatPassword?.touched) && password?.value !== repeatPassword?.value"
-               class="text-danger error">
+               class="text-danger error-message">
           Пароли должны совпадать.
         </small>
       </div>
